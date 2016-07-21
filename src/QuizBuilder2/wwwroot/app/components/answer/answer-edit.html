@@ -1,0 +1,28 @@
+<section>
+    <a class="back-nav" href ng-click="cancelAnswer()" >
+        <span class="glyphicon glyphicon-menu-left"></span>
+        <span>Cancel</span>
+    </a>
+    <h4>{{currentQuestion.get('questionText')}}</h4>
+    <form ng-submit="saveAnswer()" class="content" name="answerEditForm" novalidate>
+        <div class="input-group">
+          <input ng-model="currentAnswer.answerText" type="text" class="form-control" placeholder="Enter an answer..." id="answer-text" aria-describedby="answer-text" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+            <rg-upload-image on-upload="uploadImage(files)"></rg-upload-image>
+            <p class="help-block">Image size must be less than 768 KB</p>
+            <img class="edit-image" ng-if="currentAnswer.imageUrl" ng-src="{{currentAnswer.imageUrl}}" />
+            <div>
+                <button ng-show="currentAnswer.imageUrl" ng-click="removeImage($event)" class="clear-image btn btn-default">Remove image</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input ng-model="currentAnswer.showImageOnly" type="checkbox"> Show image only
+                </label>
+            </div>
+        </div>
+        <input type="submit" class="icon-list-add-button btn btn-primary" value="Save" ng-disabled="answerEditForm.$invalid" />
+    </form>
+</section>

@@ -30,7 +30,8 @@ namespace QuizBuilder2
             services.AddMvc();
 
             var connection =  Configuration["ConnectionStrings:QuizBuilderDataConnectionString"];
-            services.AddDbContext<QuizDbContext>(options => options.UseSqlServer(connection));
+            //services.AddDbContext<QuizDbContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<QuizDbContext>(options => options.UseInMemoryDatabase());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +42,7 @@ namespace QuizBuilder2
             {
                 using(var context = scope.ServiceProvider.GetService<QuizDbContext>())
                 {
-                    context.Database.Migrate();
+                    //context.Database.Migrate();
                 }
             }
 

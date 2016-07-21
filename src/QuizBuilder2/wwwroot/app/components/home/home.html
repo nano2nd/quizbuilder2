@@ -1,0 +1,45 @@
+<div class="container">
+    <div>
+        <div class="box-header">
+            <h4 style="text-align:center">Quiz Questions</h2>
+        </div>
+        <div class="list-group quiz-list">
+            <button type="button" class="list-group-item" ng-repeat="quiz in quizzes" ng-click="onQuizClick(quiz)">
+                <span class="badge">
+                    <span>{{quiz.get('questions').length}}</span>
+                    <span class="hidden-xs">Questions</span>
+                </span>
+                <span>{{quiz.get('title')}}</span>  
+            </button>
+        </div>
+        <div class="box-footer clearfix">
+            <span class="page-numbers">Showing {{quizzes.length}} of {{count}}</span>
+            <div class="actions btn-group">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#quizInfo">Add Quiz</button>
+            </div>
+        </div>
+    </div>
+    <nav class="question-pager" >
+        <ul class="pagination">
+            <li ng-if="page != 1">
+                <a href="#/?page={{page - 1}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li ng-repeat="n in [1, pages] | range" ng-class="{active: page == n}">
+                <a href="#/?page={{n}}">{{n}}<span class="sr-only">(current)</a>
+            </li>
+            <li ng-if="page != pages">
+              <a href="#/?page={{page + 1}}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<save-dialog dialog-title="Quiz info" dialog-id="quizInfo" on-save="saveQuiz(dialog)">
+    <div class="form-group">
+        <label for="quizTitle">Quiz Title</label>
+        <input ng-model="newQuiz.title" class="form-control" name="quizTitle" placeholder="Create a title for your quiz" autocomplete="off" required />
+    </div>
+</save-dialog>

@@ -1,0 +1,51 @@
+<section id="quiz-section" class="container-fluid">
+    <div class="header row">
+        <div class="col-sm-9">
+            <div class="title-container">
+                <a ui-sref="quiz.questions({id: quiz.id})">
+                    <h2>{{quiz.get('title')}}</h2>
+                    <a href ng-click="editTitle()">Change title</a>
+                    |
+                    <a href ng-click="removeQuiz()">Remove this quiz</a>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="points-remaining">
+                <div>Points Remaining</div>
+                <div class="big-points">{{remainingPoints}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row main-content-container">
+        <div class="col-sm-3 outcome-sidebar clearfix">
+            <h4>Outcomes</h4>
+            <ul class="outcome-list">
+                <li ng-repeat="outcome in quiz.get('outcomes')" draggable="true" rg-drag>
+                    <span class="outcome-remove" ng-click="$parent.removeOutcome(outcome)">x</span>
+                    <a ui-sref="quiz.outcome-edit({outcomeId: outcome.id})" ui-sref-active="active">
+                        <div class="title">{{outcome.get('name')}}</div>
+                        <div class="outcome-top-role">{{outcome.topRole.get('name')}}</div>
+                        <div class="outcome-points">
+                            <span>{{outcome.pointsPossible}}</span>
+                            <span class="pp">pp</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <a ui-sref="quiz.outcome-edit({outcomeId: ''})" class="add-outcome-button btn btn-default">Add</a>
+        </div>
+        <div class="col-sm-9 questions-area container-fluid"> 
+            <div ui-view id="quiz-subview"></div>  
+        </div>
+    </div>
+    
+    <!-- Change title dialog -->
+    <save-dialog dialog-title="Change Title" dialog-id="changeTitle" on-save="saveTitle(dialog)">
+        <div class="form-group">            
+            <div>
+                <input ng-model="quiz.title" class="form-control" placeholder="Enter title" autocomplete="off" required />
+            </div>
+        </div>
+    </save-dialog>   
+</section>

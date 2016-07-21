@@ -1,0 +1,14 @@
+<form class="jumbotron container" name="logInForm" ng-submit="logIn()">
+    <div class="alert alert-danger" role="alert" ng-show="loginFailed">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        user name or password was incorrect
+    </div>
+    <h2>Log in to account</h1>
+    <div class="form-group">
+        <input ng-model="user.userName" class="form-control" name="userName" placeholder="Choose your username" required />
+    </div>      
+    <div class="form-group">
+        <input type="password" ng-model="user.password" class="form-control" name="password" placeholder="Choose a password" required />
+    </div> 
+    <input class="btn btn-primary" type="submit" value="Log in" ng-disabled="logInForm.$invalid" />
+</form>
