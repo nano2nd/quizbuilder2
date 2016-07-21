@@ -1,6 +1,6 @@
-namespace QuizBuilder2.Models.ManageViewModels
+namespace QuizBuilder2.Models.ManageModels
 {
-    public class RemoveLoginViewModel
+    public class RemoveLoginModel
     {
         public string LoginProvider { get; set; }
         public string ProviderKey { get; set; }

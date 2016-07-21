@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace QuizBuilder2.Models.AccountViewModels
+namespace QuizBuilder2.Models.AccountModels
 {
-    public class LoginViewModel
+    public class LoginModel
     {
         [Required]
         [EmailAddress]

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using QuizBuilder2.Models;
+using QuizBuilder2.Data.Entities;
 
 namespace QuizBuilder2.Data
 {

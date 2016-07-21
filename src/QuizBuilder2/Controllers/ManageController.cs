@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using QuizBuilder2.Models;
+using QuizBuilder2.Data.Entities;
 using QuizBuilder2.Services;
-using QuizBuilder2.Models.ManageViewModels;
+using QuizBuilder2.Models.ManageModels;
 
 namespace QuizBuilder2.Controllers
 {
@@ -52,7 +52,7 @@ namespace QuizBuilder2.Controllers
             {
                 return View("Error");
             }
-            var model = new IndexViewModel
+            var model = new IndexModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
@@ -67,7 +67,7 @@ namespace QuizBuilder2.Controllers
         // POST: /Manage/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel account)
+        public async Task<IActionResult> RemoveLogin(RemoveLoginModel account)
         {
             ManageMessageId? message = ManageMessageId.Error;
             var user = await GetCurrentUserAsync();
@@ -94,7 +94,7 @@ namespace QuizBuilder2.Controllers
         // POST: /Manage/AddPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
+        public async Task<IActionResult> AddPhoneNumber(AddPhoneNumberModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -155,14 +155,14 @@ namespace QuizBuilder2.Controllers
             }
             var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
             // Send an SMS to verify the phone number
-            return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
+            return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberModel { PhoneNumber = phoneNumber });
         }
 
         //
         // POST: /Manage/VerifyPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
+        public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumberModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -214,7 +214,7 @@ namespace QuizBuilder2.Controllers
         // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -248,7 +248,7 @@ namespace QuizBuilder2.Controllers
         // POST: /Manage/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
+        public async Task<IActionResult> SetPassword(SetPasswordModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -287,7 +287,7 @@ namespace QuizBuilder2.Controllers
             var userLogins = await _userManager.GetLoginsAsync(user);
             var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
             ViewData["ShowRemoveButton"] = user.PasswordHash != null || userLogins.Count > 1;
-            return View(new ManageLoginsViewModel
+            return View(new ManageLoginsModel
             {
                 CurrentLogins = userLogins,
                 OtherLogins = otherLogins

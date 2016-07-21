@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using QuizBuilder2.Models;
 using QuizBuilder2.Data;
+using QuizBuilder2.Data.Entities;
 
 namespace QuizBuilder2
 {

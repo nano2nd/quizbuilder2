@@ -1,4 +1,4 @@
-namespace QuizBuilder2.Models
+namespace QuizBuilder2.Data.Entities
 {
     public class Answer
     {

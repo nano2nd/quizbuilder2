@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace QuizBuilder2.Models.ManageViewModels
+namespace QuizBuilder2.Models.ManageModels
 {
-    public class IndexViewModel
+    public class IndexModel
     {
         public bool HasPassword { get; set; }
 
