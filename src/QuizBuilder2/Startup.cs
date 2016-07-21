@@ -5,7 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using QuizBuilder2.Models;
+using QuizBuilder2.Data;
 
 namespace QuizBuilder2
 {
@@ -18,8 +20,15 @@ namespace QuizBuilder2
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                
+            if (env.IsDevelopment())
+            {
+                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
+                builder.AddUserSecrets();
+            }  
+                
+            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
@@ -27,11 +36,16 @@ namespace QuizBuilder2
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            var connection =  Configuration["ConnectionStrings:QuizBuilderDataConnectionString"]
+                .Replace("<password>", Configuration["dbpassword"]);
+            services.AddDbContext<QuizDbContext>(options => options.UseSqlServer(connection));
+            //services.AddDbContext<QuizDbContext>(options => options.UseInMemoryDatabase());
+            
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<QuizDbContext>()
+                .AddDefaultTokenProviders();
 
-            var connection =  Configuration["ConnectionStrings:QuizBuilderDataConnectionString"];
-            //services.AddDbContext<QuizDbContext>(options => options.UseSqlServer(connection));
-            services.AddDbContext<QuizDbContext>(options => options.UseInMemoryDatabase());
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,7 +56,7 @@ namespace QuizBuilder2
             {
                 using(var context = scope.ServiceProvider.GetService<QuizDbContext>())
                 {
-                    //context.Database.Migrate();
+                    context.Database.Migrate();
                 }
             }
 
@@ -60,6 +74,8 @@ namespace QuizBuilder2
             }
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {

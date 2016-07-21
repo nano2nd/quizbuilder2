@@ -29,16 +29,13 @@
             <div ng-controller="NavCtrl">
                 <div ng-include="templateUrl"></div>
             </div>
-            <div ui-view class="anim-in-out anim-fade"></div>
+            @RenderBody()
         </div>
     </div>
-    <!-- @RenderBody() -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//www.parsecdn.com/js/parse-1.6.2.min.js"></script>
-    <script src="~/lib/less/dist/less.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/lib/angular/angular.js"></script>

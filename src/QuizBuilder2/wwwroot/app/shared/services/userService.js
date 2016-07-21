@@ -19,7 +19,7 @@
                 return deferred.promise;
             }
 
-            var user = new Parse.User();
+            var user = {};
             user.signUp({
                 username: username,
                 password: password
@@ -72,7 +72,7 @@
          * @returns {[[Type]]} [[Description]]
          */
         var loggedInUser = function() {
-            return Parse.User.current();
+            return null;
         }
         
         return {

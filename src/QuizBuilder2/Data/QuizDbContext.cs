@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using QuizBuilder2.Models;
 
-namespace QuizBuilder2.Models
+namespace QuizBuilder2.Data
 {
-    public class QuizDbContext : DbContext
+    public class QuizDbContext : IdentityDbContext<ApplicationUser>
     {
         public QuizDbContext(DbContextOptions<QuizDbContext> options)
             : base(options)

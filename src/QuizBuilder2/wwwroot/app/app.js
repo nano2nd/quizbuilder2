@@ -84,8 +84,6 @@
     
     /** APP RUN **/
     var run = function($rootScope, $state, userService) {
-        // Initialize Parse
-        Parse.initialize("xHol2bXz7sRAwAMUq3zCgXE5GkZc8dcEdY72r1Tw", "hBG0531RlURjBsLLZMJUJJQ7g23hRrIRBXB4RNWN");  
         
         $rootScope.$on( '$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
             var isLogin = toState.name == "login";
