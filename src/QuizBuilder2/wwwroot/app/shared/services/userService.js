@@ -2,7 +2,7 @@
 
     var app = angular.module('quizBuilder');
     
-    var userService = function($q, $log, $rootScope) {
+    var userService = function($q, $log, $rootScope, $http) {
         
         /**
          * [[Description]]
@@ -40,15 +40,14 @@
          * @returns {[[Type]]} [[Description]]
          */
         var logIn = function(username, password) {
-            var deferred = $q.defer();    
-            Parse.User.logIn(username.toLowerCase(), password).then(function(user) {
+            return $http.post('api/account/login', {
+                email: username,
+                password: password,
+                rememberMe: false
+            }).then(function(response) {
                 $rootScope.$broadcast('updateUser');
-                deferred.resolve(user);
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
+                return response.data;
             });
-            return deferred.promise;
         }
 
         /**
@@ -82,6 +81,6 @@
         }
     }
     
-    app.factory('userService', ['$q', '$log', '$rootScope', userService]);
+    app.factory('userService', ['$q', '$log', '$rootScope', '$http', userService]);
 
 })();

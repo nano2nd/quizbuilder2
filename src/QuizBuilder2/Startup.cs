@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using QuizBuilder2.Models;
 using QuizBuilder2.Data;
 using QuizBuilder2.Data.Entities;
+using QuizBuilder2.Services;
 
 namespace QuizBuilder2
 {
@@ -47,19 +48,22 @@ namespace QuizBuilder2
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
-            using(var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                using(var context = scope.ServiceProvider.GetService<QuizDbContext>())
-                {
-                    context.Database.Migrate();
-                }
-            }
+            // using(var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            // {
+            //     using(var context = scope.ServiceProvider.GetService<QuizDbContext>())
+            //     {
+            //         context.Database.Migrate();
+            //     }
+            // }
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

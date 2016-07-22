@@ -9,10 +9,14 @@
         
         $scope.logIn = function() {
             var user = $scope.user;
-            userService.LogIn(user.userName, user.password).then(function(user) {
-                $state.go('home');
-            }, function(error) {
-                $scope.loginFailed = true;
+            userService.LogIn(user.userName, user.password).then(function(response) {
+                if (response.errors) {
+                    $scope.loginFailed = true;
+                    $scope.errors = response.errors;
+                }
+                else {
+                    $state.go('home');
+                }
             });
         }
     }

@@ -83,7 +83,7 @@
     
     
     /** APP RUN **/
-    var run = function($rootScope, $state, userService) {
+    var run = function($rootScope, $state, userService, httpHelper) {
         
         $rootScope.$on( '$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
             var isLogin = toState.name == "login";
@@ -107,6 +107,7 @@
             }
         });
     }
-    app.run(['$rootScope', '$state', 'userService', run]);
+
+    app.run(['$rootScope', '$state', 'userService', 'httpHelper', run]);
     
 })();

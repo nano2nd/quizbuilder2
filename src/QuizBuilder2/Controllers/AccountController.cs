@@ -9,10 +9,12 @@ using Microsoft.Extensions.Logging;
 using QuizBuilder2.Data.Entities;
 using QuizBuilder2.Models.AccountModels;
 using QuizBuilder2.Services;
+using QuizBuilder2.Services.Extensions;
 
 namespace QuizBuilder2.Controllers
 {
     [Authorize]
+    [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -35,21 +37,8 @@ namespace QuizBuilder2.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        //
-        // GET: /Account/Login
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -65,22 +54,22 @@ namespace QuizBuilder2.Controllers
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return new JsonResult(new { 
+                        sendCode = nameof(SendCode), 
+                        ReturnUrl = returnUrl, 
+                        RememberMe = model.RememberMe 
+                    });
                 }
                 if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "User account locked out.");
-                    return View("Lockout");
-                }
+                    ModelState.AddModelError(string.Empty, "Locked out.");
                 else
-                {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return new JsonResult(new {
+                errors = ModelState.GetErrors()
+            });
         }
 
         //
