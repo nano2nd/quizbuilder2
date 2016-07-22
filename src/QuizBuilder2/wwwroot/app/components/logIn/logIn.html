@@ -1,5 +1,5 @@
 <form class="jumbotron container" name="logInForm" ng-submit="logIn()">
-    <div class="alert alert-danger" role="alert" ng-show="loginFailed">
+    <div class="alert alert-danger" role="alert" ng-show="errors.length">
         <ul>
             <li ng-repeat="error in errors">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
