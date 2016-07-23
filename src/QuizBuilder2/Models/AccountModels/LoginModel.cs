@@ -10,6 +10,7 @@ namespace QuizBuilder2.Models.AccountModels
 
         [Required]
         [DataType(DataType.Password)]
+        [MinLength(5)]
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]

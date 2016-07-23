@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using QuizBuilder2.Models;
 using QuizBuilder2.Data;
 using QuizBuilder2.Data.Entities;
 using QuizBuilder2.Services;
@@ -26,7 +25,6 @@ namespace QuizBuilder2
                 
             if (env.IsDevelopment())
             {
-                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
             }  
                 
@@ -57,13 +55,13 @@ namespace QuizBuilder2
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
-            // using(var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            // {
-            //     using(var context = scope.ServiceProvider.GetService<QuizDbContext>())
-            //     {
-            //         context.Database.Migrate();
-            //     }
-            // }
+            using(var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using(var context = scope.ServiceProvider.GetService<QuizDbContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

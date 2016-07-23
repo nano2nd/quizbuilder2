@@ -1,5 +1,28 @@
+@model QuizBuilder2.Data.Entities.ApplicationUser
+
 @{
     ViewData["Title"] = "WhoAmI Quiz Builder";
 }
 
 <div ui-view class="anim-in-out anim-fade"></div>
+
+
+@section Scripts {
+    <script>
+        var qb_LOGGED_IN_USER;
+
+        @{
+            if (Model != null)
+            {
+                <text>
+                qb_LOGGED_IN_USER = {
+                    Id: '@Model.Id',
+                    Email: '@Model.Email'
+                };  
+                </text>
+            }
+
+        }
+        
+    </script>
+}

@@ -45,7 +45,24 @@
                 password: password,
                 rememberMe: false
             }).then(function(response) {
-                $rootScope.$broadcast('updateUser');
+                qb_LOGGED_IN_USER = response.data.content;
+                return response.data;
+            });
+        }
+
+        /**
+         * [[Description]]
+         * @param   {[[Type]]} username [[Description]]
+         * @param   {[[Type]]} password [[Description]]
+         * @param   {[[Type]]} confirmPassword [[Description]]
+         * @returns {[[Type]]} [[Description]]
+         */
+        var register = function(username, password, confirmPassword) {
+            return $http.post('api/account/register', {
+                email: username,
+                password: password,
+                confirmPassword: confirmPassword
+            }).then(function(response) {
                 return response.data;
             });
         }
@@ -55,15 +72,10 @@
          * @returns {[[Type]]} [[Description]]
          */
         var logOut = function() {
-            var deferred = $q.defer();            
-            Parse.User.logOut().then(function() {
-                $rootScope.$broadcast('updateUser');
-                deferred.resolve();
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
+            return $http.post('api/account/logoff').then(function(response) {
+                qb_LOGGED_IN_USER = null;
+                return response.data;
             });
-            return deferred.promise;
         }
 
         /**
@@ -71,13 +83,18 @@
          * @returns {[[Type]]} [[Description]]
          */
         var loggedInUser = function() {
-            return null;
+            return $http.get('api/account/currentuser').then(function(response) {
+                var user = response.data;
+                qb_LOGGED_IN_USER = user;
+                return user;  
+            });
         }
         
         return {
             LogIn: logIn,
             LogOut: logOut,
-            LoggedInUser: loggedInUser
+            LoggedInUser: loggedInUser,
+            Register: register
         }
     }
     

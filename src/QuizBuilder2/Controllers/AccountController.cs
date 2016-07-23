@@ -2,11 +2,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using QuizBuilder2.Data.Entities;
+using QuizBuilder2.Models;
 using QuizBuilder2.Models.AccountModels;
 using QuizBuilder2.Services;
 using QuizBuilder2.Services.Extensions;
@@ -37,11 +39,21 @@ namespace QuizBuilder2.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
+        public async Task<CustomJsonResult> CurrentUser()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            return new CustomJsonResult(
+                new {
+                    currentUser.Id,
+                    currentUser.Email
+                }
+            );
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -50,11 +62,11 @@ namespace QuizBuilder2.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    return new CustomJsonResult(new {model.Email});
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return new JsonResult(new { 
+                    return new CustomJsonResult(new { 
                         sendCode = nameof(SendCode), 
                         ReturnUrl = returnUrl, 
                         RememberMe = model.RememberMe 
@@ -67,34 +79,18 @@ namespace QuizBuilder2.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return new JsonResult(new {
-                errors = ModelState.GetErrors()
-            });
+            return CustomJsonResult.Errors(ModelState.GetErrors());
         }
 
-        //
-        // GET: /Account/Register
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        //
-        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var registerResult = await _userManager.CreateAsync(user, model.Password);
+                if (registerResult.Succeeded)
                 {
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
@@ -102,26 +98,23 @@ namespace QuizBuilder2.Controllers
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(user, isPersistent: true);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return new CustomJsonResult(new { Result = "success"});
                 }
-                AddErrors(result);
+                AddErrors(registerResult);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return CustomJsonResult.Errors(ModelState.GetErrors());
         }
 
-        //
-        // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return new CustomJsonResult("success");
         }
 
         //
@@ -433,9 +426,9 @@ namespace QuizBuilder2.Controllers
             }
         }
 
-        private Task<ApplicationUser> GetCurrentUserAsync()
+        private async Task<ApplicationUser> GetCurrentUserAsync()
         {
-            return _userManager.GetUserAsync(HttpContext.User);
+            return await _userManager.GetUserAsync(HttpContext.User);
         }
 
         private IActionResult RedirectToLocal(string returnUrl)

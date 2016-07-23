@@ -15,6 +15,12 @@
                 controller: 'LogInCtrl',
                 title: 'Log In'
             })
+            .state('register', {
+                url: '/register',
+                templateUrl: 'app/components/register/register.html',
+                controller: 'RegisterCtrl',
+                title: 'Register'
+            })
             .state('home', {
                 url: '/?page',
                 templateUrl: 'app/components/home/home.html',
@@ -83,10 +89,9 @@
     
     
     /** APP RUN **/
-    var run = function($rootScope, $state, userService, httpHelper) {
+    var run = function($rootScope, $state, httpHelper) {
         
-        $rootScope.$on( '$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
-            var isLogin = toState.name == "login";
+        $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
             
             //record slight history; 
             $rootScope.previousState = { 
@@ -94,12 +99,12 @@
                 params: fromParams
             }
             
-            if(isLogin){
+            if(toState.name == "login" || toState.name == "register"){
                return; // no need to redirect 
             }
 
             // now, redirect only not authenticated
-            var user = userService.LoggedInUser();
+            var user = qb_LOGGED_IN_USER;
 
             if(!user) {
                 e.preventDefault(); // stop current execution

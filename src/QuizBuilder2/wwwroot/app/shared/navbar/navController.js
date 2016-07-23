@@ -8,20 +8,20 @@
             return state.nav;
         });
         
-        $scope.user = userService.LoggedInUser();
+        $scope.user = qb_LOGGED_IN_USER;
+
         $scope.isLoggedIn = $scope.user != null;
         $scope.templateUrl = 'app/shared/navbar/navbar.html';
         
         $scope.logOut = function() {
-            userService.LogOut().then(function() {
-                $state.go("login");
-                $rootScope.apply();
+            userService.LogOut().then(function(data) {
+                if (data.content == "success") {
+                    $scope.user = null;
+                    $scope.isLoggedIn = false;
+                    $state.go("login");
+                }
             });
-        }
-        
-        $rootScope.$on('updateUser', function() {
-            $scope.user = userService.LoggedInUser();
-        });      
+        }    
     }
 
     app.controller('NavCtrl', ['$scope', '$state', '$rootScope', 'userService', navController]);

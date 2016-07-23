@@ -1,4 +1,4 @@
-<form class="jumbotron container" name="logInForm" ng-submit="logIn()">
+<form class="jumbotron container" name="registerForm" ng-submit="register()">
     <div class="alert alert-danger" role="alert" ng-show="errors.length">
         <ul>
             <li ng-repeat="error in errors">
@@ -7,12 +7,15 @@
             </li>
         </ul>
     </div>
-    <h2>Log in to account</h1>
+    <h2>Register</h1>
     <div class="form-group">
-        <input ng-model="user.userName" class="form-control" name="userName" placeholder="Enter your email" required />
+        <input type="email" ng-model="user.email" class="form-control" name="email" placeholder="Enter your email" required />
     </div>      
     <div class="form-group">
         <input type="password" ng-model="user.password" class="form-control" name="password" placeholder="Enter your password" required />
+    </div>
+    <div class="form-group">
+        <input type="password" ng-model="user.confirmPassword" class="form-control" name="confirmPassword" placeholder="Confirm password" required />
     </div> 
-    <input class="btn btn-primary" type="submit" value="Log in" ng-disabled="logInForm.$invalid" />
+    <input class="btn btn-primary" type="submit" value="Create Account" ng-disabled="registerForm.$invalid" />
 </form>

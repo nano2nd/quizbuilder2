@@ -17,10 +17,13 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li ui-sref-active="active" ng-hide="user">
+            <li ui-sref-active="active" ng-hide="isLoggedIn">
                 <a ui-sref="login">Log in</a>
             </li>
-            <li ng-hide="!user">
+            <li ui-sref-active="active"" ng-hide="isLoggedIn">
+                <a ui-sref="register">Register</a>
+            </li>
+            <li ng-hide="!isLoggedIn">
                 <a href="javascript:void(0)" ng-click="logOut()">Log out {{user.get('username')}}</a>
             </li>
         </ul>

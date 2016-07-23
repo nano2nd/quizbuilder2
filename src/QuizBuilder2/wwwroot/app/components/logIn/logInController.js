@@ -10,9 +10,9 @@
 
         $scope.logIn = function() {
             var user = $scope.user;
-            userService.LogIn(user.userName, user.password).then(function(response) {
-                if (response.errors) {
-                    $scope.errors = response.errors;
+            userService.LogIn(user.userName, user.password).then(function(data) {
+                if (data.errors.length) {
+                    $scope.errors = data.errors;
                 }
                 else {
                     $state.go('home');
