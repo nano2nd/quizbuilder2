@@ -18,8 +18,6 @@
                     quizCount: results[1]
                 }
             });
-            
-            return data;
         }
         
         return {

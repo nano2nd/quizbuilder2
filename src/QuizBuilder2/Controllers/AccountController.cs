@@ -2,7 +2,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +11,7 @@ using QuizBuilder2.Models;
 using QuizBuilder2.Models.AccountModels;
 using QuizBuilder2.Services;
 using QuizBuilder2.Services.Extensions;
+using QuizBuilder2.Services.Interfaces;
 
 namespace QuizBuilder2.Controllers
 {
@@ -100,7 +100,7 @@ namespace QuizBuilder2.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: true);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return new CustomJsonResult(new { Result = "success"});
+                    return new CustomJsonResult(new {model.Email});
                 }
                 AddErrors(registerResult);
             }

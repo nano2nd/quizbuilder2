@@ -99,16 +99,23 @@
                 params: fromParams
             }
             
-            if(toState.name == "login" || toState.name == "register"){
-               return; // no need to redirect 
+            var user = qb_LOGGED_IN_USER;
+
+            // These pages are OK for 
+            if (toState.name == "login" || toState.name == "register") {
+                if (user) {
+                    e.preventDefault(); // stop current execution
+                    $state.go('home');
+                }
+                else {
+                   return; // no need to redirect
+                }
             }
 
             // now, redirect only not authenticated
-            var user = qb_LOGGED_IN_USER;
-
             if(!user) {
                 e.preventDefault(); // stop current execution
-                $state.go('login'); // go to login
+                $state.go('login', {'requestedState': toState.name}); // go to login
             }
         });
     }

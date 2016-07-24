@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using QuizBuilder2.Data.Entities;
 using QuizBuilder2.Services;
 using QuizBuilder2.Models.ManageModels;
+using QuizBuilder2.Services.Interfaces;
 
 namespace QuizBuilder2.Controllers
 {

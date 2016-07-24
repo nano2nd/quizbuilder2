@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace QuizBuilder2.Services
+namespace QuizBuilder2.Services.Interfaces
 {
     public interface ISmsSender
     {

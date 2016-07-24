@@ -63,6 +63,7 @@
                 password: password,
                 confirmPassword: confirmPassword
             }).then(function(response) {
+                qb_LOGGED_IN_USER = response.data.content;
                 return response.data;
             });
         }
