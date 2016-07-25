@@ -63,7 +63,7 @@ namespace QuizBuilder2
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             ILoggerFactory loggerFactory, IServiceProvider serviceProvider, ISeeder seeder,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             /* Since there is no request yet, the service provider is not yet able to give a scoped 
                 instance of the DbContext so it otherwise creates one that will live for the lifetime of
@@ -97,7 +97,14 @@ namespace QuizBuilder2
                 };
 
                 // Running this method asynchronously causes indefinite hang
-                var result = userManager.CreateAsync(user, _configuration["dbpassword"]).Result;
+                var userM = userManager.CreateAsync(user, _configuration["dbpassword"]).Result;
+
+                // Add the required role
+                var quizAdminRole = new IdentityRole {
+                    Name = "QuizAdminRole"
+                };
+                var role = roleManager.CreateAsync(quizAdminRole).Result;
+                var addResult = userManager.AddToRoleAsync(user, "QuizAdminRole").Result;
             }
             else
             {
