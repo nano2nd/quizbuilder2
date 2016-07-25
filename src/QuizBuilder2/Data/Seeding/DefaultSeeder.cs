@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using QuizBuilder2.Data.Entities;
-using QuizBuilder2.Services.Interfaces;
+using QuizBuilder2.Services;
 
 namespace QuizBuilder2.Data.Seeding
 {

@@ -1,4 +1,4 @@
-namespace QuizBuilder2.Services.Interfaces
+namespace QuizBuilder2.Services
 {
     public interface ISeeder
     {

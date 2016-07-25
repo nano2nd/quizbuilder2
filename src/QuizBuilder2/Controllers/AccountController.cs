@@ -11,7 +11,6 @@ using QuizBuilder2.Models;
 using QuizBuilder2.Models.AccountModels;
 using QuizBuilder2.Services;
 using QuizBuilder2.Services.Extensions;
-using QuizBuilder2.Services.Interfaces;
 
 namespace QuizBuilder2.Controllers
 {
