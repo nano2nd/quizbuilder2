@@ -10,18 +10,23 @@
         
         $scope.user = qb_LOGGED_IN_USER;
 
-        $scope.isLoggedIn = $scope.user != null;
+        $scope.isLoggedIn = function() {
+            return $scope.user != null;
+        }
         $scope.templateUrl = 'app/shared/navbar/navbar.html';
         
         $scope.logOut = function() {
             userService.LogOut().then(function(data) {
                 if (data.content == "success") {
                     $scope.user = null;
-                    $scope.isLoggedIn = false;
                     $state.go("login");
                 }
             });
-        }    
+        }
+
+        $rootScope.$on('updateUser', function(event, user) {
+            $scope.user = user;
+        });   
     }
 
     app.controller('NavCtrl', ['$scope', '$state', '$rootScope', 'userService', navController]);

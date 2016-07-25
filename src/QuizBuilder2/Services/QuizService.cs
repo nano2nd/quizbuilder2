@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using QuizBuilder2.Data;
 using QuizBuilder2.Data.Entities;
 
@@ -17,7 +18,9 @@ namespace QuizBuilder2.Services
 
         public IQueryable<Quiz> GetQuizzes(int? numberOfQuizzes = null, int? skip = null)
         {
-            var quizzes = _db.Quizzes.OrderBy(q => q.Title);
+            var quizzes = _db.Quizzes
+                .Include(q => q.Questions)
+                .OrderBy(q => q.Title);
 
             if (numberOfQuizzes.HasValue && skip.HasValue)
                 return quizzes.Skip(skip.Value).Take(numberOfQuizzes.Value);

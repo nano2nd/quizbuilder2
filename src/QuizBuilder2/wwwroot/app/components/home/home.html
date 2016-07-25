@@ -6,7 +6,7 @@
         <div class="list-group quiz-list">
             <button type="button" class="list-group-item" ng-repeat="quiz in quizzes" ng-click="onQuizClick(quiz)">
                 <span class="badge">
-                    <span>{{$parent.quizzes.length}}</span>
+                    <span>{{quiz.questions.length}}</span>
                     <span class="hidden-xs">Questions</span>
                 </span>
                 <span>{{quiz.title}}</span>  

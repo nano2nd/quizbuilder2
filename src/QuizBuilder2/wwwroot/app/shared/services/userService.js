@@ -43,9 +43,11 @@
             return $http.post('api/account/login', {
                 email: username,
                 password: password,
-                rememberMe: false
+                rememberMe: true
             }).then(function(response) {
-                qb_LOGGED_IN_USER = response.data.content;
+                var user = response.data.content;
+                qb_LOGGED_IN_USER = user;
+                $rootScope.$broadcast('updateUser', user);
                 return response.data;
             });
         }
@@ -63,7 +65,9 @@
                 password: password,
                 confirmPassword: confirmPassword
             }).then(function(response) {
-                qb_LOGGED_IN_USER = response.data.content;
+                var user = response.data.content;
+                qb_LOGGED_IN_USER = user;
+                $rootScope.$broadcast('updateUser', user);
                 return response.data;
             });
         }

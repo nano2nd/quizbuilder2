@@ -34,28 +34,6 @@
             return $http.get(`api/quiz/getquizzes?limit=${limit}&skip=${skip}`).then(function(response) {
                 return response.data;
             });
-
-            // var deferred = $q.defer();
-            // var q = query('Quiz');
-            // q.ascending('title');
-            // q.include('questions');
-            
-            // if (limit) {
-            //     q.limit(limit);   
-            // }
-            
-            // if (skip) {
-            //     q.skip(skip);  
-            // }
-            
-            // q.find().then(function(results) {              
-            //     deferred.resolve(results);
-            // }, function(error) {  
-            //     $log.error(error.message);
-            //     deferred.reject(error);
-            // });
-            
-            // return deferred.promise;
         }
         
         /**
@@ -66,17 +44,6 @@
             return $http.get(`api/quiz/count`).then(function(response) {
                 return response.data;
             });
-
-
-            // var deferred = $q.defer();
-            // var q = query('Quiz');
-            // q.count().then(function(count) { 
-            //     deferred.resolve(count);
-            // }, function(error) {
-            //     $log.error(error.message); 
-            //     deferred.reject(error);
-            // });
-            // return deferred.promise;
         }
         
         /**
