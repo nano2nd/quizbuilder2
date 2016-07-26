@@ -13,7 +13,11 @@ namespace QuizBuilder2.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AnswerOutcome>().HasKey(a => new { a.AnswerId, a.OutcomeId });
+            
             modelBuilder.Entity<CharacterRoleOutcome>().HasKey( c => new { c.CharacterRoleId, c.OutcomeId });
+
+            base.OnModelCreating(modelBuilder);
+
         }
 
         public DbSet<Quiz> Quizzes { get; set; }
@@ -22,5 +26,6 @@ namespace QuizBuilder2.Data
         public DbSet<CharacterRole> CharacterRoles { get; set; }
         public DbSet<Outcome> Outcomes { get; set; }
         public DbSet<CharacterRoleOutcome> CharacterRoleOutcomes { get; set; }
+        public DbSet<AnswerOutcome> AnswerOutcomes { get; set; }
     }
 }

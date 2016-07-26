@@ -10,8 +10,8 @@ namespace QuizBuilder2.Data.Entities
         public string ImageFile { get; set; }
         
         public int QuestionId { get; set; }
-        public Question Question { get; set; }
+        public virtual Question Question { get; set; }
 
-        public ICollection<Outcome> Outcomes { get; set; }
+        public ICollection<AnswerOutcome> AnswerOutcomes { get; set; }
     }
 }

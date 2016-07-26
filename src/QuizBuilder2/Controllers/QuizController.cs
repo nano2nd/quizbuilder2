@@ -29,7 +29,7 @@ namespace QuizBuilder2.Controllers
             return _quizService.GetQuizzes(limit, skip);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<Quiz> GetQuiz(int id)
         {
             return await _quizService.GetQuizAsync(id);

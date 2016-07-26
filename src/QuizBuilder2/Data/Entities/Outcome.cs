@@ -9,8 +9,10 @@ namespace QuizBuilder2.Data.Entities
         public string Summary { get; set; }
         public string ImageFile { get; set; }
 
-        public ICollection<Quiz> Quizzes { get; set; }
-        public ICollection<CharacterRole> CharacterRoles { get; set; }
-        public ICollection<Answer> Answers { get; set; }
+        public int QuizId { get; set; }
+        public virtual Quiz Quiz { get; set; }
+
+        public ICollection<CharacterRoleOutcome> CharacterRoleOutcomes { get; set; }
+        public ICollection<AnswerOutcome> AnswerOutcomes { get; set; }
     }
 }

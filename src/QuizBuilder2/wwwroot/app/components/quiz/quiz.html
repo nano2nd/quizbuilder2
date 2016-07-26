@@ -24,10 +24,10 @@
                 <li ng-repeat="outcome in quiz.outcomes" draggable="true" rg-drag>
                     <span class="outcome-remove" ng-click="$parent.removeOutcome(outcome)">x</span>
                     <a ui-sref="quiz.outcome-edit({outcomeId: outcome.id})" ui-sref-active="active">
-                        <div class="title">{{outcome.get('name')}}</div>
-                        <div class="outcome-top-role">{{outcome.topRole.get('name')}}</div>
+                        <div class="title">{{outcome.name}}</div>
+                        <div class="outcome-top-role">{{outcome.roles[0]}}</div>
                         <div class="outcome-points">
-                            <span>{{outcome.pointsPossible}}</span>
+                            <!--<span>{{outcome.pointsPossible}}</span>-->
                             <span class="pp">pp</span>
                         </div>
                     </a>

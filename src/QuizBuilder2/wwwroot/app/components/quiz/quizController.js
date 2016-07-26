@@ -10,12 +10,10 @@
         $scope.quiz = quizData;
         
         $scope.editTitle = function(question) {
-            $scope.quiz.title = $scope.quiz.get('title');
             $('#changeTitle').modal();
         }
         
         $scope.saveTitle = function(dialog) {
-            $scope.quiz.set('title', $scope.quiz.title);
             dataService.SaveQuiz($scope.quiz, $scope.quiz.title).then(function() {
                 dialog.close();    
             });
@@ -24,21 +22,20 @@
         $scope.editPoints = function(question) {
             $('#questionPoints').modal();
             $scope.selectedQuestion = question;
-            $scope.selectedQuestion.points = question.get('points');
+            $scope.selectedQuestion.points = question.points;
         }
         
         $scope.savePoints = function(dialog) {
-            $scope.selectedQuestion.set('points', $scope.selectedQuestion.points);
             dataService.SaveQuestion($scope.selectedQuestion, null, $scope.selectedQuestion.points).then(function() {
                 dialog.close();
             });
         }
         
         $scope.updateRemainingPoints = function() {
-            var questions = $scope.quiz.get('questions');
+            var questions = $scope.quiz.questions;
             if (questions.length) {
                 $scope.remainingPoints = 200 - questions.map(function(q) {
-                    return q.get('points');  
+                    return q.points;  
                 }).reduce(function(prev, current) {
                     return prev + current;
                 });
@@ -70,7 +67,7 @@
             });
         }
         
-        $scope.$watch('selectedQuestion.get("points")', function() {
+        $scope.$watch('selectedQuestion.points', function() {
             $scope.updateRemainingPoints();
         });
         

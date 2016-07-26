@@ -55,7 +55,12 @@ namespace QuizBuilder2
                 .AddEntityFrameworkStores<QuizDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });;
 
             services.AddQuizBuilderServices();       
         }

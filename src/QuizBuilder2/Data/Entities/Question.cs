@@ -9,7 +9,7 @@ namespace QuizBuilder2.Data.Entities
         public int Points {get; set; }
 
         public int QuizId {get; set; }
-        public Quiz Quiz { get; set; }
+        public virtual Quiz Quiz { get; set; }
 
         public ICollection<Answer> Answers {get; set;}
     }

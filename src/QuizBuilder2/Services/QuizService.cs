@@ -39,6 +39,7 @@ namespace QuizBuilder2.Services
         public async Task<Quiz> GetQuizAsync(int id)
         {
             var quiz = await _db.Quizzes
+                .Include(q => q.Outcomes)
                 .Include(q => q.Questions)
                 .ThenInclude(q => q.Answers)
                 .FirstAsync(q => q.Id == id);

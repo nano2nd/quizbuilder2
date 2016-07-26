@@ -5,9 +5,9 @@ namespace QuizBuilder2.Data.Entities
         public int Value { get; set; }
         
         public int CharacterRoleId { get; set; }
-        public CharacterRole Role { get; set; }
+        public virtual CharacterRole Role { get; set; }
         
         public int OutcomeId { get; set; }
-        public Outcome Outcome { get; set; }
+        public virtual Outcome Outcome { get; set; }
     }
 }

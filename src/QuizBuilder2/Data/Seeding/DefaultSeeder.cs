@@ -64,11 +64,12 @@ namespace QuizBuilder2.Data.Seeding
             {
                 for (int i = 0; i < NumberOfOutcomes; i++)
                 {
-                    var outcome = new Outcome
+                    _db.Outcomes.Add(new Outcome
                     {
+                        QuizId = quiz.Id,
                         Name = $"Outcome {i}",
                         Summary = $"This is a fantastic summary for the \"{quiz.Title}\" quiz."
-                    };
+                    });
                 }
             }
 
@@ -84,7 +85,8 @@ namespace QuizBuilder2.Data.Seeding
                 {
                     _db.Questions.Add(new Question {
                         QuizId = quiz.Id,
-                        Text = $"What is question number {i}?"
+                        Text = $"What is question number {i}?",
+                        Points = (int)Math.Floor((decimal)(200/NumberOfQuestions))
                     });
                 }
             }
@@ -111,7 +113,6 @@ namespace QuizBuilder2.Data.Seeding
 
         private async Task<int> ConnectAnswersToOutcomes()
         {
-            var random = new Random();
             var answers = _db.Answers
                 .Include(a => a.Question)
                 .ThenInclude(q => q.Quiz)
@@ -120,11 +121,15 @@ namespace QuizBuilder2.Data.Seeding
             foreach (var answer in answers)
             {
                 var outcomes = answer.Question.Quiz.Outcomes.ToList();
-                var connection = new AnswerOutcome 
+                
+                var random = new Random();
+                var randomId = random.Next(1, outcomes.Count + 1);
+                
+                _db.AnswerOutcomes.Add(new AnswerOutcome 
                 {
                     AnswerId = answer.Id,
-                    OutcomeId = outcomes.First(o => o.Id == random.Next(1, outcomes.Count)).Id
-                };
+                    OutcomeId = randomId
+                });
             }
 
             return await _db.SaveChangesAsync();

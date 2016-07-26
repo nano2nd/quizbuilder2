@@ -4,7 +4,9 @@
     var quizService = function($q, dataService) {        
         
         var quizData = function (quizId) {
-            return dataService.GetQuiz(quizId);
+            return dataService.GetQuiz(quizId).then(function(response) {
+                return response.data;
+            });
         }
         
         return {
