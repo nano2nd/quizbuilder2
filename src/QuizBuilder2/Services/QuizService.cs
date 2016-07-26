@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QuizBuilder2.Data;
 using QuizBuilder2.Data.Entities;
@@ -33,6 +34,15 @@ namespace QuizBuilder2.Services
                 return quizzes.Skip(skip.Value);
 
             return quizzes;
+        }
+
+        public async Task<Quiz> GetQuizAsync(int id)
+        {
+            var quiz = await _db.Quizzes
+                .Include(q => q.Questions)
+                .ThenInclude(q => q.Answers)
+                .FirstAsync(q => q.Id == id);
+            return quiz;
         }
     }
 }

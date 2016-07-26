@@ -31,7 +31,7 @@
          * @return {promise} - A promise that returns when the query has finished
          */
         var getQuizzes = function(limit = null, skip = null) {
-            return $http.get(`api/quiz/getquizzes?limit=${limit}&skip=${skip}`).then(function(response) {
+            return $http.get(`api/quiz/quizzes?limit=${limit}&skip=${skip}`).then(function(response) {
                 return response.data;
             });
         }
@@ -52,35 +52,39 @@
          * @returns {[[Type]]} [[Description]]
          */
         var getQuiz = function(id) {
-            var deferred = $q.defer();
-            var q = query('Quiz');
-            q.equalTo('objectId', id);
-            q.include('questions');
-            q.include('questions.answers');
-            q.include('questions.answers.image');
-            q.include('outcomes');
-            q.first().then(function(quiz) {
-                // Calculate points possible for each outcome
-                var updatePpPromise = updateAllOutcomePp(quiz);
-                
-                // Get top role for each outcome
-                var topPointsPromises = [];
-                quiz.get('outcomes').forEach(function(outcome) {
-                    topPointsPromises.push(topRoleForOutcome(outcome).then(function(role) {
-                        outcome.topRole = role;
-                        return role;
-                    }));
-                });
-                
-                return $q.all([updatePpPromise, $q.all(topPointsPromises)]).then(function() {
-                    deferred.resolve(quiz);
-                });
-
-            }, function(error) {
-               $log.error(error.message); 
+            return $http.get(`api/quiz/getquiz/${id}`, function(response) {
+                return response.data;
             });
+
+            // var deferred = $q.defer();
+            // var q = query('Quiz');
+            // q.equalTo('objectId', id);
+            // q.include('questions');
+            // q.include('questions.answers');
+            // q.include('questions.answers.image');
+            // q.include('outcomes');
+            // q.first().then(function(quiz) {
+            //     // Calculate points possible for each outcome
+            //     var updatePpPromise = updateAllOutcomePp(quiz);
+                
+            //     // Get top role for each outcome
+            //     var topPointsPromises = [];
+            //     quiz.get('outcomes').forEach(function(outcome) {
+            //         topPointsPromises.push(topRoleForOutcome(outcome).then(function(role) {
+            //             outcome.topRole = role;
+            //             return role;
+            //         }));
+            //     });
+                
+            //     return $q.all([updatePpPromise, $q.all(topPointsPromises)]).then(function() {
+            //         deferred.resolve(quiz);
+            //     });
+
+            // }, function(error) {
+            //    $log.error(error.message); 
+            // });
             
-            return deferred.promise;
+            // return deferred.promise;
         }
         
         /**

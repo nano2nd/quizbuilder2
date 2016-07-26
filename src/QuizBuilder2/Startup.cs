@@ -101,7 +101,7 @@ namespace QuizBuilder2
 
                 // Add the required role
                 var quizAdminRole = new IdentityRole {
-                    Name = "QuizAdminRole"
+                   Name = "QuizAdminRole"
                 };
                 var role = roleManager.CreateAsync(quizAdminRole).Result;
                 var addResult = userManager.AddToRoleAsync(user, "QuizAdminRole").Result;

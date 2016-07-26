@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizBuilder2.Data;
 using QuizBuilder2.Data.Entities;
@@ -9,6 +11,7 @@ using QuizBuilder2.Services;
 
 namespace QuizBuilder2.Controllers
 {
+    [Authorize(Roles = "QuizAdminRole")]
     [Route("api/[controller]/[action]")]
     public class QuizController : Controller
     {
@@ -17,23 +20,20 @@ namespace QuizBuilder2.Controllers
         public QuizController(QuizDbContext db, IQuizService quizService)
         {
             _db = db;
-            _quizService = quizService;
-            
+            _quizService = quizService;          
         }
 
-        // GET api/values
         [HttpGet]
-        public IEnumerable<Quiz> GetQuizzes(int? limit, int? skip)
+        public IEnumerable<Quiz> Quizzes(int? limit, int? skip)
         {
             return _quizService.GetQuizzes(limit, skip);
         }
 
-        // GET api/values/5
-        // [HttpGet("{id}")]
-        // public string Get(int id)
-        // {
-        //     return "value";
-        // }
+        [HttpGet]
+        public async Task<Quiz> GetQuiz(int id)
+        {
+            return await _quizService.GetQuizAsync(id);
+        }
 
         // POST api/values
         [HttpPost]
