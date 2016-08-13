@@ -11,7 +11,7 @@ namespace QuizBuilder2.Data.Seeding
     {
         private QuizDbContext _db;
         private const int NumberOfQuizzes = 10;
-        private const int NumberOfOutcomes = 5;
+        private const int NumberOfOutcomes = 6;
         private const int NumberOfQuestions = 9;
         private  const int NumberOfAnswers = 4;
 
@@ -27,7 +27,8 @@ namespace QuizBuilder2.Data.Seeding
             await AddOutcomesAsync();
             await AddQuestionsAsync();
             await AddAnswersAsync();
-            await ConnectAnswersToOutcomes();  
+            await ConnectOutcomesToCharacterRolesAsync();
+            await ConnectAnswersToOutcomesAsync();
         }
 
         private async Task<int> AddCharacterRoles()
@@ -111,7 +112,32 @@ namespace QuizBuilder2.Data.Seeding
             return await _db.SaveChangesAsync();
         }
 
-        private async Task<int> ConnectAnswersToOutcomes()
+        private async Task<int> ConnectOutcomesToCharacterRolesAsync()
+        {
+            var quizzes = _db.Quizzes
+                .Include(q => q.Outcomes);
+            
+            foreach(var quiz in quizzes)
+            {
+                var i = 1;
+                foreach (var outcome in quiz.Outcomes)
+                {
+                    var random = new Random();
+                    var randomValue= random.Next(0, 21);
+                    _db.CharacterRoleOutcomes.Add(new CharacterRoleOutcome 
+                    {
+                        CharacterRoleId = i,
+                        OutcomeId = outcome.Id,
+                        Value = randomValue
+                    });
+                    i++;
+                }
+            }
+
+            return await _db.SaveChangesAsync();
+        }
+
+        private async Task<int> ConnectAnswersToOutcomesAsync()
         {
             var answers = _db.Answers
                 .Include(a => a.Question)
@@ -123,12 +149,12 @@ namespace QuizBuilder2.Data.Seeding
                 var outcomes = answer.Question.Quiz.Outcomes.ToList();
                 
                 var random = new Random();
-                var randomId = random.Next(1, outcomes.Count + 1);
+                var randomId = random.Next(0, outcomes.Count);
                 
                 _db.AnswerOutcomes.Add(new AnswerOutcome 
                 {
                     AnswerId = answer.Id,
-                    OutcomeId = randomId
+                    OutcomeId = outcomes[randomId].Id
                 });
             }
 

@@ -27,7 +27,9 @@ namespace QuizBuilder2Tests
                 var firstQuiz = await db.Quizzes
                     .Include(q => q.Questions)
                     .ThenInclude(q => q.Answers)
+                    .ThenInclude(a => a.AnswerOutcomes)
                     .FirstAsync();
+                    
                 Assert.NotNull(firstQuiz);
                 Assert.Equal("Quiz Number 0", firstQuiz.Title);
 
@@ -36,11 +38,14 @@ namespace QuizBuilder2Tests
 
                 var firstAnswer = firstQuestion.Answers.First();
                 Assert.Equal("Answer number 0", firstAnswer.Text);
+
+                var answerOutcome = firstAnswer.AnswerOutcomes.First();
+                Assert.NotNull(answerOutcome);
             }
         }
 
         [Fact]
-        public void GetQuizzesTest()
+        public void ShouldGetQuizzesTest()
         {
             const int numberOfQuizzes = 3;
             var skipInterval = numberOfQuizzes;

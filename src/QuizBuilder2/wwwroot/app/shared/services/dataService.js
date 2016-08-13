@@ -52,7 +52,7 @@
          * @returns {[[Type]]} [[Description]]
          */
         var getQuiz = function(id) {
-            return $http.get(`api/quiz/getquiz/${id}`, function(response) {
+            return $http.get(`api/quiz/getquiz/${id}`).then(function(response) {
                 return response.data;
             });
 

@@ -40,9 +40,13 @@ namespace QuizBuilder2.Services
         {
             var quiz = await _db.Quizzes
                 .Include(q => q.Outcomes)
+                .ThenInclude(o => o.CharacterRoleOutcomes)
+                .ThenInclude(cro => cro.Role)
                 .Include(q => q.Questions)
                 .ThenInclude(q => q.Answers)
+                .ThenInclude(a => a.AnswerOutcomes)
                 .FirstAsync(q => q.Id == id);
+
             return quiz;
         }
     }

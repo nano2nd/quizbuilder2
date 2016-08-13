@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuizBuilder2.Data.Entities
 {
@@ -14,5 +15,23 @@ namespace QuizBuilder2.Data.Entities
 
         public ICollection<CharacterRoleOutcome> CharacterRoleOutcomes { get; set; }
         public ICollection<AnswerOutcome> AnswerOutcomes { get; set; }
+
+        public int PointsPossible {
+            get {
+                if (AnswerOutcomes != null)
+                    return AnswerOutcomes.Sum(ao => ao.Answer.Question.Points);
+
+                return 0;
+            }
+        }
+
+        public CharacterRole TopCharacterRole {
+            get {
+                if (CharacterRoleOutcomes != null)
+                    return CharacterRoleOutcomes.OrderByDescending(cro => cro.Value).First().Role;
+                
+                return null;
+            }
+        }
     }
 }
