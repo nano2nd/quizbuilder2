@@ -3,7 +3,7 @@
         <span class="glyphicon glyphicon-menu-left"></span>
         <span>Cancel</span>
     </a>
-    <h4>{{outcome.get('name') || 'New Outcome'}}</h4>
+    <h4>{{outcome.name || 'New Outcome'}}</h4>
     <form ng-submit="saveOutcome()" class="content" name="outcomeEditForm" novalidate>
         <div class="input-group">
           <input ng-model="outcome.name" type="text" class="form-control" placeholder="Enter name..." id="outcome-name" autocomplete="off" required>
@@ -21,7 +21,7 @@
         
         <ul class="role-value-list">
             <li ng-repeat="outcomeToRole in roles">
-                <label>{{outcomeToRole.role.get('name') }}</label>
+                <label>{{outcomeToRole.role.name}}</label>
                 <rzslider rz-slider-ceil="100" rz-slider-on-start="onSliderChangeStart(outcomeToRole)" rz-slider-on-change="onSliderChange(outcomeToRole)" rz-slider-always-show-bar="true" rz-slider-model="outcomeToRole.value"></rzslider>
             </li>
         </ul>

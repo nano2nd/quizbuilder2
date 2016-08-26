@@ -2,7 +2,7 @@
     
     var app = angular.module('quizBuilder');
     
-    var controller = function($scope, $state, dataService, confirmToast, quizData, rolesData) {
+    var controller = function($scope, $state, dataService, confirmToast, quizData) {
         
         $scope.tinymceOptions = {
             onChange: function(e) {
@@ -19,9 +19,7 @@
         $scope.pointsAvailable = 100;
         
         if ($state.params.outcomeId) {
-            $scope.outcome = Utilities.find($scope.quiz.get('outcomes'), 'id', $state.params.outcomeId);
-            $scope.outcome.name = $scope.outcome.get('name');
-            $scope.outcome.image = null; // TODO: Get image here
+            $scope.outcome = Utilities.find(quizData.outcomes, 'id', $state.params.outcomeId);
         } else {
             $scope.outcome = {
                 name: '',
@@ -30,7 +28,7 @@
             }
         }
         
-        $scope.roles = rolesData;
+        $scope.roles = $scope.outcome.characterRoleOutcomes;
         
         $scope.pointsUsed = function() {
             return $scope.roles.map(function(role) {
@@ -75,5 +73,5 @@
         }
     }
     
-    app.controller('OutcomeCtrl', ['$scope', '$state', 'dataService', 'confirmToast', 'quizData', 'rolesData', controller]);
+    app.controller('OutcomeCtrl', ['$scope', '$state', 'dataService', 'confirmToast', 'quizData', controller]);
 })();

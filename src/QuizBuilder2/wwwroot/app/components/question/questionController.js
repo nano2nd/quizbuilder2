@@ -10,9 +10,7 @@
         }
         
         if ($stateParams.questionId) {
-            $scope.currentQuestion = Utilities.find($scope.quiz.get('questions'), 'id', $stateParams.questionId);
-            $scope.currentQuestion.questionText = $scope.currentQuestion.get('questionText');
-            $scope.currentQuestion.points = $scope.currentQuestion.get('points');
+            $scope.currentQuestion = Utilities.find(quizData.questions, 'id', $stateParams.questionId);
         }
         
         $scope.saveQuestion = function() {           
@@ -45,8 +43,8 @@
             });
         }
         
-        $scope.unlinkOutcome = function(answer, outcome) {
-            dataService.UnlinkOutcomeForAnswer(answer, outcome);
+        $scope.unlinkOutcome = function(answerOutcome) {
+            dataService.UnlinkOutcomeForAnswer(answerOutcome);
         }
         
         $scope.cancelQuestion = function() {

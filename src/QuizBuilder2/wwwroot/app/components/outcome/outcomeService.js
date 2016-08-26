@@ -4,24 +4,25 @@
     var outcomeService = function($q, dataService) {        
         
         var rolesForOutcome = function (outcomeId) {
-            var outcomeQuery = dataService.Query('Outcome');
-            outcomeQuery.equalTo('objectId', outcomeId);
-            return outcomeQuery.first().then(function(outcome) {
-                return dataService.GetRolesForOutcome(outcome).then(function(outcomeToRoles) {
-                    var rolesPromises = [];
-                    outcomeToRoles.forEach(function(outcomeToRole) {
-                        outcomeToRole.role = outcomeToRole.get('role');
-                        rolesPromises.push(outcomeToRole.role.fetch());
-                        outcomeToRole.value = outcomeToRole.get('value');
-                    });
-                    return $q.all(rolesPromises).then(function(roles) {
-                        return outcomeToRoles.sort(function(object1, object2) {
-                            return object1.get('role').get('name')
-                                .localeCompare(object2.get('role').get('name'));
-                        });
-                    });
-                });
-            });
+
+            // var outcomeQuery = dataService.Query('Outcome');
+            // outcomeQuery.equalTo('objectId', outcomeId);
+            // return outcomeQuery.first().then(function(outcome) {
+            //     return dataService.GetRolesForOutcome(outcome).then(function(outcomeToRoles) {
+            //         var rolesPromises = [];
+            //         outcomeToRoles.forEach(function(outcomeToRole) {
+            //             outcomeToRole.role = outcomeToRole.get('role');
+            //             rolesPromises.push(outcomeToRole.role.fetch());
+            //             outcomeToRole.value = outcomeToRole.get('value');
+            //         });
+            //         return $q.all(rolesPromises).then(function(roles) {
+            //             return outcomeToRoles.sort(function(object1, object2) {
+            //                 return object1.get('role').get('name')
+            //                     .localeCompare(object2.get('role').get('name'));
+            //             });
+            //         });
+            //     });
+            // });
         }
         
         var newRolesForOutcome = function() {

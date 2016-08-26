@@ -49,5 +49,13 @@ namespace QuizBuilder2.Services
 
             return quiz;
         }
+
+        public async Task<AnswerOutcome> RemoveAnswerOutcome(int answerId, int outcomeId)
+        {
+            var answerOutcome = await _db.AnswerOutcomes
+                .FirstAsync(ao => ao.AnswerId == answerId && ao.OutcomeId == outcomeId);
+            _db.AnswerOutcomes.Remove(answerOutcome);
+            return answerOutcome;
+        }
     }
 }

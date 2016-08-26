@@ -4,8 +4,8 @@
     
     var controller = function($scope, $stateParams, $state, dataService, quizData) {
         
-        $scope.currentQuestion = Utilities.find($scope.quiz.get('questions'), 'id', $stateParams.questionId);  
-        $scope.answers = $scope.currentQuestion.get('answers');
+        $scope.currentQuestion = Utilities.find(quizData.questions, 'id', $stateParams.questionId);  
+        $scope.answers = $scope.currentQuestion.answers;
         $scope.currentAnswer = {
             answerText: '',
             image: null,
@@ -14,13 +14,6 @@
         
         if ($stateParams.answerId) {
             $scope.currentAnswer = Utilities.find($scope.answers, 'id', $stateParams.answerId);
-            $scope.currentAnswer.answerText = $scope.currentAnswer.get('answerText')
-            $scope.currentAnswer.image = $scope.currentAnswer.get('image');
-            $scope.currentAnswer.showImageOnly = $scope.currentAnswer.get('showImageOnly');
-            
-            if ($scope.currentAnswer.image) {
-                $scope.currentAnswer.imageUrl = $scope.currentAnswer.image.get('data').url();
-            }
         }
         
         $scope.uploadImage = function(files) {

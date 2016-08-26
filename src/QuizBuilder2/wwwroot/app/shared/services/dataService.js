@@ -523,18 +523,25 @@
          * @param   {[[Type]]} outcome [[Description]]
          * @returns {[[Type]]} [[Description]]
          */
-        var unlinkOutcomeForAnswer = function(answer, outcome) {
-            var deferred = $q.defer();
-            answer.remove('outcomes', outcome);
-            answer.save().then(function(savedAnswer) {
-                $rootScope.$broadcast('updatePp', outcome);
-                deferred.resolve(savedAnswer);
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
+        var unlinkOutcomeForAnswer = function(answerOutcome) {
+            return $http.post(
+                'api/question/unlinkOutcomeFromAnswer', 
+                answerOutcome
+            ).then(function(response) {
+                return response.data;
             });
+
+            // var deferred = $q.defer();
+            // answer.remove('outcomes', outcome);
+            // answer.save().then(function(savedAnswer) {
+            //     $rootScope.$broadcast('updatePp', outcome);
+            //     deferred.resolve(savedAnswer);
+            // }, function(error) {
+            //     $log.error(error.message);
+            //     deferred.reject(error);
+            // });
             
-            return deferred.promise;
+            // return deferred.promise;
         }
         
         /**

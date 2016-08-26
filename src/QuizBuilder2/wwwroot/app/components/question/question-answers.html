@@ -3,24 +3,24 @@
         <span class="glyphicon glyphicon-menu-left"></span>
         <span>Back to Questions</span>
     </a>
-    <h4>{{currentQuestion.get('questionText')}}</h4>
+    <h4>{{currentQuestion.text}}</h4>
     <ul class="answer-list icon-list">
-        <li ng-repeat="answer in currentQuestion.get('answers')" rg-drop>
+        <li ng-repeat="answer in currentQuestion.answers" rg-drop>
             <div class="icon-container">
                 <div class="icon-list-icon">
-                    <img ng-if="answer.get('image')" ng-src="{{answer.get('image').get('data').url()}}" />
-                    <div ng-if="!answer.get('image')">A</div>
+                    <img ng-if="answer.imageFile" ng-src="{{answer.imageFile}}" />
+                    <div ng-if="!answer.imageFile">A</div>
                 </div>
             </div>
             <div class="body-container">
-                <a ui-sref="quiz.answer-edit({questionId: currentQuestion.id, answerId: answer.id})" class="title">{{answer.get('answerText')}}</a>
+                <a ui-sref="quiz.answer-edit({questionId: currentQuestion.id, answerId: answer.id})" class="title">{{answer.text}}</a>
                 <ul class="tag-list outcomes">
-                    <li ng-repeat="outcome in answer.get('outcomes')">
-                        <a class="tag-link">{{outcome.get('name')}}</a>
-                        <span class="remove-tag" ng-click="unlinkOutcome(answer, outcome)"></span>
+                    <li ng-repeat="answerOutcome in answer.answerOutcomes">
+                        <a class="tag-link">{{answerOutcome.outcome.name}}</a>
+                        <span class="remove-tag" ng-click="unlinkOutcome(answerOutcome)"></span>
                     </li>
                 </ul>
-                <div class="tag-drag-placeholder" ng-if="!answer.get('outcomes').length">Drag outcome here</div>
+                <div class="tag-drag-placeholder" ng-if="!answer.outcomes.length">Drag outcome here</div>
                 <a class="action answer-remove" href="javascript:void(0)" ng-click="removeAnswer(answer, $event)">delete answer</a>
             </div>
         </li>
