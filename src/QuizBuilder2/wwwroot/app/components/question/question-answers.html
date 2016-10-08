@@ -15,8 +15,8 @@
             <div class="body-container">
                 <a ui-sref="quiz.answer-edit({questionId: currentQuestion.id, answerId: answer.id})" class="title">{{answer.text}}</a>
                 <ul class="tag-list outcomes">
-                    <li ng-repeat="answerOutcome in answer.answerOutcomes">
-                        <a class="tag-link">{{answerOutcome.outcome.name}}</a>
+                    <li ng-repeat="answerOutcome in answer.outcomes">
+                        <a class="tag-link">{{answerOutcome.name}}</a>
                         <span class="remove-tag" ng-click="unlinkOutcome(answerOutcome)"></span>
                     </li>
                 </ul>

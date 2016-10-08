@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace QuizBuilder2.Models
 {
     public class AnswerModel {
@@ -8,5 +10,7 @@ namespace QuizBuilder2.Models
         
         public int QuestionId { get; set; }
         public int QuestionPoints { get; set; }
+
+        public ICollection<OutcomeModel> Outcomes { get; set; }
     }
 }

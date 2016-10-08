@@ -67,15 +67,6 @@
                 url: '/outcome/:outcomeId',
                 templateUrl: 'app/components/outcome/outcome-edit.html',
                 controller: 'OutcomeCtrl'
-                // resolve: {
-                //     'rolesData': ['$stateParams', 'outcomeService', function($stateParams, outcomeService) {
-                //         if ($stateParams.outcomeId) {
-                //             return outcomeService.rolesForOutcome($stateParams.outcomeId);
-                //         } else {
-                //             return outcomeService.newRolesForOutcome();
-                //         }
-                //     }]
-                // }
             });
     }
     app.config(['$stateProvider', '$urlRouterProvider', configRoutes]);    

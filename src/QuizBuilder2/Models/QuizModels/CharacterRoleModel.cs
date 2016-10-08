@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace QuizBuilder2.Models
 {
     public class CharacterRoleModel {

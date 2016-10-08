@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace QuizBuilder2.Models
 {
@@ -14,5 +13,6 @@ namespace QuizBuilder2.Models
         public int PointsPossible { get; set; }
 
         public CharacterRoleModel TopCharacterRole { get; set; }
+        public ICollection<CharacterRoleOutcomeModel> CharacterRoleOutcomes { get; set; }
     }
 }

@@ -20,9 +20,9 @@
         </div>
         
         <ul class="role-value-list">
-            <li ng-repeat="outcomeToRole in roles">
-                <label>{{outcomeToRole.role.name}}</label>
-                <rzslider rz-slider-ceil="100" rz-slider-on-start="onSliderChangeStart(outcomeToRole)" rz-slider-on-change="onSliderChange(outcomeToRole)" rz-slider-always-show-bar="true" rz-slider-model="outcomeToRole.value"></rzslider>
+            <li ng-repeat="roleOutcome in roles">
+                <label>{{roleOutcome.roleName}}</label>
+                <rzslider rz-slider-ceil="100" rz-slider-on-start="onSliderChangeStart(roleOutcome)" rz-slider-on-change="onSliderChange(roleOutcome)" rz-slider-always-show-bar="true" rz-slider-model="roleOutcome.value"></rzslider>
             </li>
         </ul>
         

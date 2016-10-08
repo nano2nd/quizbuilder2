@@ -9,6 +9,9 @@ namespace QuizBuilder2.Data.Seeding
 {
     public class DefaultSeeder : ISeeder
     {
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
+
         private QuizDbContext _db;
         private const int NumberOfQuizzes = 10;
         private const int NumberOfOutcomes = 6;
@@ -119,18 +122,22 @@ namespace QuizBuilder2.Data.Seeding
             
             foreach(var quiz in quizzes)
             {
-                var i = 1;
                 foreach (var outcome in quiz.Outcomes)
                 {
-                    var random = new Random();
-                    var randomValue= random.Next(0, 21);
-                    _db.CharacterRoleOutcomes.Add(new CharacterRoleOutcome 
+                    foreach (var characterRole in _db.CharacterRoles)
                     {
-                        CharacterRoleId = i,
-                        OutcomeId = outcome.Id,
-                        Value = randomValue
-                    });
-                    i++;
+                        int randomValue;
+                        lock(syncLock) { // synchronize
+                            randomValue = random.Next(0, 21);
+                        }
+                    
+                        _db.CharacterRoleOutcomes.Add(new CharacterRoleOutcome 
+                        {
+                            CharacterRoleId = characterRole.Id,
+                            OutcomeId = outcome.Id,
+                            Value = randomValue
+                        });
+                    }
                 }
             }
 
@@ -147,9 +154,11 @@ namespace QuizBuilder2.Data.Seeding
             foreach (var answer in answers)
             {
                 var outcomes = answer.Question.Quiz.Outcomes.ToList();
-                
-                var random = new Random();
-                var randomId = random.Next(0, outcomes.Count);
+            
+                int randomId;
+                lock(syncLock) { // synchronize
+                    randomId = random.Next(0, outcomes.Count);
+                }
                 
                 _db.AnswerOutcomes.Add(new AnswerOutcome 
                 {
