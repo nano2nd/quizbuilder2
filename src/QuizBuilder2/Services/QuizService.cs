@@ -64,6 +64,13 @@ namespace QuizBuilder2.Services
             return quiz.Title;
         }
 
+        public async Task<int> RemoveQuiz(int quizId)
+        {
+            var quiz = await _db.Quizzes.FirstAsync(q => q.Id == quizId);
+            _db.Remove(quiz);
+            return await _db.SaveChangesAsync();
+        }
+
         public async Task<AnswerOutcome> RemoveAnswerOutcome(int answerId, int outcomeId)
         {
             var answerOutcome = await _db.AnswerOutcomes

@@ -3,120 +3,6 @@
     var app = angular.module('quizBuilder');
 
     var dataService = function($q, $rootScope, $log, $http, userService) {
-                
-        /**
-         * [[Description]]
-         * @param   {[[Type]]} className [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
-        var create = function(className) {
-            var ClassObject = Parse.Object.extend(className);
-            return new ClassObject();
-        }
-        
-        /**
-         * Shorthand to create Parse's database Query object.
-         * @param {string} className - The name of the Class in Parse.
-         * @returns {Parse.Query} - The Query object
-         */
-        var query = function(className) {
-            var classObject = create(className);
-            return new Parse.Query(classObject);
-        }
-        
-        /**
-         * [[Description]]
-         * @param   {[[Type]]} id [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
-        var getQuestion = function(id) {
-            var deferred = $q.defer();
-            var q = query('Question');
-            q.equalTo('objectId', id);
-            q.include('answers');
-            q.include('answers.outcomes');
-            q.first().then(function(question) {
-                deferred.resolve(question);
-            }, function(error) {
-               $log.error(error.message); 
-            });
-            
-            return deferred.promise;
-        }
-        
-        /**
-         * [[Description]]
-         * @param   {Object}   question     [[Description]]
-         * @param   {[[Type]]} questionText [[Description]]
-         * @param   {[[Type]]} quiz         [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
-        var saveQuestion = function(question, questionText, points, quiz) {
-            var deferred = $q.defer();
-            var isNew = !question.id;
-            
-            // Create it if it does not exist
-            if (isNew) {
-                question = create('Question');
-                question.set('answers', []);
-            }
-            
-            if (questionText) {
-                question.set('questionText', questionText.trim());
-            }
-            
-            if (points) {
-                question.set('points', points);
-            }
-            
-            question.save().then(function(savedQuestion) {               
-                // Add to answers array of question
-                if (isNew) {
-                    quiz.add('questions', savedQuestion);
-                    return quiz.save().then(function() {
-                        $rootScope.$broadcast('updatePp');
-                        deferred.resolve(savedQuestion);  
-                    });                   
-                } else {
-                    $rootScope.$broadcast('updatePp');
-                    deferred.resolve(savedQuestion); 
-                }
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
-            });
-            
-            return deferred.promise;
-        }
-        
-        /**
-         * [[Description]]
-         * @param   {[[Type]]} question [[Description]]
-         * @param   {[[Type]]} quiz     [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
-        var removeQuestion = function(question, quiz) {
-            var deferred = $q.defer();
-            quiz.remove('questions', question);
-            quiz.save().then(function() {
-                var answers = question.get('answers');
-                var answerPromises = [];
-                answers.forEach(function(answer) {
-                     answerPromises.push(removeAnswer(answer, question));
-                });
-                return $q.all(answerPromises).then(function() {
-                    return question.destroy().then(function(question) {
-                        deferred.resolve(question);
-                    });
-                });
-                
-            }, function(error) {
-                $log.error(error.message); 
-                deferred.reject(error); 
-            });
-            
-            return deferred.promise;
-        }
         
         /**
          * [[Description]]
@@ -537,10 +423,6 @@
         }
         
         return {
-            Create: create,
-            Query: query,
-            SaveQuestion: saveQuestion,
-            RemoveQuestion: removeQuestion,
             SaveAnswer: saveAnswer,
             RemoveAnswer: removeAnswer,
             SaveOutcome: saveOutcome,

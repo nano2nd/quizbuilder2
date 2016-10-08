@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizBuilder2.Data;
-using QuizBuilder2.Data.Entities;
+using QuizBuilder2.Models;
 using QuizBuilder2.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,18 +14,28 @@ namespace QuizBuilder2.Controllers
     [Route("api/[controller]/[action]")]
     public class QuestionController : Controller
     {
-        private QuizDbContext _db;
-        private IQuizService _quizService;
-        public QuestionController(QuizDbContext db, IQuizService quizService)
+        private readonly QuizDbContext _db;
+        private readonly IQuestionService _questionService;
+        private readonly IMapper _mapper;
+        
+        public QuestionController(QuizDbContext db, IQuestionService questionService, IMapper mapper)
         {
             _db = db;
-            _quizService = quizService;          
+            _questionService = questionService;  
+            _mapper = mapper;        
         }
 
         [HttpPost]
-        public void UnlinkOutcomeFromAnswer([FromBody] AnswerOutcome answerOutcome)
+        public async Task<QuestionModel> SaveQuestion(QuestionModel questionModel)
         {
-            _quizService.RemoveAnswerOutcome(answerOutcome.AnswerId, answerOutcome.OutcomeId);
+            var question = await _questionService.SaveQuestionAsync(questionModel);
+            return _mapper.Map<QuestionModel>(question);
+        }
+
+        [HttpPost]
+        public async Task<int> UpdatePoints(int questionId, int points)
+        {
+            return await _questionService.UpdatePointsAsync(questionId, points);
         }
     }
 }

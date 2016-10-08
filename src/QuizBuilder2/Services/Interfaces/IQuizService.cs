@@ -10,5 +10,6 @@ namespace QuizBuilder2.Services
         Task<Quiz> GetQuizAsync(int id);
         Task<AnswerOutcome> RemoveAnswerOutcome(int answerId, int outcomeId);
         Task<string> ChangeQuizTitleAsync(int quizId, string newTitle);
+        Task<int> RemoveQuiz(int quizId);
     }
 }

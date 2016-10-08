@@ -30,7 +30,7 @@
     <save-dialog dialog-title="Question Points" dialog-id="questionPoints" on-save="savePoints(dialog)">
         <div class="form-group">            
             <div class="question-points-container">
-                <input type="number" ng-model="selectedQuestion.points" class="form-control" min="1" max="{{remainingPoints + selectedQuestion.points}}" required />
+                <input type="number" ng-model="selectedQuestion.newPoints" class="form-control" min="1" max="{{remainingPoints + selectedQuestion.points}}" required />
                 <div>maximum is {{remainingPoints + selectedQuestion.points}}</div>
             </div>
         </div>

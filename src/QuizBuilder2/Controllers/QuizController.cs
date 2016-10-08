@@ -40,29 +40,16 @@ namespace QuizBuilder2.Controllers
             return _mapper.Map<QuizModel>(quiz);
         }
 
-        // POST api/values
         [HttpPost]
         public async Task<string> ChangeTitle(int quizId, string newTitle)
         {
             return await _quizService.ChangeQuizTitleAsync(quizId, newTitle);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPost]
+        public async Task<int> RemoveQuiz(int quizId)
         {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        [HttpGet]
-        public int Count()
-        {
-            return _quizService.GetQuizzes().Count();
+            return await _quizService.RemoveQuiz(quizId);
         }
     }
 }

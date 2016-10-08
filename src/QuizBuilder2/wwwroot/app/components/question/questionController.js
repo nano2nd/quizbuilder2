@@ -2,26 +2,32 @@
  
     var app = angular.module('quizBuilder');
 
-    var questionController = function($scope, $state, $stateParams, dataService, confirmToast, quizData) {
+    var questionController = function($scope, $state, $stateParams, questionDataService, confirmToast, quizData) {
         
-        $scope.currentQuestion = {
-            questionText: '',
-            points: 20
-        }
+        $scope.newQuestion = {
+            text: '',
+            points: 20,
+            quizId: null
+        };
         
         if ($stateParams.questionId) {
             $scope.currentQuestion = Utilities.find(quizData.questions, 'id', $stateParams.questionId);
+            
+            $scope.newQuestion.id = $scope.currentQuestion.id;
+            $scope.newQuestion.text = $scope.currentQuestion.text;
+            $scope.newQuestion.points = $scope.currentQuestion.points;
+            $scope.newQuestion.quizId = $scope.currentQuestion.quizId;
         }
         
         $scope.saveQuestion = function() {           
-            dataService.SaveQuestion(
-                $scope.currentQuestion,
-                $scope.currentQuestion.questionText,
-                $scope.currentQuestion.points,
-                $scope.quiz).then(function() {
-                    $scope.updateRemainingPoints();
-                    $state.go('^.questions');
-                });
+            questionDataService.SaveQuestion($scope.newQuestion).then(function(savedQuestion) {
+                $scope.currentQuestion.text = savedQuestion.text;
+                $scope.currentQuestion.points = savedQuestion.points;
+                $scope.currentQuestion.quizId = savedQuestion.quizId;
+
+                $scope.updateRemainingPoints();
+                $state.go('^.questions');
+            });
         }
         
         $scope.removeQuestion = function() {
@@ -56,7 +62,7 @@
         }
     }
     
-    app.controller('QuestionCtrl', ['$scope', '$state', '$stateParams', 'dataService', 
+    app.controller('QuestionCtrl', ['$scope', '$state', '$stateParams', 'questionDataService', 
                                     'confirmToast', 'quizData', questionController]);
  
  })();

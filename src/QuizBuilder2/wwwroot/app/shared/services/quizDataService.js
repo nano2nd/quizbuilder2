@@ -100,28 +100,12 @@
          * [[Description]]
          * @param {[[Type]]} quiz [[Description]]
          */
-        var removeQuiz = function(quiz) {
-            var deferred = $q.defer();
-            var questionPromises = [];
-            quiz.get('questions').forEach(function(question) {
-               questionPromises.push(removeQuestion(question, quiz)); 
+        var removeQuiz = function(quizId) {
+            return $http.post('api/quiz/removequiz', {
+                quizId: quizId
+            }).then(function(response) {
+                return response.data;
             });
-            $q.all(questionPromises).then(function() {
-                var outcomePromises = [];
-                quiz.get('outcomes').forEach(function(outcome) {
-                    outcomePromises.push(removeOutcome(outcome, quiz)); 
-                });
-                $q.all(outcomePromises).then(function() {
-                    return quiz.destroy().then(function(quiz) {
-                       deferred.resolve(quiz);
-                    });
-                });
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
-            });
-            
-            return deferred.promise;
         }
                 
         return {

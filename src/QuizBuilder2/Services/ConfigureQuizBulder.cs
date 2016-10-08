@@ -17,6 +17,7 @@ namespace QuizBuilder2.Services
                 .AddTransient<ISmsSender, AuthMessageSender>()
                 
                 .AddTransient<IQuizService, QuizService>()
+                .AddTransient<IQuestionService, QuestionService>()
                 
                 .AddTransient<IMapper>(provider => new Mapper(mapperConfig.Config));
         }
