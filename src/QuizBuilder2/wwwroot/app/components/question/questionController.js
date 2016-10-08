@@ -7,7 +7,7 @@
         $scope.newQuestion = {
             text: '',
             points: 20,
-            quizId: null
+            quizId: quizData.id
         };
         
         if ($stateParams.questionId) {
@@ -16,14 +16,16 @@
             $scope.newQuestion.id = $scope.currentQuestion.id;
             $scope.newQuestion.text = $scope.currentQuestion.text;
             $scope.newQuestion.points = $scope.currentQuestion.points;
-            $scope.newQuestion.quizId = $scope.currentQuestion.quizId;
         }
         
         $scope.saveQuestion = function() {           
             questionDataService.SaveQuestion($scope.newQuestion).then(function(savedQuestion) {
-                $scope.currentQuestion.text = savedQuestion.text;
-                $scope.currentQuestion.points = savedQuestion.points;
-                $scope.currentQuestion.quizId = savedQuestion.quizId;
+                if ($scope.currentQuestion) {
+                    $scope.currentQuestion.text = savedQuestion.text;
+                    $scope.currentQuestion.points = savedQuestion.points;
+                } else {
+                    quizData.questions.push(savedQuestion);
+                }
 
                 $scope.updateRemainingPoints();
                 $state.go('^.questions');

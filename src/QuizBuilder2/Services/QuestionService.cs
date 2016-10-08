@@ -23,8 +23,10 @@ namespace QuizBuilder2.Services
             Question question;
             if (questionModel.Id.HasValue)
                 question = await _db.Questions.FirstAsync(q => q.Id == questionModel.Id.Value);
-            else 
+            else {
                 question = new Question();
+                _db.Add(question);
+            }
 
             question.Text = questionModel.Text;
             question.Points = questionModel.Points;
