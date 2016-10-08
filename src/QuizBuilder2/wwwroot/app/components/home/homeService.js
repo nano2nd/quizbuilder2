@@ -1,7 +1,7 @@
 (function() {
     var app = angular.module('quizBuilder');
     
-    var homeService = function($q, dataService) {        
+    var homeService = function($q, quizDataService) {        
         var limit = 10;
         
         var data = function (page) {
@@ -10,8 +10,8 @@
             }
             
             return $q.all([
-                dataService.GetQuizzes(limit, skip),
-                dataService.GetQuizCount()
+                quizDataService.GetQuizzes(limit, skip),
+                quizDataService.GetQuizCount()
             ]).then(function(results) {
                 return {
                     quizzes: results[0],
@@ -24,5 +24,5 @@
             data: data
         }  
     }
-    app.factory('homeService', ['$q', 'dataService', homeService]);
+    app.factory('homeService', ['$q', 'quizDataService', homeService]);
 })();

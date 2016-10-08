@@ -2,7 +2,7 @@
     
     var app = angular.module('quizBuilder');
 
-    var homeController = function($scope, $state, $stateParams, dataService, quizData) {
+    var homeController = function($scope, $state, $stateParams, quizDataService, quizData) {
             
         $scope.quizzes = quizData.quizzes;
         $scope.count = quizData.quizCount;
@@ -15,7 +15,7 @@
         // New quiz dialog
         $scope.saveQuiz = function(dialog) {
             dialog.close();
-            dataService.SaveQuiz($scope.newQuiz, $scope.newQuiz.title)
+            quizDataService.SaveQuiz($scope.newQuiz, $scope.newQuiz.title)
                 .then(function(quiz) {
                     $state.go('quiz.questions', { id: quiz.id });
                 });
@@ -29,6 +29,6 @@
     }
 
     app.controller('HomeCtrl', [
-        '$scope', '$state', '$stateParams', 'dataService', 'quizData', homeController]);
+        '$scope', '$state', '$stateParams', 'quizDataService', 'quizData', homeController]);
     
 })();

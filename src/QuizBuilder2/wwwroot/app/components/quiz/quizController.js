@@ -5,16 +5,18 @@
     /**
      * Controller for quiz page
      */
-    var quizController = function($scope, $state, dataService, confirmToast, quizData) {
+    var quizController = function($scope, $state, dataService, quizDataService, confirmToast, quizData) {
         
         $scope.quiz = quizData;
+        $scope.quiz.newQuizTitle = quizData.title;
         
         $scope.editTitle = function(question) {
             $('#changeTitle').modal();
         }
         
         $scope.saveTitle = function(dialog) {
-            dataService.SaveQuiz($scope.quiz, $scope.quiz.title).then(function() {
+            quizDataService.ChangeQuizTitle($scope.quiz.id, $scope.quiz.newQuizTitle).then(function(newTitle) {
+                $scope.quiz.title = newTitle;
                 dialog.close();    
             });
         }
@@ -47,7 +49,7 @@
         $scope.removeQuiz = function() {
             confirmToast('Are you sure you want to remove this quiz and all of its questions?', function(yes) {
                 if (yes) {
-                    dataService.RemoveQuiz($scope.quiz).then(function() {
+                    quizDataService.RemoveQuiz($scope.quiz).then(function() {
                         $state.go('home');
                     });
                 }
@@ -76,6 +78,6 @@
         });    
     }
     
-    app.controller('QuizCtrl', ['$scope', '$state', 'dataService', 'confirmToast', 'quizData', quizController]);
+    app.controller('QuizCtrl', ['$scope', '$state', 'dataService', 'quizDataService', 'confirmToast', 'quizData', quizController]);
     
 })();

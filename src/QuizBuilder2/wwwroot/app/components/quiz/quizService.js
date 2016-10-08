@@ -1,10 +1,10 @@
 (function() {
     var app = angular.module('quizBuilder');
     
-    var quizService = function($q, dataService) {        
+    var quizService = function($q, quizDataService) {        
         
         var getQuizData = function (quizId) {
-            return dataService.GetQuiz(quizId).then(function(quiz) {
+            return quizDataService.GetQuiz(quizId).then(function(quiz) {
                 return quiz;
             });
         }
@@ -13,5 +13,5 @@
             getQuizData: getQuizData
         }
     }
-    app.factory('quizService', ['$q', 'dataService', quizService]);
+    app.factory('quizService', ['$q', 'quizDataService', quizService]);
 })();

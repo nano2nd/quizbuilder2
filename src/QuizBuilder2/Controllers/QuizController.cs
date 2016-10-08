@@ -37,8 +37,9 @@ namespace QuizBuilder2.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<string> ChangeTitle(int quizId, string newTitle)
         {
+            return await _quizService.ChangeQuizTitleAsync(quizId, newTitle);
         }
 
         // PUT api/values/5
