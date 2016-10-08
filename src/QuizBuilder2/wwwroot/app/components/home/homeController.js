@@ -2,11 +2,11 @@
     
     var app = angular.module('quizBuilder');
 
-    var homeController = function($scope, $state, $stateParams, quizDataService, quizData) {
+    var homeController = function($scope, $state, $stateParams, quizDataService, quizzes) {
             
-        $scope.quizzes = quizData.quizzes;
-        $scope.count = quizData.quizCount;
-        $scope.pages =  Math.ceil(quizData.quizCount / 10);
+        $scope.quizzes = quizzes;
+        $scope.count = quizzes.length;
+        $scope.pages =  Math.ceil(quizzes.length / 10);
         $scope.page = parseInt($stateParams.page) || 1;
         
         // must bind to an object to update through directive

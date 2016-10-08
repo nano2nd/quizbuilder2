@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizBuilder2.Data;
-using QuizBuilder2.Data.Entities;
+using QuizBuilder2.Models;
 using QuizBuilder2.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,22 +18,26 @@ namespace QuizBuilder2.Controllers
     {
         private QuizDbContext _db;
         private IQuizService _quizService;
-        public QuizController(QuizDbContext db, IQuizService quizService)
+        private IMapper _mapper;
+        public QuizController(QuizDbContext db, IQuizService quizService, IMapper mapper)
         {
             _db = db;
-            _quizService = quizService;          
+            _quizService = quizService;    
+            _mapper = mapper;      
         }
 
         [HttpGet]
-        public IEnumerable<Quiz> Quizzes(int? limit, int? skip)
+        public IEnumerable<QuizModel> Quizzes(int? limit, int? skip)
         {
-            return _quizService.GetQuizzes(limit, skip);
+            return _quizService.GetQuizzes(limit, skip)
+                .Select(_mapper.Map<QuizModel>);
         }
 
         [HttpGet("{id}")]
-        public async Task<Quiz> GetQuiz(int id)
+        public async Task<QuizModel> GetQuiz(int id)
         {
-            return await _quizService.GetQuizAsync(id);
+            var quiz = await _quizService.GetQuizAsync(id);
+            return _mapper.Map<QuizModel>(quiz);
         }
 
         // POST api/values

@@ -16,16 +16,6 @@
         }
         
         /**
-         * The amount of quizzes in the Parse database.
-         * @return {promise} - A promise that returns when the query has finished
-         */
-        var getQuizCount = function() {
-            return $http.get('api/quiz/count').then(function(response) {
-                return response.data;
-            });
-        }
-        
-        /**
          * [[Description]]
          * @param   {[[Type]]} id [[Description]]
          * @returns {[[Type]]} [[Description]]
@@ -136,7 +126,6 @@
                 
         return {
             GetQuizzes: getQuizzes,
-            GetQuizCount: getQuizCount,
             SaveQuiz: saveQuiz,
             GetQuiz: getQuiz,
             RemoveQuiz: removeQuiz,

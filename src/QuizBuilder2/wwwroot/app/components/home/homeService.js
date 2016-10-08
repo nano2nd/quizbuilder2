@@ -9,14 +9,8 @@
                 var skip = (parseInt(page)-1) * 10;
             }
             
-            return $q.all([
-                quizDataService.GetQuizzes(limit, skip),
-                quizDataService.GetQuizCount()
-            ]).then(function(results) {
-                return {
-                    quizzes: results[0],
-                    quizCount: results[1]
-                }
+            return quizDataService.GetQuizzes(limit, skip).then(function(results) {
+                return results;
             });
         }
         

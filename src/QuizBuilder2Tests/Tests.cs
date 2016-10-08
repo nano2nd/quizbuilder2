@@ -17,6 +17,13 @@ namespace QuizBuilder2Tests
         }
 
         [Fact]
+        public void TestAutoMapper()
+        {
+            var config = _testFixture.MapperConfig;
+            config.AssertConfigurationIsValid();
+        }
+
+        [Fact]
         public async void DbTest()
         {
             using (var db = new QuizDbContext(_testFixture.DbOptions))

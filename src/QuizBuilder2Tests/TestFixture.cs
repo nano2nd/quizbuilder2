@@ -1,11 +1,14 @@
 using System;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using QuizBuilder2.Data;
 using QuizBuilder2.Data.Seeding;
+using QuizBuilder2.Services;
 
 public class TestFixture : IDisposable
 {
     public DbContextOptions<QuizDbContext> DbOptions { get; }
+    public readonly MapperConfiguration MapperConfig;
     
     public TestFixture()
     {
@@ -18,6 +21,8 @@ public class TestFixture : IDisposable
             var seeder = new DefaultSeeder(db);
             seeder.Seed();
         }
+
+        MapperConfig = new ConfigureMapper().Config;
     }
 
     public void Dispose()
