@@ -33,6 +33,12 @@ namespace QuizBuilder2.Controllers
                 .Select(_mapper.Map<QuizModel>);
         }
 
+        [HttpGet]
+        public int GetQuizCount()
+        {
+            return _quizService.GetQuizzes().Count();
+        }
+
         [HttpGet("{id}")]
         public async Task<QuizModel> GetQuiz(int id)
         {

@@ -13,7 +13,7 @@ namespace QuizBuilder2.Data.Seeding
         private static readonly object syncLock = new object();
 
         private QuizDbContext _db;
-        private const int NumberOfQuizzes = 10;
+        private const int NumberOfQuizzes = 16;
         private const int NumberOfOutcomes = 6;
         private const int NumberOfQuestions = 9;
         private  const int NumberOfAnswers = 4;

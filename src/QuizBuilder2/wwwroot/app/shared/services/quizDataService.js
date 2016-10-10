@@ -15,6 +15,12 @@
             });
         }
         
+        var getQuizCount = function() {
+            return $http.get('api/quiz/getquizcount').then(function(response) {
+                return response.data;
+            });
+        }
+        
         /**
          * [[Description]]
          * @param   {[[Type]]} id [[Description]]
@@ -84,6 +90,7 @@
                 
         return {
             GetQuizzes: getQuizzes,
+            GetQuizCount: getQuizCount,
             SaveQuiz: saveQuiz,
             RemoveQuiz: removeQuiz,
             GetQuiz: getQuiz

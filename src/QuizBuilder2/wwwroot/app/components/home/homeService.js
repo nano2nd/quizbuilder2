@@ -2,15 +2,24 @@
     var app = angular.module('quizBuilder');
     
     var homeService = function($q, quizDataService) {        
+        
         var limit = 10;
         
         var data = function (page) {
             if (page) {
-                var skip = (parseInt(page)-1) * 10;
+                var skip = (parseInt(page)-1) * limit;
             }
             
-            return quizDataService.GetQuizzes(limit, skip).then(function(results) {
-                return results;
+            var promises = [
+                quizDataService.GetQuizzes(limit, skip),
+                quizDataService.GetQuizCount()
+            ];
+
+            return $q.all(promises).then(function(results) {
+                return {
+                    quizzes: results[0],
+                    quizCount: results[1]
+                };
             });
         }
         
