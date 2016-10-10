@@ -15,9 +15,9 @@
             <div class="body-container">
                 <a ui-sref="quiz.answer-edit({questionId: currentQuestion.id, answerId: answer.id})" class="title">{{answer.text}}</a>
                 <ul class="tag-list outcomes">
-                    <li ng-repeat="answerOutcome in answer.outcomes">
-                        <a class="tag-link">{{answerOutcome.name}}</a>
-                        <span class="remove-tag" ng-click="unlinkOutcome(answerOutcome)"></span>
+                    <li ng-repeat="outcome in answer.outcomes">
+                        <a class="tag-link">{{outcome.name}}</a>
+                        <span class="remove-tag" ng-click="unlinkOutcome(answer, outcome)"></span>
                     </li>
                 </ul>
                 <div class="tag-drag-placeholder" ng-if="!answer.outcomes.length">Drag outcome here</div>

@@ -56,44 +56,18 @@
             // return deferred.promise;
         }
 
-        var changeQuizTitle = function(quizId, newTitle) {
-            return $http.post('api/quiz/changetitle', {
-                quizId: quizId, newTitle: newTitle
-            }).then(function(response) {
-                return response.data;
-            });
-        }
-
         /**
          * [[Description]]
          * @param   {Object}   quiz  [[Description]]
          * @param   {[[Type]]} title [[Description]]
          * @returns {[[Type]]} [[Description]]
          */
-        var saveQuiz = function(quiz, title) {
-            var deferred = $q.defer();
-            var isNew = !quiz.id;
-            
-            // Create it if it does not exist
-            if (isNew) {
-                quiz = create('Quiz');
-                quiz.set('questions', []);
-                quiz.set('outcomes', []);
-                quiz.set('user', userService.LoggedInUser());
-            }
-            
-            if (title) {
-                quiz.set('title', title.trim());
-            }
-            
-            quiz.save().then(function(savedQuiz) {
-                deferred.resolve(savedQuiz); 
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
+        var saveQuiz = function(quiz) {
+            return $http.post('api/quiz/savequiz', {
+                quizModel: quiz
+            }).then(function(response) {
+                return response.data;
             });
-            
-            return deferred.promise;
         }
         
         /**
@@ -111,9 +85,8 @@
         return {
             GetQuizzes: getQuizzes,
             SaveQuiz: saveQuiz,
-            GetQuiz: getQuiz,
             RemoveQuiz: removeQuiz,
-            ChangeQuizTitle: changeQuizTitle
+            GetQuiz: getQuiz
         }
     }
     

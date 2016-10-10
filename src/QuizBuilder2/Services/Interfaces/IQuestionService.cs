@@ -7,6 +7,7 @@ namespace QuizBuilder2.Services
     public interface IQuestionService
     {
         Task<Question> SaveQuestionAsync(QuestionModel questionModel);
+        Task<int> RemoveQuestionAsync(int questionId);
         Task<int> UpdatePointsAsync(int questionId, int points);
     }
 }

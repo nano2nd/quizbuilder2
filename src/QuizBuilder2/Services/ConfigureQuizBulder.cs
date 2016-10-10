@@ -18,6 +18,8 @@ namespace QuizBuilder2.Services
                 
                 .AddTransient<IQuizService, QuizService>()
                 .AddTransient<IQuestionService, QuestionService>()
+                .AddTransient<IAnswerService, AnswerService>()
+                .AddTransient<IOutcomeService, OutcomeService>()
                 
                 .AddTransient<IMapper>(provider => new Mapper(mapperConfig.Config));
         }

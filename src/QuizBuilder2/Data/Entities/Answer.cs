@@ -5,6 +5,11 @@ namespace QuizBuilder2.Data.Entities
 {
     public class Answer
     {
+        public Answer()
+        {
+            AnswerOutcomes = new HashSet<AnswerOutcome>();
+        }
+
         public int Id { get; set; }
         public string Text { get; set; }
         public bool IsImage { get; set; }

@@ -14,11 +14,10 @@
         
         // New quiz dialog
         $scope.saveQuiz = function(dialog) {
-            dialog.close();
-            quizDataService.SaveQuiz($scope.newQuiz, $scope.newQuiz.title)
-                .then(function(quiz) {
-                    $state.go('quiz.questions', { id: quiz.id });
-                });
+            quizDataService.SaveQuiz($scope.newQuiz).then(function(quiz) {
+                dialog.close();
+                $state.go('quiz.questions', { id: quiz.id });
+            });
         }
         
         $scope.onQuizClick = function() {

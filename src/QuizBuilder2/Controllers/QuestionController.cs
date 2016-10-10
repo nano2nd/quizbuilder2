@@ -33,6 +33,12 @@ namespace QuizBuilder2.Controllers
         }
 
         [HttpPost]
+        public async Task<int> RemoveQuestion(int questionId)
+        {
+            return await _questionService.RemoveQuestionAsync(questionId);
+        }
+
+        [HttpPost]
         public async Task<int> UpdatePoints(int questionId, int points)
         {
             return await _questionService.UpdatePointsAsync(questionId, points);

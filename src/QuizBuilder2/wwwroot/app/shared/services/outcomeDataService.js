@@ -2,96 +2,8 @@
     
     var app = angular.module('quizBuilder');
 
-    var dataService = function($q, $rootScope, $log, $http, userService) {
+    var outcomeDataService = function($q, $rootScope, $log, $http, userService) {
         
-        /**
-         * [[Description]]
-         * @param   {Object}   answer        [[Description]]
-         * @param   {[[Type]]} answerText    [[Description]]
-         * @param   {[[Type]]} image         [[Description]]
-         * @param   {[[Type]]} showImageOnly [[Description]]
-         * @param   {[[Type]]} question      [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
-        var saveAnswer = function(answer, answerText, image, showImageOnly, question) {
-            var deferred = $q.defer();
-            var isNew = !answer.id;
-            
-            // Create it if it does not exist
-            if (isNew) {
-                answer = create('Answer');
-            }
-            
-            answer.set('answerText', answerText.trim());
-            answer.set('showImageOnly', showImageOnly);
-            
-            var imagePromises = [];
-            if (image) {
-                var parseFile = new Parse.File(image.name, image);
-                imagePromises.push(parseFile.save().then(function() {
-                    var parseImage = create('Image');
-                    parseImage.set('data', parseFile);
-                    return parseImage.save().then(function() {
-                         answer.set('image', parseImage); 
-                    });
-                }));  
-            }
-            
-            $q.all(imagePromises).then(function() {
-                return answer.save().then(function(savedAnswer) {
-                    // Add to answers array of question
-                    if (isNew) {
-                        question.add('answers', savedAnswer);
-                        return question.save().then(function() {
-                            deferred.resolve(savedAnswer);
-                        });
-                    } else {
-                        deferred.resolve(savedAnswer);                  
-                    } 
-                });    
-            }, function(error) {
-                $log.error(error.message);
-            });
-            
-            return deferred.promise;
-        }
-        
-        /**
-         * Removes an answer from the database
-         * @param   {Obj} answer The object of the Answer
-         * @returns {Object} A promise that contains the removed Answer
-         */
-        var removeAnswer = function(answer, question) {
-            var deferred = $q.defer();
-            var preDestroyPromises = [];
-            question.remove('answers', answer);
-            preDestroyPromises.push(question.save());
-            
-            var image = answer.get('image');
-            preDestroyPromises.push(image.destroy());
-            
-            $q.all(preDestroyPromises).then(function() {
-                return answer.destroy().then(function(answer) {
-                    $rootScope.$broadcast('updatePp');
-                    deferred.resolve(answer);
-                });
-            }, function(error) {
-                $log.error(error.message); 
-                deferred.reject(error); 
-            });
-            
-            return deferred.promise;
-        }
-        
-        /**
-         * [[Description]]
-         * @param   {Object}   answer        [[Description]]
-         * @param   {[[Type]]} answerText    [[Description]]
-         * @param   {[[Type]]} image         [[Description]]
-         * @param   {[[Type]]} showImageOnly [[Description]]
-         * @param   {[[Type]]} question      [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
         var saveOutcome = function(outcome, name, summary, image, outcomeRoles, quiz) {
             var deferred = $q.defer();
             var isNew = !outcome.id;
@@ -153,12 +65,6 @@
             return deferred.promise;
         }
         
-        /**
-         * [[Description]]
-         * @param   {[[Type]]} outcome [[Description]]
-         * @param   {[[Type]]} quiz    [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
         var removeOutcome = function(outcome, quiz) {
             var deferred = $q.defer();
             quiz.remove('outcomes', outcome);
@@ -189,10 +95,6 @@
             return deferred.promise;
         }
         
-        /**
-         * [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
         var getInitialOutcomeToRoles = function() {
             var rolesQuery = query('Role');
             rolesQuery.ascending('name');
@@ -211,11 +113,6 @@
             });
         }
         
-        /**
-         * [[Description]]
-         * @param   {Object}   outcome [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
         var getRolesForOutcome = function(outcome) {
             var deferred = $q.defer();
             if (!(outcome && outcome.id)) {
@@ -233,11 +130,6 @@
             return deferred.promise;
         }
         
-        /**
-         * [[Description]]
-         * @param   {Object}   outcome [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
         var removeRolesForOutcome = function(outcome) {
             var deferred = $q.defer();
             if (!outcome.id) {
@@ -260,38 +152,37 @@
             return deferred.promise;
         }
         
-        /**
-         * [[Description]]
-         * @param   {[[Type]]} answer  [[Description]]
-         * @param   {[[Type]]} outcome [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
-        var linkOutcomeForAnswer = function(answer, outcome) {
-            var deferred = $q.defer();
-            answer.add('outcomes', outcome)
-            answer.save().then(function(savedAnswer) {
-                $rootScope.$broadcast('updatePp', outcome);
-                deferred.resolve(savedAnswer);
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
+        var linkOutcomeToAnswer = function(answerId, outcomeId) {
+            return $http.post(
+                'api/outcome/linkoutcometoanswer', { 
+                    answerId: answerId, 
+                    outcomeId: outcomeId 
+                }).then(function(response) {
+                     $rootScope.$broadcast('updatePp', outcomeId);
+                    return response.data;
             });
             
-            return deferred.promise;
+            // var deferred = $q.defer();
+            // answer.add('outcomes', outcome)
+            // answer.save().then(function(savedAnswer) {
+            //     $rootScope.$broadcast('updatePp', outcome);
+            //     deferred.resolve(savedAnswer);
+            // }, function(error) {
+            //     $log.error(error.message);
+            //     deferred.reject(error);
+            // });
+            
+            // return deferred.promise;
         }
         
-        /**
-         * [[Description]]
-         * @param   {[[Type]]} answer  [[Description]]
-         * @param   {[[Type]]} outcome [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
-        var unlinkOutcomeForAnswer = function(answerOutcome) {
+        var unlinkOutcomeFromAnswer = function(answerId, outcomeId) {
             return $http.post(
-                'api/question/unlinkOutcomeFromAnswer', 
-                answerOutcome
-            ).then(function(response) {
-                return response.data;
+                'api/outcome/unlinkoutcomefromanswer', { 
+                    answerId: answerId, 
+                    outcomeId: outcomeId 
+                }).then(function(response) {
+                     $rootScope.$broadcast('updatePp', outcomeId);
+                    return response.data;
             });
 
             // var deferred = $q.defer();
@@ -340,29 +231,24 @@
             return deferred.promise;
         }
         
-        /**
-         * [[Description]]
-         * @param   {[[Type]]} quiz [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
         var updateAllOutcomePp = function(quiz) {
-            var deferred = $q.defer();
-            var outcomePointsPromises = [];
-            quiz.get('outcomes').forEach(function(outcome) {
-                outcomePromise = getPointsPossibleForOutcome(outcome).then(function(points) {
-                    outcome.pointsPossible = points;
-                });
-                outcomePointsPromises.push(outcomePromise);
-            });
+            // var deferred = $q.defer();
+            // var outcomePointsPromises = [];
+            // quiz.get('outcomes').forEach(function(outcome) {
+            //     outcomePromise = getPointsPossibleForOutcome(outcome).then(function(points) {
+            //         outcome.pointsPossible = points;
+            //     });
+            //     outcomePointsPromises.push(outcomePromise);
+            // });
             
-            $q.all(outcomePointsPromises).then(function(result) {
-                deferred.resolve(result);
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
-            });
+            // $q.all(outcomePointsPromises).then(function(result) {
+            //     deferred.resolve(result);
+            // }, function(error) {
+            //     $log.error(error.message);
+            //     deferred.reject(error);
+            // });
             
-            return deferred.promise;
+            // return deferred.promise;
         }
         
         /**
@@ -384,61 +270,20 @@
             });
             return deferred.promise;
         }
-        
-        /**
-         * [[Description]]
-         * @param   {[[Type]]} imageFile [[Description]]
-         * @returns {[[Type]]} [[Description]]
-         */
-        var urlForImageFile = function(imageFile) {
-            var deferred = $q.defer();
-            var reader  = new FileReader();
-            reader.onloadend = function () {
-                deferred.resolve(reader.result);
-            }
 
-            if (imageFile) {
-                reader.readAsDataURL(imageFile);
-            } else {
-                deferred.reject({
-                    error: 'file has no value'
-                });
-            }
-            return deferred.promise;
-        }
-        
-        var removeImageFromAnswer = function(answer) {
-            var deferred = $q.defer();
-            
-            answer.get('image').destroy().then(function(removedAnswer) {
-                answer.set('image', null);
-                return answer.save().then(function() {
-                    deferred.resolve(removedAnswer); 
-                });
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
-            });
-            return deferred.promise;
-        }
-        
         return {
-            SaveAnswer: saveAnswer,
-            RemoveAnswer: removeAnswer,
             SaveOutcome: saveOutcome,
             RemoveOutcome: removeOutcome,
             GetRolesForOutcome: getRolesForOutcome,
-            LinkOutcomeForAnswer: linkOutcomeForAnswer,
-            UnlinkOutcomeForAnswer: unlinkOutcomeForAnswer,
+            LinkOutcomeToAnswer: linkOutcomeToAnswer,
+            UnlinkOutcomeFromAnswer: unlinkOutcomeFromAnswer,
             GetPointsPossibleForOutcome: getPointsPossibleForOutcome,
             UpdateAllOutcomePp: updateAllOutcomePp,
-            TopRoleForOutcome: topRoleForOutcome,
-            UrlForImageFile: urlForImageFile,
-            RemoveImageFromAnswer: removeImageFromAnswer
-        }
+            TopRoleForOutcome: topRoleForOutcome
+        };
     }
     
     // register the service
-    app.factory('dataService', ['$q', '$rootScope', '$log', '$http', 'userService', dataService]);
+    app.factory('outcomeDataService', ['$q', '$rootScope', '$log', '$http', 'userService', outcomeDataService]);
     
 })();

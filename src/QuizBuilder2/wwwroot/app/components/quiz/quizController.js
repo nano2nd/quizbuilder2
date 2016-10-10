@@ -5,18 +5,23 @@
     /**
      * Controller for quiz page
      */
-    var quizController = function($scope, $state, dataService, quizDataService, questionDataService, confirmToast, quizData) {
+    var quizController = function($scope, $state, quizDataService, questionDataService, 
+        outcomeDataService, confirmToast, quizData) {
         
         $scope.quiz = quizData;
-        $scope.quiz.newQuizTitle = quizData.title;
+        $scope.newQuizTitle = {title: quizData.title }
         
         $scope.editTitle = function(question) {
             $('#changeTitle').modal();
         }
         
         $scope.saveTitle = function(dialog) {
-            quizDataService.ChangeQuizTitle($scope.quiz.id, $scope.quiz.newQuizTitle).then(function(newTitle) {
-                $scope.quiz.title = newTitle;
+            quizDataService.SaveQuiz({
+                title: $scope.newQuizTitle.title,
+                id: $scope.quiz.id,
+                sumary: $scope.quiz.summary
+            }).then(function(savedQuiz) {
+                $scope.quiz.title = savedQuiz.title;
                 dialog.close();    
             });
         }
@@ -75,10 +80,11 @@
         });
         
         $scope.$on('updatePp', function (event, outcome) {
-            dataService.UpdateAllOutcomePp($scope.quiz);
+            outcomeDataService.UpdateAllOutcomePp($scope.quiz);
         });    
     }
     
-    app.controller('QuizCtrl', ['$scope', '$state', 'dataService', 'quizDataService', 'questionDataService', 'confirmToast', 'quizData', quizController]);
+    app.controller('QuizCtrl', ['$scope', '$state', 'quizDataService', 
+        'questionDataService', 'outcomeDataService', 'confirmToast', 'quizData', quizController]);
     
 })();

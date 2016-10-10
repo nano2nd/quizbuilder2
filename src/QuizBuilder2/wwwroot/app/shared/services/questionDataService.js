@@ -49,56 +49,27 @@
             //return deferred.promise;
         }
 
+        var removeQuestion = function(questionId) {
+            return $http.post('api/question/removequestion', {
+                questionId: questionId
+            }).then(function(response) {
+                return response.data;
+            });
+        }
+
         var updatePoints = function(questionId, points) {
-                return $http.post('api/question/updatepoints', {
-                    questionId: questionId,
-                    points: points
-                }).then(function(response) {
-                    return response.data;
-                });
-        }
-
-        var removeQuestion = function(question, quiz) {
-            var deferred = $q.defer();
-            quiz.remove('questions', question);
-            quiz.save().then(function() {
-                var answers = question.get('answers');
-                var answerPromises = [];
-                answers.forEach(function(answer) {
-                     answerPromises.push(removeAnswer(answer, question));
-                });
-                return $q.all(answerPromises).then(function() {
-                    return question.destroy().then(function(question) {
-                        deferred.resolve(question);
-                    });
-                });
-                
-            }, function(error) {
-                $log.error(error.message); 
-                deferred.reject(error); 
+            return $http.post('api/question/updatepoints', {
+                questionId: questionId,
+                points: points
+            }).then(function(response) {
+                return response.data;
             });
-            
-            return deferred.promise;
-        }
-
-        var getQuestion = function(id) {
-            var deferred = $q.defer();
-            var q = query('Question');
-            q.equalTo('objectId', id);
-            q.include('answers');
-            q.include('answers.outcomes');
-            q.first().then(function(question) {
-                deferred.resolve(question);
-            }, function(error) {
-               $log.error(error.message); 
-            });
-            
-            return deferred.promise;
         }
                 
         return {
             UpdatePoints: updatePoints,
-            SaveQuestion: saveQuestion
+            SaveQuestion: saveQuestion,
+            RemoveQuestion: removeQuestion
         }
     }
     

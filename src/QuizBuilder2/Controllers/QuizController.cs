@@ -41,15 +41,16 @@ namespace QuizBuilder2.Controllers
         }
 
         [HttpPost]
-        public async Task<string> ChangeTitle(int quizId, string newTitle)
+        public async Task<QuizModel> SaveQuiz(QuizModel quizModel)
         {
-            return await _quizService.ChangeQuizTitleAsync(quizId, newTitle);
+            var quiz = await _quizService.SaveQuizAsync(quizModel);
+            return _mapper.Map<QuizModel>(quiz);
         }
 
         [HttpPost]
         public async Task<int> RemoveQuiz(int quizId)
         {
-            return await _quizService.RemoveQuiz(quizId);
+            return await _quizService.RemoveQuizAsync(quizId);
         }
     }
 }

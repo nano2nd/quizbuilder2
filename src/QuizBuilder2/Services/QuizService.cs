@@ -3,12 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QuizBuilder2.Data;
 using QuizBuilder2.Data.Entities;
+using QuizBuilder2.Models;
 
 namespace QuizBuilder2.Services
 {
-    // This class is used by the application to send Email and SMS
-    // when you turn on two-factor authentication in ASP.NET Identity.
-    // For more details see this link https://go.microsoft.com/fwlink/?LinkID=532713
     public class QuizService : IQuizService
     {
         private QuizDbContext _db;
@@ -56,15 +54,23 @@ namespace QuizBuilder2.Services
             return quiz;
         }
 
-        public async Task<string> ChangeQuizTitleAsync(int quizId, string newTitle)
-        {
-            var quiz = await _db.Quizzes.FirstAsync(q => q.Id == quizId);
-            quiz.Title = newTitle;
+        public async Task<Quiz> SaveQuizAsync(QuizModel quizModel) {
+            Quiz quiz;
+            if (quizModel.Id.HasValue)
+                quiz = await _db.Quizzes.FirstAsync(q => q.Id == quizModel.Id.Value);
+            else {
+                quiz = new Quiz();
+                _db.Add(quiz);
+            }
+
+            quiz.Title = quizModel.Title.Trim();
+            quiz.Summary = quizModel.Summary;
+            
             await _db.SaveChangesAsync();
-            return quiz.Title;
+            return quiz;
         }
 
-        public async Task<int> RemoveQuiz(int quizId)
+        public async Task<int> RemoveQuizAsync(int quizId)
         {
             var quiz = await _db.Quizzes.FirstAsync(q => q.Id == quizId);
             _db.Remove(quiz);

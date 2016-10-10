@@ -3,23 +3,23 @@
         <span class="glyphicon glyphicon-menu-left"></span>
         <span>Cancel</span>
     </a>
-    <h4>{{currentQuestion.get('questionText')}}</h4>
+    <h4>{{currentQuestion.text}}</h4>
     <form ng-submit="saveAnswer()" class="content" name="answerEditForm" novalidate>
         <div class="input-group">
-          <input ng-model="currentAnswer.text" type="text" class="form-control" placeholder="Enter an answer..." id="answer-text" aria-describedby="answer-text" autocomplete="off" required>
+          <input ng-model="newAnswer.text" type="text" class="form-control" placeholder="Enter an answer..." id="answer-text" aria-describedby="answer-text" autocomplete="off" required>
         </div>
         <div class="form-group">
             <rg-upload-image on-upload="uploadImage(files)"></rg-upload-image>
             <p class="help-block">Image size must be less than 2 MB</p>
-            <img class="edit-image" ng-if="currentAnswer.imageFile" ng-src="{{currentAnswer.imageFile}}" />
+            <img class="edit-image" ng-if="newAnswer.imageFile" ng-src="{{newAnswer.imageFile}}" />
             <div>
-                <button ng-show="currentAnswer.imageFile" ng-click="removeImage($event)" class="clear-image btn btn-default">Remove image</button>
+                <button ng-show="newAnswer.imageFile" ng-click="removeImage($event)" class="clear-image btn btn-default">Remove image</button>
             </div>
         </div>
         <div class="form-group">
             <div class="checkbox">
                 <label>
-                    <input ng-model="currentAnswer.IsImage" type="checkbox"> Show image only
+                    <input ng-model="newAnswer.IsImage" type="checkbox"> Show image only
                 </label>
             </div>
         </div>

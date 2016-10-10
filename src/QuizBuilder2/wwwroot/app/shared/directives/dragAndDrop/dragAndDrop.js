@@ -14,7 +14,7 @@
         }
     });
     
-    app.directive('rgDrop', ['dataService', function(dataService) {
+    app.directive('rgDrop', ['outcomeDataService', function(outcomeDataService) {
         return { 
             restrict: "A",
             link: function(scope, element, attrs) {
@@ -29,7 +29,7 @@
                     var outcomeId = event.originalEvent.dataTransfer.getData('outcomeId');
                     
                     var outcome = Utilities.find(scope.$parent.$parent.quiz.get('outcomes'), 'id', outcomeId);
-                    dataService.LinkOutcomeForAnswer(scope.answer, outcome).then(function() {
+                    outcomeDataService.LinkOutcomeToAnswer(scope.answer.id, outcome.id).then(function() {
                         // this then causes scope.$apply() 
                     });
                     return false;

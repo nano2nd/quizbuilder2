@@ -2,7 +2,7 @@
     
     var app = angular.module('quizBuilder');
     
-    var controller = function($scope, $state, dataService, confirmToast, quizData) {
+    var controller = function($scope, $state, outcomeDataService, confirmToast, quizData) {
         
         $scope.tinymceOptions = {
             onChange: function(e) {
@@ -73,5 +73,5 @@
         }
     }
     
-    app.controller('OutcomeCtrl', ['$scope', '$state', 'dataService', 'confirmToast', 'quizData', controller]);
+    app.controller('OutcomeCtrl', ['$scope', '$state', 'outcomeDataService', 'confirmToast', 'quizData', controller]);
 })();
