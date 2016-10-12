@@ -28,7 +28,7 @@ namespace QuizBuilder2.Data.Entities
         public CharacterRole TopCharacterRole {
             get {
                 if (CharacterRoleOutcomes != null)
-                    return CharacterRoleOutcomes.OrderByDescending(cro => cro.Value).First().Role;
+                    return CharacterRoleOutcomes.OrderByDescending(cro => cro.Value).FirstOrDefault()?.Role;
                 
                 return null;
             }

@@ -28,8 +28,9 @@
                     event.preventDefault();
                     var outcomeId = event.originalEvent.dataTransfer.getData('outcomeId');
                     
-                    var outcome = Utilities.find(scope.$parent.$parent.quiz.get('outcomes'), 'id', outcomeId);
+                    var outcome = Utilities.find(scope.$parent.$parent.quiz.outcomes, 'id', outcomeId);
                     outcomeDataService.LinkOutcomeToAnswer(scope.answer.id, outcome.id).then(function() {
+                        scope.answer.outcomes.push(outcome);
                         // this then causes scope.$apply() 
                     });
                     return false;

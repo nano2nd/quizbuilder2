@@ -4,95 +4,110 @@
 
     var outcomeDataService = function($q, $rootScope, $log, $http, userService) {
         
-        var saveOutcome = function(outcome, name, summary, image, outcomeRoles, quiz) {
-            var deferred = $q.defer();
-            var isNew = !outcome.id;
-            
-            // Create it if it does not exist
-            if (isNew) {
-                outcome = create('Outcome');
-                outcome.points = 0;
-            }
-            
-            outcome.set('name', name.trim());
-            outcome.set('image', image);
-            outcome.set('summary', summary.trim());
-            
-            outcome.save().then(function(savedOutcome) {
-                // Add to outcomes array for quiz
-                if (isNew) {                    
-                    quiz.add('outcomes', savedOutcome);
-                    quiz.save().then(function() {
-                        $rootScope.$broadcast('updatePp');
-                    });
-                }
-                                            
-                // Update all outcome roles or create new ones if needed
-                var outcomeToRoles = [];
-                var topOutcomeToRole;
-                outcomeRoles.forEach(function(outcomeRole) {
-                    if (isNew) {
-                        // Connect OutcomeToRole to new Outcome
-                        var outcomeToRole = create('OutcomeToRole');
-                        outcomeToRole.set('outcome', savedOutcome);
-                        outcomeToRole.set('role', outcomeRole.role);
-                        outcomeToRole.set('value', outcomeRole.value);
-                        outcomeToRoles.push(outcomeToRole);
-                    } else {
-                        outcomeRole.set('value', outcomeRole.value);
-                        outcomeToRoles.push(outcomeRole);
-                    }
-                    
-                    //keep track of the highest value
-                    if (!topOutcomeToRole) {
-                        topOutcomeToRole = outcomeRole;
-                    } else {
-                        if (outcomeRole.value > topOutcomeToRole.value) {
-                            topOutcomeToRole = outcomeRole;
-                        }
-                    }
-                });
-                outcome.topRole = topOutcomeToRole.role;
-                // Save the role values
-                return Parse.Object.saveAll(outcomeToRoles).then(function(savedOutcomeToRoles) {
-                    deferred.resolve(savedOutcome);
-                });
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
+        var saveOutcome = function(outcome) {
+            return $http.post(
+                'api/outcome/saveoutcome', { 
+                    outcomeModel: outcome,
+                }).then(function(response) {
+                    $rootScope.$broadcast('updatePp');
+                    return response.data;
             });
+
+            // var deferred = $q.defer();
+            // var isNew = !outcome.id;
             
-            return deferred.promise;
+            // // Create it if it does not exist
+            // if (isNew) {
+            //     outcome = create('Outcome');
+            //     outcome.points = 0;
+            // }
+            
+            // outcome.set('name', name.trim());
+            // outcome.set('image', image);
+            // outcome.set('summary', summary.trim());
+            
+            // outcome.save().then(function(savedOutcome) {
+            //     // Add to outcomes array for quiz
+            //     if (isNew) {                    
+            //         quiz.add('outcomes', savedOutcome);
+            //         quiz.save().then(function() {
+            //             $rootScope.$broadcast('updatePp');
+            //         });
+            //     }
+                                            
+            //     // Update all outcome roles or create new ones if needed
+            //     var outcomeToRoles = [];
+            //     var topOutcomeToRole;
+            //     outcomeRoles.forEach(function(outcomeRole) {
+            //         if (isNew) {
+            //             // Connect OutcomeToRole to new Outcome
+            //             var outcomeToRole = create('OutcomeToRole');
+            //             outcomeToRole.set('outcome', savedOutcome);
+            //             outcomeToRole.set('role', outcomeRole.role);
+            //             outcomeToRole.set('value', outcomeRole.value);
+            //             outcomeToRoles.push(outcomeToRole);
+            //         } else {
+            //             outcomeRole.set('value', outcomeRole.value);
+            //             outcomeToRoles.push(outcomeRole);
+            //         }
+                    
+            //         //keep track of the highest value
+            //         if (!topOutcomeToRole) {
+            //             topOutcomeToRole = outcomeRole;
+            //         } else {
+            //             if (outcomeRole.value > topOutcomeToRole.value) {
+            //                 topOutcomeToRole = outcomeRole;
+            //             }
+            //         }
+            //     });
+            //     outcome.topRole = topOutcomeToRole.role;
+            //     // Save the role values
+            //     return Parse.Object.saveAll(outcomeToRoles).then(function(savedOutcomeToRoles) {
+            //         deferred.resolve(savedOutcome);
+            //     });
+            // }, function(error) {
+            //     $log.error(error.message);
+            //     deferred.reject(error);
+            // });
+            
+            // return deferred.promise;
         }
         
-        var removeOutcome = function(outcome, quiz) {
-            var deferred = $q.defer();
-            quiz.remove('outcomes', outcome);
-            
-            quiz.save().then(function() {
-                $rootScope.$broadcast('updatePp');
-                // Remove all roles for Outcome
-                return removeRolesForOutcome(outcome).then(function() {
-                    // Remove links to answers
-                    var answerQuery = query('Answer');
-                    answerQuery.equalTo('outcomes', outcome);
-                    var unlinkPromises = [];
-                    answerQuery.each(function(answerWithOutcome) {
-                        unlinkPromises.push(unlinkOutcomeForAnswer(answerWithOutcome, outcome));
-                    }).then(function() {
-                        $q.all(unlinkPromises).then(function() {
-                            return outcome.destroy().then(function(savedOutcome) {  
-                                deferred.resolve(savedOutcome);        
-                            });
-                        });
-                    });
-                });
-            }, function(error) {
-                $log.error(error.message); 
-                deferred.reject(error); 
+        var removeOutcome = function(outcomeId) {
+            return $http.post(
+                'api/outcome/removeoutcome', { 
+                    outcomeId: outcomeId,
+                }).then(function(response) {
+                    $rootScope.$broadcast('updatePp');
+                    return response.data;
             });
+            // var deferred = $q.defer();
+            // quiz.remove('outcomes', outcome);
             
-            return deferred.promise;
+            // quiz.save().then(function() {
+            //     $rootScope.$broadcast('updatePp');
+            //     // Remove all roles for Outcome
+            //     return removeRolesForOutcome(outcome).then(function() {
+            //         // Remove links to answers
+            //         var answerQuery = query('Answer');
+            //         answerQuery.equalTo('outcomes', outcome);
+            //         var unlinkPromises = [];
+            //         answerQuery.each(function(answerWithOutcome) {
+            //             unlinkPromises.push(unlinkOutcomeForAnswer(answerWithOutcome, outcome));
+            //         }).then(function() {
+            //             $q.all(unlinkPromises).then(function() {
+            //                 return outcome.destroy().then(function(savedOutcome) {  
+            //                     deferred.resolve(savedOutcome);        
+            //                 });
+            //             });
+            //         });
+            //     });
+            // }, function(error) {
+            //     $log.error(error.message); 
+            //     deferred.reject(error); 
+            // });
+            
+            // return deferred.promise;
         }
         
         var getInitialOutcomeToRoles = function() {
@@ -161,18 +176,6 @@
                      $rootScope.$broadcast('updatePp', outcomeId);
                     return response.data;
             });
-            
-            // var deferred = $q.defer();
-            // answer.add('outcomes', outcome)
-            // answer.save().then(function(savedAnswer) {
-            //     $rootScope.$broadcast('updatePp', outcome);
-            //     deferred.resolve(savedAnswer);
-            // }, function(error) {
-            //     $log.error(error.message);
-            //     deferred.reject(error);
-            // });
-            
-            // return deferred.promise;
         }
         
         var unlinkOutcomeFromAnswer = function(answerId, outcomeId) {
@@ -184,18 +187,6 @@
                      $rootScope.$broadcast('updatePp', outcomeId);
                     return response.data;
             });
-
-            // var deferred = $q.defer();
-            // answer.remove('outcomes', outcome);
-            // answer.save().then(function(savedAnswer) {
-            //     $rootScope.$broadcast('updatePp', outcome);
-            //     deferred.resolve(savedAnswer);
-            // }, function(error) {
-            //     $log.error(error.message);
-            //     deferred.reject(error);
-            // });
-            
-            // return deferred.promise;
         }
         
         /**

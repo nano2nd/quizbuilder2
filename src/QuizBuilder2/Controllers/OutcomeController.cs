@@ -26,15 +26,16 @@ namespace QuizBuilder2.Controllers
         }
 
         [HttpPost]
-        public async Task<OutcomeModel> SaveOutcome(OutcomeModel answerModel)
+        public async Task<OutcomeModel> SaveOutcome(OutcomeModel outcomeModel)
         {
-            return null;
+            var outcome = await _outcomeService.SaveOutcomeAsync(outcomeModel);
+            return _mapper.Map<OutcomeModel>(outcomeModel);
         }
 
         [HttpPost]
         public async Task<int> RemoveOutcome(int outcomeId)
         {
-            return 0;
+            return await _outcomeService.RemoveOutcomeAsync(outcomeId);
         }
 
         [HttpPost]

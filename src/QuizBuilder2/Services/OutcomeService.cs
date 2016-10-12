@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -17,14 +18,47 @@ namespace QuizBuilder2.Services
             _db = db;
         }
 
-        public async Task<Outcome> SaveOutcomeAsync(OutcomeModel answerModel)
+        public async Task<Outcome> SaveOutcomeAsync(OutcomeModel outcomeModel)
         {
-            throw new NotImplementedException();
+            //using (var transaction = await _db.Database.BeginTransactionAsync()) 
+            //{
+                Outcome outcome;
+                if (outcomeModel.Id.HasValue)
+                    outcome = await _db.Outcomes
+                        .FirstAsync(o => o.Id == outcomeModel.Id.Value);
+                else {
+                    outcome = new Outcome();
+                    _db.Add(outcome);
+                }
+
+                outcome.Name = outcomeModel.Name;
+                outcome.Summary = outcomeModel.Summary;
+                outcome.ImageFile = outcomeModel.ImageFile;
+                outcome.QuizId = outcomeModel.QuizId;
+
+                var existingRoleOutcomes = _db.CharacterRoleOutcomes.Where(cro => cro.OutcomeId == outcome.Id);
+                _db.RemoveRange(existingRoleOutcomes);
+                await _db.SaveChangesAsync();
+
+                foreach(var roleOutcomeModel in outcomeModel.CharacterRoleOutcomes) {
+                    outcome.CharacterRoleOutcomes.Add(new CharacterRoleOutcome {
+                        CharacterRoleId = roleOutcomeModel.RoleId,
+                        OutcomeId = roleOutcomeModel.OutcomeId,
+                        Value = roleOutcomeModel.Value
+                    });
+                }
+                await _db.SaveChangesAsync();
+
+                //transaction.Commit();
+                return outcome;
+            //}
         }
 
         public async Task<int> RemoveOutcomeAsync(int outcomeId)
         {
-            throw new NotImplementedException();
+            var outcome = await _db.Outcomes.FirstAsync(o => o.Id == outcomeId);
+            _db.Remove(outcome);
+            return await _db.SaveChangesAsync();
         }
 
         public async Task<int> LinkOutcomeToAnswerAsync(int answerId, int outcomeId)

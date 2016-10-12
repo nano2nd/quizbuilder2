@@ -4,32 +4,30 @@
     
     var controller = function($scope, $state, outcomeDataService, confirmToast, quizData) {
         
-        $scope.tinymceOptions = {
-            onChange: function(e) {
-              alert('what');
-            },
-            inline: false,
-            browser_spellcheck: true,
-            content_style: 'div {margin: 10px; border: 5px solid red; padding: 3px}',
-            menubar: false,
-            plugins: 'code',
-            toolbar: 'undo redo | bold italic | code'
+        $scope.newOutcome = {
+            id: null,
+            name: '',
+            summary: '',
+            imageFile: null,
+            quizId: null
         }
         
         $scope.pointsAvailable = 100;
         
         if ($state.params.outcomeId) {
             $scope.outcome = Utilities.find(quizData.outcomes, 'id', $state.params.outcomeId);
-        } else {
-            $scope.outcome = {
-                name: '',
-                image: null,
-                testValue: 50
-            }
+            copyOutcome($scope.outcome, $scope.newOutcome);
         }
         
-        $scope.roles = $scope.outcome.characterRoleOutcomes;
+        $scope.roles = $scope.newOutcome.characterRoleOutcomes;
         
+        $scope.saveOutcome = function() {           
+            outcomeDataService.SaveOutcome($scope.newOutcome).then(function() {
+                copyOutcome($scope.newOutcome, $scope.outcome);
+                $state.go('^.questions');
+            });
+        }
+
         $scope.pointsUsed = function() {
             return $scope.roles.map(function(role) {
                 return role.value;
@@ -40,18 +38,6 @@
         
         $scope.pointsLeft = function() {
             return $scope.pointsAvailable - $scope.pointsUsed();
-        }
-        
-        $scope.saveOutcome = function() {           
-            dataService.SaveOutcome(
-                $scope.outcome,
-                $scope.outcome.name,
-                $scope.outcome.summary,
-                $scope.outcome.image,
-                $scope.roles,
-                $scope.quiz).then(function() {
-                    $state.go('^.questions');
-                });
         }
         
         $scope.onSliderChangeStart = function(role) {
@@ -70,6 +56,27 @@
             } else {
                 $state.go('^.questions');
             }
+        }
+
+        $scope.tinymceOptions = {
+            onChange: function(e) {
+              alert('what');
+            },
+            inline: false,
+            browser_spellcheck: true,
+            content_style: 'div {margin: 10px; border: 5px solid red; padding: 3px}',
+            menubar: false,
+            plugins: 'code',
+            toolbar: 'undo redo | bold italic | code'
+        }
+
+        function copyOutcome(src, dest) {
+            dest.id = src.id;
+            dest.name = src.name;
+            dest.summary = src.summary;
+            dest.imageFile = src.imageFile;
+            dest.quizId = src.quizId;
+            dest.characterRoleOutcomes = src.characterRoleOutcomes;
         }
     }
     

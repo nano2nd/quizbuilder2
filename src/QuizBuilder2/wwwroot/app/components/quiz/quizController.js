@@ -66,7 +66,8 @@
             confirmToast('Are you sure you want to remove this Outcome and'
                           + ' all of its connections?', function(yes) {
                 if (yes) {
-                    dataService.RemoveOutcome(outcome, $scope.quiz).then(function() {
+                    outcomeDataService.RemoveOutcome(outcome.id).then(function() {
+                        Utilities.remove($scope.quiz.outcomes, 'id', outcome.id);
                         if ($state.params.outcomeId == outcome.id) {
                             $state.go('^.questions');
                         }

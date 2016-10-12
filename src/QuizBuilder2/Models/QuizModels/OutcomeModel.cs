@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace QuizBuilder2.Models
 {
     public class OutcomeModel {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
         public string Summary { get; set; }
         public string ImageFile { get; set; }
