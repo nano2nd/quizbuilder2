@@ -35,7 +35,7 @@
         $scope.removeQuestion = function() {
             confirmToast('Are you sure you want to remove this question and all of its answers?', function(yes) {
                 if (yes) {
-                    questionDataService.RemoveQuestion($scope.currentQuestion.id).then(function(isDeleted) {
+                    questionDataService.RemoveQuestion($scope.currentQuestion).then(function(isDeleted) {
                         if (isDeleted) {
                             Utilities.remove(quizData.questions, 'id', $scope.currentQuestion.id);
                             $scope.updateRemainingPoints();
@@ -49,7 +49,7 @@
         $scope.removeAnswer = function(answer, event) {
             confirmToast('Are you sure you want to remove this answer?', function(yes) {
                 if (yes) {
-                    answerDataService.RemoveAnswer(answer.id).then(function(isDeleted) {
+                    answerDataService.RemoveAnswer(answer).then(function(isDeleted) {
                         if (isDeleted) {
                             Utilities.remove($scope.currentQuestion.answers, 'id', answer.id);
                         }
@@ -59,7 +59,7 @@
         }
         
         $scope.unlinkOutcome = function(answer, outcome) {
-            outcomeDataService.UnlinkOutcomeFromAnswer(answer.id, outcome.id).then(function(didUnlink) {
+            outcomeDataService.UnlinkOutcomeFromAnswer(answer, outcome).then(function(didUnlink) {
                 if (didUnlink)
                     Utilities.remove(answer.outcomes, 'id', outcome.id);
             });

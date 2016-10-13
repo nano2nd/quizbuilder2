@@ -33,7 +33,7 @@
         }
         
         $scope.savePoints = function(dialog) {
-            questionDataService.UpdatePoints($scope.selectedQuestion.id, $scope.selectedQuestion.newPoints).then(function(points) {
+            questionDataService.UpdatePoints($scope.selectedQuestion, $scope.selectedQuestion.newPoints).then(function(points) {
                 $scope.selectedQuestion.points = points;
                 dialog.close();
             });
@@ -55,7 +55,7 @@
         $scope.removeQuiz = function() {
             confirmToast('Are you sure you want to remove this quiz and all of its questions?', function(yes) {
                 if (yes) {
-                    quizDataService.RemoveQuiz($scope.quiz.id).then(function() {
+                    quizDataService.RemoveQuiz($scope.quiz).then(function() {
                         $state.go('home');
                     });
                 }
@@ -66,7 +66,7 @@
             confirmToast('Are you sure you want to remove this Outcome and'
                           + ' all of its connections?', function(yes) {
                 if (yes) {
-                    outcomeDataService.RemoveOutcome(outcome.id).then(function() {
+                    outcomeDataService.RemoveOutcome(outcome).then(function() {
                         Utilities.remove($scope.quiz.outcomes, 'id', outcome.id);
                         if ($state.params.outcomeId == outcome.id) {
                             $state.go('^.questions');
@@ -81,8 +81,10 @@
         });
         
         $scope.$on('updatePp', function (event, outcome) {
-            outcomeDataService.UpdateAllOutcomePp($scope.quiz);
-        });    
+            outcomeDataService.UpdatePp(outcome).then(function(points) {
+                outcome.pointsPossible = points;
+            }); 
+        });   
     }
     
     app.controller('QuizCtrl', ['$scope', '$state', 'quizDataService', 

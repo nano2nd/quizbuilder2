@@ -12,9 +12,9 @@
                 });
         }
 
-        var removeAnswer = function(answerId) {
+        var removeAnswer = function(answer) {
             return $http.post('api/answer/removeanswer', {
-                answerId: answerId
+                answerId: answer.id
             }).then(function(response) {
                 return response.data;
             });

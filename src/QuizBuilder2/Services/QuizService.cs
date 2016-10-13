@@ -39,7 +39,7 @@ namespace QuizBuilder2.Services
             var quiz = await _db.Quizzes
                 .Include(q => q.Outcomes)
                 .ThenInclude(o => o.CharacterRoleOutcomes)
-                .ThenInclude(cro => cro.Role)
+                .ThenInclude(cro => cro.CharacterRole)
                 
                 .Include(q => q.Outcomes)
                 .ThenInclude(o => o.CharacterRoleOutcomes)

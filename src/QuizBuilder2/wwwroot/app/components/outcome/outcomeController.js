@@ -2,14 +2,14 @@
     
     var app = angular.module('quizBuilder');
     
-    var controller = function($scope, $state, outcomeDataService, confirmToast, quizData) {
+    var controller = function($scope, $state, outcomeDataService, confirmToast, quizData, characterRoles) {
         
         $scope.newOutcome = {
             id: null,
             name: '',
             summary: '',
             imageFile: null,
-            quizId: null
+            quizId: quizData.id
         }
         
         $scope.pointsAvailable = 100;
@@ -17,19 +17,23 @@
         if ($state.params.outcomeId) {
             $scope.outcome = Utilities.find(quizData.outcomes, 'id', $state.params.outcomeId);
             copyOutcome($scope.outcome, $scope.newOutcome);
-        }
-        
-        $scope.roles = $scope.newOutcome.characterRoleOutcomes;
+        } else {
+            $scope.newOutcome.characterRoleOutcomes = characterRoles;
+        }    
         
         $scope.saveOutcome = function() {           
-            outcomeDataService.SaveOutcome($scope.newOutcome).then(function() {
-                copyOutcome($scope.newOutcome, $scope.outcome);
+            outcomeDataService.SaveOutcome($scope.newOutcome).then(function(savedOutcome) {
+                if ($scope.outcome) {
+                    copyOutcome($scope.newOutcome, $scope.outcome);
+                } else {
+                    quizData.outcomes.push(savedOutcome);
+                }
                 $state.go('^.questions');
             });
         }
 
         $scope.pointsUsed = function() {
-            return $scope.roles.map(function(role) {
+            return $scope.newOutcome.characterRoleOutcomes.map(function(role) {
                 return role.value;
             }).reduce(function(currentRoleValue, prevRoleValue) {
                 return prevRoleValue + currentRoleValue; 
@@ -80,5 +84,6 @@
         }
     }
     
-    app.controller('OutcomeCtrl', ['$scope', '$state', 'outcomeDataService', 'confirmToast', 'quizData', controller]);
+    app.controller('OutcomeCtrl', ['$scope', '$state', 'outcomeDataService', 
+        'confirmToast', 'quizData', 'characterRoles', controller]);
 })();

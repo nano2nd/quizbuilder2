@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -25,11 +27,22 @@ namespace QuizBuilder2.Controllers
             _mapper = mapper;        
         }
 
+        [Route("{outcomeId}")]
+        public async Task<int> PointsPossible(int outcomeId)
+        {
+            return await _outcomeService.GetPointsPossible(outcomeId);
+        }
+
+        public IEnumerable<CharacterRoleOutcomeModel> DefaultRoleOutcomes()
+        {
+            return _outcomeService.GetDefaultCharacterRoleOutcomes();
+        }
+
         [HttpPost]
         public async Task<OutcomeModel> SaveOutcome(OutcomeModel outcomeModel)
         {
             var outcome = await _outcomeService.SaveOutcomeAsync(outcomeModel);
-            return _mapper.Map<OutcomeModel>(outcomeModel);
+            return _mapper.Map<OutcomeModel>(outcome);
         }
 
         [HttpPost]

@@ -5,6 +5,12 @@ namespace QuizBuilder2.Data.Entities
 {
     public class Outcome
     {
+        public Outcome()
+        {
+            CharacterRoleOutcomes = new HashSet<CharacterRoleOutcome>();
+            AnswerOutcomes = new HashSet<AnswerOutcome>();
+        }
+        
         public int Id { get; set; }
         public string Name { get; set; }
         public string Summary { get; set; }
@@ -28,7 +34,7 @@ namespace QuizBuilder2.Data.Entities
         public CharacterRole TopCharacterRole {
             get {
                 if (CharacterRoleOutcomes != null)
-                    return CharacterRoleOutcomes.OrderByDescending(cro => cro.Value).FirstOrDefault()?.Role;
+                    return CharacterRoleOutcomes.OrderByDescending(cro => cro.Value).FirstOrDefault()?.CharacterRole;
                 
                 return null;
             }

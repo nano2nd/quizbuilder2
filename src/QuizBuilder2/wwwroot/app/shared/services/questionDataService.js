@@ -8,6 +8,7 @@
             return $http.post('api/question/savequestion', {
                     questionModel: question
                 }).then(function(response) {
+                    $rootScope.$broadcast('updatePp', outcome);
                     return response.data;
                 });
 
@@ -49,19 +50,24 @@
             //return deferred.promise;
         }
 
-        var removeQuestion = function(questionId) {
+        var removeQuestion = function(question) {
             return $http.post('api/question/removequestion', {
-                questionId: questionId
+                questionId: question.id
             }).then(function(response) {
                 return response.data;
             });
         }
 
-        var updatePoints = function(questionId, points) {
+        var updatePoints = function(question, points) {
             return $http.post('api/question/updatepoints', {
-                questionId: questionId,
+                questionId: question.id,
                 points: points
             }).then(function(response) {
+                question.answers.forEach(function(a) {
+                    a.outcomes.forEach(function(o) {
+                        $rootScope.$broadcast('updatePp', o);
+                    });
+                });
                 return response.data;
             });
         }

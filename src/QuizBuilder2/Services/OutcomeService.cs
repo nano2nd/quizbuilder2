@@ -25,6 +25,7 @@ namespace QuizBuilder2.Services
                 Outcome outcome;
                 if (outcomeModel.Id.HasValue)
                     outcome = await _db.Outcomes
+                        .Include(o => o.AnswerOutcomes)
                         .FirstAsync(o => o.Id == outcomeModel.Id.Value);
                 else {
                     outcome = new Outcome();
@@ -42,15 +43,19 @@ namespace QuizBuilder2.Services
 
                 foreach(var roleOutcomeModel in outcomeModel.CharacterRoleOutcomes) {
                     outcome.CharacterRoleOutcomes.Add(new CharacterRoleOutcome {
-                        CharacterRoleId = roleOutcomeModel.RoleId,
-                        OutcomeId = roleOutcomeModel.OutcomeId,
+                        CharacterRoleId = roleOutcomeModel.CharacterRoleId,
+                        OutcomeId = outcome.Id,
                         Value = roleOutcomeModel.Value
                     });
                 }
                 await _db.SaveChangesAsync();
-
                 //transaction.Commit();
-                return outcome;
+
+                return await _db.Outcomes
+                    .Include(o => o.CharacterRoleOutcomes)
+                    .ThenInclude(o => o.CharacterRole)
+                    .FirstAsync(o => o.Id == outcome.Id);
+                
             //}
         }
 
@@ -83,6 +88,30 @@ namespace QuizBuilder2.Services
             
             _db.Remove(exists);
             return await _db.SaveChangesAsync();
+        }
+
+        public IEnumerable<CharacterRoleOutcomeModel> GetDefaultCharacterRoleOutcomes()
+        {
+            var roleOutcomes = new List<CharacterRoleOutcomeModel>();
+            foreach(var role in _db.CharacterRoles) {
+                roleOutcomes.Add(new CharacterRoleOutcomeModel {
+                    CharacterRoleId = role.Id,
+                    CharacterRoleName = role.Name,
+                    Value = 100 / _db.CharacterRoles.Count()
+                });
+            }
+            return roleOutcomes;
+        }
+
+        public async Task<int> GetPointsPossible(int outcomeId)
+        {
+            var outcome = await _db.Outcomes
+                .Include(o => o.AnswerOutcomes)
+                .ThenInclude(ao => ao.Answer)
+                .ThenInclude(a => a.Question)
+                .FirstAsync(o => o.Id == outcomeId);
+            
+            return outcome.PointsPossible;
         }
     }
 }

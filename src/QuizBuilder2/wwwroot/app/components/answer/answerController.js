@@ -34,7 +34,7 @@
         $scope.removeAnswer = function() {
             confirmToast('Are you sure you want to remove this answer?', function(yes) {
                 if (yes) {
-                    answerDataService.RemoveAnswer($scope.currentAnswer.id).then(function(isDeleted) {
+                    answerDataService.RemoveAnswer($scope.currentAnswer).then(function(isDeleted) {
                         if (isDeleted) {
                             Utilities.remove($scope.answers, 'id', id);
                         }

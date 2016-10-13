@@ -66,7 +66,13 @@
             .state('quiz.outcome-edit', {
                 url: '/outcome/:outcomeId',
                 templateUrl: 'app/components/outcome/outcome-edit.html',
-                controller: 'OutcomeCtrl'
+                controller: 'OutcomeCtrl',
+                resolve: {
+                    'characterRoles': ['$stateParams', 'outcomeDataService', function($stateParams, outcomeDataService) {
+                        if (!$stateParams.outcomeId)
+                            return outcomeDataService.GetDefaultRoleOutcomes();
+                    }]
+                }
             });
     }
     app.config(['$stateProvider', '$urlRouterProvider', configRoutes]);    
