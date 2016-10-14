@@ -25,7 +25,6 @@ namespace QuizBuilder2.Services
                 Outcome outcome;
                 if (outcomeModel.Id.HasValue)
                     outcome = await _db.Outcomes
-                        .Include(o => o.AnswerOutcomes)
                         .FirstAsync(o => o.Id == outcomeModel.Id.Value);
                 else {
                     outcome = new Outcome();
@@ -54,6 +53,9 @@ namespace QuizBuilder2.Services
                 return await _db.Outcomes
                     .Include(o => o.CharacterRoleOutcomes)
                     .ThenInclude(o => o.CharacterRole)
+                    .Include(o => o.AnswerOutcomes)
+                    .ThenInclude(o => o.Answer)
+                    .ThenInclude(o => o.Question)
                     .FirstAsync(o => o.Id == outcome.Id);
                 
             //}
@@ -66,7 +68,7 @@ namespace QuizBuilder2.Services
 
             var outcome = await _db.Outcomes.FirstAsync(o => o.Id == outcomeId);
             _db.Remove(outcome);
-            
+
             return await _db.SaveChangesAsync();
         }
 

@@ -8,7 +8,6 @@
             return $http.post('api/question/savequestion', {
                     questionModel: question
                 }).then(function(response) {
-                    $rootScope.$broadcast('updatePp', outcome);
                     return response.data;
                 });
 

@@ -12,7 +12,7 @@
             text: '',
             isImage: false,
             imageFile: null,
-            questionId: null
+            questionId: $scope.currentQuestion.id
         }
         
         if ($stateParams.answerId) {
