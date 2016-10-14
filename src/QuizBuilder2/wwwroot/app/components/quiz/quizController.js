@@ -51,7 +51,7 @@
                 $scope.remainingPoints = 200;
             }
         }
-        
+
         $scope.removeQuiz = function() {
             confirmToast('Are you sure you want to remove this quiz and all of its questions?', function(yes) {
                 if (yes) {
@@ -68,6 +68,12 @@
                 if (yes) {
                     outcomeDataService.RemoveOutcome(outcome).then(function() {
                         Utilities.remove($scope.quiz.outcomes, 'id', outcome.id);
+                        $scope.quiz.questions.forEach(function(q) {
+                            q.answers.forEach(function(a) {
+                                Utilities.remove(a.outcomes, 'id', outcome.id);
+                            });
+                        });
+
                         if ($state.params.outcomeId == outcome.id) {
                             $state.go('^.questions');
                         }
@@ -80,11 +86,11 @@
             $scope.updateRemainingPoints();
         });
         
-        $scope.$on('updatePp', function (event, outcome) {
-            outcomeDataService.UpdatePp(outcome).then(function(points) {
-                outcome.pointsPossible = points;
-            }); 
-        });   
+        // $scope.$on('updatePp', function (event, outcome) {
+        //     outcomeDataService.UpdatePp(outcome).then(function(points) {
+        //         outcome.pointsPossible = points;
+        //     }); 
+        // });   
     }
     
     app.controller('QuizCtrl', ['$scope', '$state', 'quizDataService', 

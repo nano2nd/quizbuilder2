@@ -176,8 +176,9 @@
                     answerId: answer.id, 
                     outcomeId: outcome.id 
                 }).then(function(response) {
-                     $rootScope.$broadcast('updatePp', outcome);
-                    return response.data;
+                    return updatePp(outcome).then(function(points) {
+                        outcome.pointsPossible = points;
+                    });
             });
         }
         
@@ -187,8 +188,10 @@
                     answerId: answer.id, 
                     outcomeId: outcome.id 
                 }).then(function(response) {
-                    $rootScope.$broadcast('updatePp', outcome);
-                    return response.data;
+                    return updatePp(outcome).then(function(points) {
+                        outcome.pointsPossible = points;
+                        return response.data;
+                    });
             });
         }
         

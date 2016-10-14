@@ -61,8 +61,12 @@ namespace QuizBuilder2.Services
 
         public async Task<int> RemoveOutcomeAsync(int outcomeId)
         {
+            var answerOutcomes = _db.AnswerOutcomes.Where(ao => ao.OutcomeId == outcomeId);
+            _db.RemoveRange(answerOutcomes);
+
             var outcome = await _db.Outcomes.FirstAsync(o => o.Id == outcomeId);
             _db.Remove(outcome);
+            
             return await _db.SaveChangesAsync();
         }
 
@@ -109,8 +113,10 @@ namespace QuizBuilder2.Services
                 .Include(o => o.AnswerOutcomes)
                 .ThenInclude(ao => ao.Answer)
                 .ThenInclude(a => a.Question)
-                .FirstAsync(o => o.Id == outcomeId);
-            
+                .FirstOrDefaultAsync(o => o.Id == outcomeId);
+            if (outcome == null)
+                return 0;
+
             return outcome.PointsPossible;
         }
     }

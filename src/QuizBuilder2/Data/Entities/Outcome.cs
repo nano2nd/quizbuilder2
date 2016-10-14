@@ -25,7 +25,18 @@ namespace QuizBuilder2.Data.Entities
         public int PointsPossible {
             get {
                 if (AnswerOutcomes != null)
-                    return AnswerOutcomes.Sum(ao => ao.Answer.Question.Points);
+                {
+                    var questionSeen = new List<int>();
+                    var runningSum = 0;
+                    foreach(var ao in AnswerOutcomes)
+                    {
+                        if (questionSeen.Contains(ao.Answer.QuestionId))
+                            continue;
+                        runningSum += ao.Answer.Question.Points;
+                        questionSeen.Add(ao.Answer.QuestionId);
+                    }
+                    return runningSum;
+                }
 
                 return 0;
             }
