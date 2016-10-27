@@ -70,7 +70,7 @@
                         Utilities.remove($scope.quiz.outcomes, 'id', outcome.id);
                         $scope.quiz.questions.forEach(function(q) {
                             q.answers.forEach(function(a) {
-                                Utilities.remove(a.outcomes, 'id', outcome.id);
+                                Utilities.remove(a.answerOutcomes, 'outcomeId', outcome.id);
                             });
                         });
 
