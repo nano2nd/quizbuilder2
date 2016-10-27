@@ -16,9 +16,20 @@ var Utilities = function() {
         }
     }
 
+    var findMax = function(array, property) {
+        var currentMax = array[0];
+        for (var i = 0; i < array.length; i++) {
+            if (array[i][property] > currentMax[property]) {
+                currentMax = array[i];
+            }
+        }
+        return currentMax;
+    }
+
     return {
         find: find,
-        remove: remove
+        remove: remove,
+        findMax: findMax
     }
     
 }();

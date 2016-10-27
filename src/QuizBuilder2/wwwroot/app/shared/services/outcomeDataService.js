@@ -9,6 +9,14 @@
                 'api/outcome/saveoutcome', { 
                     outcomeModel: outcome,
                 }).then(function(response) {
+                    // update top role
+                    var topCharacterRoleOutcome = Utilities.findMax(outcome.characterRoleOutcomes, 'value');
+                    outcome.topCharacterRole = {
+                        id: topCharacterRoleOutcome.characterRoleId,
+                        name: topCharacterRoleOutcome.characterRoleName,
+                        summary: topCharacterRoleOutcome.characterRoleSummary,
+                        imageFile: topCharacterRoleOutcome.characterRoleImageFile
+                    };
                     return response.data;
             });
 

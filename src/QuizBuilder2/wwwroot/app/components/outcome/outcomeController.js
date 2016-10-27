@@ -81,6 +81,7 @@
             dest.imageFile = src.imageFile;
             dest.quizId = src.quizId;
             dest.characterRoleOutcomes = src.characterRoleOutcomes;
+            dest.topCharacterRole = src.topCharacterRole;
         }
     }
     
