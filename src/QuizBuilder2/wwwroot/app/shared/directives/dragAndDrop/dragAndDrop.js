@@ -30,8 +30,10 @@
                     
                     var outcome = Utilities.find(scope.$parent.$parent.quiz.outcomes, 'id', outcomeId);
                     outcomeDataService.LinkOutcomeToAnswer(scope.answer, outcome).then(function() {
-                        scope.answer.outcomes.push(outcome);
-                        // this then causes scope.$apply() 
+                        scope.answer.answerOutcomes.push({
+                            answerId: scope.answer.id,
+                            outcomeId: outcome.id
+                        });
                     });
                     return false;
                 });

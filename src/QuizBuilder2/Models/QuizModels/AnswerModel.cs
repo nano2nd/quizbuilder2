@@ -9,6 +9,6 @@ namespace QuizBuilder2.Models
         public string ImageFile { get; set; }
         public int QuestionId { get; set; }
 
-        public ICollection<OutcomeModel> Outcomes { get; set; }
+        public ICollection<AnswerOutcomeModel> AnswerOutcomes { get; set; }
     }
 }

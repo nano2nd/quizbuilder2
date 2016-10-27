@@ -9,7 +9,6 @@
                 'api/outcome/saveoutcome', { 
                     outcomeModel: outcome,
                 }).then(function(response) {
-                    $rootScope.$broadcast('updatePp', outcome);
                     return response.data;
             });
 
@@ -78,7 +77,6 @@
                 'api/outcome/removeoutcome', { 
                     outcomeId: outcome.id,
                 }).then(function(response) {
-                    $rootScope.$broadcast('updatePp', outcome);
                     return response.data;
             });
             // var deferred = $q.defer();
@@ -171,28 +169,33 @@
         // }
         
         var linkOutcomeToAnswer = function(answer, outcome) {
-            return $http.post(
+            var deferred = $q.defer();
+            $http.post(
                 'api/outcome/linkoutcometoanswer', { 
                     answerId: answer.id, 
                     outcomeId: outcome.id 
                 }).then(function(response) {
-                    return updatePp(outcome).then(function(points) {
+                    updatePp(outcome).then(function(points) {
                         outcome.pointsPossible = points;
+                        deferred.resolve(response.data);
                     });
-            });
+                });
+            return deferred.promise;
         }
         
         var unlinkOutcomeFromAnswer = function(answer, outcome) {
-            return $http.post(
+            var deferred = $q.defer();
+            $http.post(
                 'api/outcome/unlinkoutcomefromanswer', { 
                     answerId: answer.id, 
                     outcomeId: outcome.id 
                 }).then(function(response) {
-                    return updatePp(outcome).then(function(points) {
+                    updatePp(outcome).then(function(points) {
                         outcome.pointsPossible = points;
-                        return response.data;
+                        deferred.resolve(response.data);
                     });
-            });
+                });
+            return deferred.promise;
         }
         
         /**

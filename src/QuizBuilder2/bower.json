@@ -2,7 +2,7 @@
   "name": "WhoAmI Quiz Builder",
   "private": true,
   "dependencies": {
-    "angular": "~1.4.7",
+    "angular": "~1.5.8",
     "bootstrap": "~3.3.5",
     "jquery": "~2.1.4",
     "angular-ui-router": "~0.2.15",

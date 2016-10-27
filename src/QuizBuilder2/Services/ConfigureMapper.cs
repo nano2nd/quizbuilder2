@@ -10,10 +10,7 @@ namespace QuizBuilder2.Services
         public ConfigureMapper() {
             _config = new MapperConfiguration(cfg => {
                 
-                cfg.CreateMap<Answer, AnswerModel>()
-                    .ForMember(answerModel => answerModel.Outcomes, opt => opt.ResolveUsing((answer, answerModel, result, mapperContext) => {
-                        return answer.AnswerOutcomes.Select(ao => mapperContext.Mapper.Map<Outcome>(ao.Outcome));
-                    }));
+                cfg.CreateMap<Answer, AnswerModel>();
                 
                 cfg.CreateMap<ApplicationUser, UserModel>();
                 
@@ -26,6 +23,8 @@ namespace QuizBuilder2.Services
                 cfg.CreateMap<Question, QuestionModel>();
                 
                 cfg.CreateMap<Quiz, QuizModel>();
+
+                cfg.CreateMap<AnswerOutcome, AnswerOutcomeModel>();
             });
         }
 

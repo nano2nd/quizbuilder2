@@ -22,7 +22,7 @@
         $scope.saveQuestion = function() {           
             questionDataService.SaveQuestion($scope.newQuestion).then(function(savedQuestion) {
                 if ($scope.currentQuestion) {
-                    copyQuestion($scope.currentQuestion, $scope.newQuestion);
+                    copyQuestion($scope.newQuestion, $scope.currentQuestion);
                 } else {
                     quizData.questions.push(savedQuestion);
                 }
@@ -58,10 +58,14 @@
             });
         }
         
-        $scope.unlinkOutcome = function(answer, outcome) {
+        $scope.unlinkOutcome = function(answer, outcomeId) {
+            var answerId = answer.id;
+            var outcome = $scope.getOutcomeById(outcomeId);
+
             outcomeDataService.UnlinkOutcomeFromAnswer(answer, outcome).then(function(didUnlink) {
-                if (didUnlink)
-                    Utilities.remove(answer.outcomes, 'id', outcome.id);
+                if (didUnlink) {
+                    Utilities.remove(answer.answerOutcomes, 'outcomeId', outcomeId);
+                }
             });
         }        
         $scope.cancelQuestion = function() {
@@ -70,6 +74,10 @@
             } else {
                 $state.go('^.questions');
             }
+        }
+
+        $scope.getOutcomeById = function(outcomeId) {
+            return Utilities.find(quizData.outcomes, 'id', outcomeId);
         }
 
         function copyQuestion(src, dest) {
