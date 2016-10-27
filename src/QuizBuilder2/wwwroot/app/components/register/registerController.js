@@ -16,7 +16,7 @@
                     $scope.errors = response.errors;
                 }
                 else {
-                    $state.go('home');
+                    $state.go('register-finish');
                 }
             });
         }

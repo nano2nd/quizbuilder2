@@ -21,6 +21,12 @@
                 controller: 'RegisterCtrl',
                 title: 'Register'
             })
+            .state('register-finish', {
+                url: '/register/finish',
+                templateUrl: 'app/components/register/finish.html',
+                title: 'Thank you for registering',
+                controller: 'RegisterCtrl'
+            })
             .state('home', {
                 url: '/?page',
                 templateUrl: 'app/components/home/home.html',

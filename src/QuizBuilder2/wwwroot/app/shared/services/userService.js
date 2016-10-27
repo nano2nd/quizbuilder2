@@ -65,9 +65,11 @@
                 password: password,
                 confirmPassword: confirmPassword
             }).then(function(response) {
-                var user = response.data.content;
-                qb_LOGGED_IN_USER = user;
-                $rootScope.$broadcast('updateUser', user);
+                if (response.data.content) {
+                    var user = response.data.content;
+                    qb_LOGGED_IN_USER = user;
+                    $rootScope.$broadcast('updateUser', user);
+                }
                 return response.data;
             });
         }
