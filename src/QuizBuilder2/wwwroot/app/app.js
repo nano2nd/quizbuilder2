@@ -10,7 +10,7 @@
         
         $stateProvider
             .state('login', {
-                url: '/login',
+                url: '/login?returnUrl',
                 templateUrl: 'app/components/logIn/logIn.html',
                 controller: 'LogInCtrl',
                 title: 'Log In'
@@ -92,7 +92,7 @@
     
     
     /** APP RUN **/
-    var run = function($rootScope, $state, httpHelper) {
+    var run = function($rootScope, $state, $location, httpHelper) {
         
         $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
             
@@ -118,11 +118,11 @@
             // now, redirect only not authenticated
             if(!user) {
                 e.preventDefault(); // stop current execution
-                $state.go('login', {'requestedState': toState.name}); // go to login
+                $state.go('login', {'returnUrl': $location.$$url}); // go to login
             }
         });
     }
 
-    app.run(['$rootScope', '$state', 'userService', 'httpHelper', run]);
+    app.run(['$rootScope', '$state', '$location', 'httpHelper', run]);
     
 })();

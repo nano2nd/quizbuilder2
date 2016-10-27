@@ -13,6 +13,10 @@
     </div>      
     <div class="form-group">
         <input type="password" ng-model="user.password" class="form-control" name="password" placeholder="Enter your password" required />
-    </div> 
+    </div>
+    <div class="form-group">
+        <input type="checkbox" ng-model="user.rememberMe" name="rememberMe" /> Remember me
+    </div>
+
     <input class="btn btn-primary" type="submit" value="Log in" ng-disabled="logInForm.$invalid" />
 </form>

@@ -39,11 +39,11 @@
          * @param   {[[Type]]} password [[Description]]
          * @returns {[[Type]]} [[Description]]
          */
-        var logIn = function(username, password) {
+        var logIn = function(username, password, rememberMe) {
             return $http.post('api/account/login', {
                 email: username,
                 password: password,
-                rememberMe: true
+                rememberMe: rememberMe || false
             }).then(function(response) {
                 var user = response.data.content;
                 qb_LOGGED_IN_USER = user;
