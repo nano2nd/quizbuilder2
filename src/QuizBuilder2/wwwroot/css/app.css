@@ -268,6 +268,31 @@ rzslider span.rz-pointer.rz-active:after {
   height: inherit;
   border-radius: 10px;
 }
+.quick-entry-item {
+  margin-top: 20px;
+}
+.quick-entry-item > div {
+  display: inline-block;
+}
+.quick-entry-item > div:nth-child(1) {
+  width: 5%;
+  vertical-align: top;
+}
+.quick-entry-item > div:nth-child(2) {
+  width: 94%;
+}
+.quick-entry-item .question-box {
+  width: 100%;
+}
+.quick-entry-item ul.answer-list {
+  margin-top: 15px;
+}
+.quick-entry-item ul.answer-list > li {
+  margin-top: 10px;
+}
+.quick-entry-item .answer-box {
+  width: 75%;
+}
 /*********   ANSWERS  *************/
 .answer-list .icon-list-icon {
   background-color: coral;

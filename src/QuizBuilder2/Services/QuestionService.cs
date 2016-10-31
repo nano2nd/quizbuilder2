@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,23 @@ namespace QuizBuilder2.Services
             
             await _db.SaveChangesAsync();
             return question;
+        }
+
+        public async Task<IEnumerable<Question>> SaveQuestionsAsync(IEnumerable<QuestionModel> questions)
+        {
+            var newQuestions = questions.Select(q => new Question {
+                Text = q.Text,
+                Points = 10,
+                QuizId = q.QuizId,
+                Answers = q.Answers.Select(a => new Answer {
+                    Text = a.Text
+                }).ToList()
+            }).ToList(); // We do a final ToList so we get an actualy object in-memory, so that Ids update after save
+            
+            _db.AddRange(newQuestions);
+
+            await _db.SaveChangesAsync();
+            return newQuestions;
         }
 
         public async Task<int> RemoveQuestionAsync(int questionId)

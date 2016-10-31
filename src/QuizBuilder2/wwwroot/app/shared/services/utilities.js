@@ -26,10 +26,15 @@ var Utilities = function() {
         return currentMax;
     }
 
+    var createArray = function(size) {
+        return new Array(size);
+    }
+
     return {
         find: find,
         remove: remove,
-        findMax: findMax
+        findMax: findMax,
+        createArray: createArray
     }
     
 }();

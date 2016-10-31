@@ -12,5 +12,5 @@ gulp.task('less', function() {
 gulp.task('gulp-build', ['less']);
 
 gulp.task('default', ['gulp-build'], function() {
-    gulp.watch('*.less', ['less']);
+    gulp.watch('./less/*.less', ['less']);
 })

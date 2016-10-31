@@ -70,11 +70,20 @@
                 return response.data;
             });
         }
+
+        var saveFromQuickEntry = function(questions) {
+            return $http.post('api/question/saveFromQuickEntry', {
+                questions: questions
+            }).then(function(response) {
+                return response.data;
+            });
+        }
                 
         return {
             UpdatePoints: updatePoints,
             SaveQuestion: saveQuestion,
-            RemoveQuestion: removeQuestion
+            RemoveQuestion: removeQuestion,
+            SaveFromQuickEntry: saveFromQuickEntry
         }
     }
     

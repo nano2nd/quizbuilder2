@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -42,6 +44,12 @@ namespace QuizBuilder2.Controllers
         public async Task<int> UpdatePoints(int questionId, int points)
         {
             return await _questionService.UpdatePointsAsync(questionId, points);
+        }
+
+        [HttpPost]
+        public async Task<IEnumerable<QuestionModel>> SaveFromQuickEntry(IEnumerable<QuestionModel> questions) {
+            var newQuestions = await _questionService.SaveQuestionsAsync(questions);
+            return newQuestions.Select(q => _mapper.Map<QuestionModel>(q));
         }
     }
 }

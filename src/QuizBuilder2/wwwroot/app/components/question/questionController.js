@@ -6,7 +6,8 @@
         questionDataService, answerDataService, outcomeDataService, 
         confirmToast, quizData
     ) {
-        
+        $scope.Utilities = Utilities;
+
         $scope.newQuestion = {
             id: null,
             text: '',

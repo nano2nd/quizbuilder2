@@ -54,6 +54,11 @@
                 url:'',
                 templateUrl: 'app/components/question/questions.html'
             })
+            .state('quiz.quick-entry', {
+                url:'/quick-entry',
+                templateUrl: 'app/components/question/quick-entry.html',
+                controller: 'QuickEntryCtrl'
+            })
             .state('quiz.question-edit', {
                 url:'/edit/:questionId',
                 templateUrl: 'app/components/question/question-edit.html',
