@@ -1,0 +1,30 @@
+<section>
+   <a class="back-nav" ui-sref="quiz.questions" >
+        <span class="glyphicon glyphicon-menu-left"></span>
+        <span>Back to Questions</span>
+    </a>
+    <h4>{{currentQuestion.text}}</h4>
+    <ul class="answer-list icon-list">
+        <li ng-repeat="answer in currentQuestion.answers" rg-drop>
+            <div class="icon-container">
+                <div class="icon-list-icon">
+                    <img ng-if="answer.imageFile" ng-src="{{answer.imageFile}}" />
+                    <div ng-if="!answer.imageFile">A</div>
+                </div>
+            </div>
+            <div class="body-container">
+                <a ui-sref="quiz.answer-edit({questionId: currentQuestion.id, answerId: answer.id})" class="title">{{answer.text}}</a>
+                <ul class="tag-list outcomes">
+                    <li ng-repeat="answerOutcome in answer.answerOutcomes">
+                        <a class="tag-link">{{getOutcomeById(answerOutcome.outcomeId).name}}</a>
+                        <span class="remove-tag" ng-click="unlinkOutcome(answer, answerOutcome.outcomeId)"></span>
+                    </li>
+                </ul>
+                <div class="tag-drag-placeholder" ng-if="!answer.answerOutcomes.length">Drag outcome here</div>
+                <a class="action answer-remove" href="javascript:void(0)" ng-click="removeAnswer(answer, $event)">delete answer</a>
+            </div>
+        </li>
+    </ul>
+    <button ui-sref="quiz.answer-edit({questionId: currentQuestion.id})" type="button" class="icon-list-add-button btn btn-default">Add answer</button>
+    <button href="javascript:void(0)" ng-click="removeQuestion()" type="button" class="icon-list-add-button btn btn-danger">Remove this question</button>
+</section>

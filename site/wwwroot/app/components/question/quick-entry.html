@@ -1,0 +1,22 @@
+<section>
+    <a class="back-nav" ui-sref="quiz.questions" >
+        <span class="glyphicon glyphicon-menu-left"></span>
+        <span>Back to Questions</span>
+    </a>
+    <h4>Enter Questions and Answers</h4>
+    <ul>
+        <li ng-repeat="q in quizEntries" class="quick-entry-item">
+            <div class="num">Q{{$index + 1}}.</div>
+            <div>
+                <input type="text" class="question-box" ng-model="q.text" />
+                <ul class="answer-list">
+                    <li ng-repeat="a in q.answers">
+                        <span>A{{$index + 1}}.</span>
+                        <input type="text" class="answer-box" ng-model="a.text" />
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <button type="button" ng-click="save()" class="icon-list-add-button btn btn-default">Apply</button>
+</section>

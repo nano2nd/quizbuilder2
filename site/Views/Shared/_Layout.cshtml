@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
+    <link rel="stylesheet" href="~/lib/angularjs-slider/dist/rzslider.css" />
+    <link rel="stylesheet" href="~/css/app.css" />
+    
+    <environment names="Development">
+        
+    </environment>
+    <environment names="Staging,Production">
+        <!--
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        -->
+    </environment>
+</head>
+<body ng-app="quizBuilder">
+    <div class="container-fluid">
+        <div class="row">
+            <div ng-controller="NavCtrl">
+                <div ng-include="templateUrl"></div>
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/angular/angular.js"></script>
+    <script src="~/lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="~/app/shared/services/utilities.js"></script> 
+    <script src="~/lib/toastr/toastr.js"></script>
+    <script src="~/lib/angularjs-slider/dist/rzslider.js"></script>
+    <script src="~/lib/tinymce-dist/tinymce.js"></script>
+    <script src="~/lib/angular-ui-tinymce/src/tinymce.js"></script>
+    
+    <!-- Main -->
+    <script src="~/app/app.js"></script>
+    
+    <!-- Shared Controls -->
+    <script src="~/app/shared/navbar/navController.js"></script>
+    <script src="~/app/shared/services/httpHelper.js"></script>
+    <script src="~/app/shared/services/userService.js"></script>
+    <script src="~/app/shared/services/quizDataService.js"></script>
+    <script src="~/app/shared/services/questionDataService.js"></script>
+    <script src="~/app/shared/services/answerDataService.js"></script>
+    <script src="~/app/shared/services/outcomeDataService.js"></script>
+    <script src="~/app/shared/services/filters.js"></script>
+    <script src="~/app/shared/directives/panel/panel.js"></script>
+    <script src="~/app/shared/directives/saveDialog/saveDialog.js"></script>
+    <script src="~/app/shared/services/confirmToast.js"></script>
+    <script src="~/app/shared/directives/dragAndDrop/dragAndDrop.js"></script>
+    <script src="~/app/shared/directives/upload/uploadImage.js"></script>
+    
+    <!-- Components -->
+    <script src="~/app/components/home/homeController.js"></script>
+    <script src="~/app/components/home/homeService.js"></script>
+    <script src="~/app/components/quiz/quizController.js"></script>
+    <script src="~/app/components/quiz/quizService.js"></script>
+    <script src="~/app/components/question/questionController.js"></script>
+    <script src="~/app/components/question/quickEntryController.js"></script>
+    <script src="~/app/components/answer/answerController.js"></script>
+    <script src="~/app/components/outcome/outcomeController.js"></script>
+    <script src="~/app/components/outcome/outcomeService.js"></script>
+    <script src="~/app/components/logIn/logInController.js"></script>
+    <script src="~/app/components/register/registerController.js"></script>
+    
+    <environment names="Development">
+        
+    </environment>
+    <environment names="Staging,Production">
+        <!--
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        -->
+    </environment>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
