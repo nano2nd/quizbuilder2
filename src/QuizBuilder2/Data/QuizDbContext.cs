@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using QuizBuilder2.Data.Entities;
 
 namespace QuizBuilder2.Data
@@ -14,10 +15,12 @@ namespace QuizBuilder2.Data
         {
             modelBuilder.Entity<AnswerOutcome>().HasKey(a => new { a.AnswerId, a.OutcomeId });
             
-            modelBuilder.Entity<CharacterRoleOutcome>().HasKey( c => new { c.CharacterRoleId, c.OutcomeId });
+            modelBuilder.Entity<CharacterRoleOutcome>().HasKey(c => new { c.CharacterRoleId, c.OutcomeId });
 
+            modelBuilder.Entity<AnswerOutcome>().HasOne(ao => ao.Outcome).WithMany(o => o.AnswerOutcomes)
+                .OnDelete(DeleteBehavior.Restrict);
+            
             base.OnModelCreating(modelBuilder);
-
         }
 
         public DbSet<Quiz> Quizzes { get; set; }

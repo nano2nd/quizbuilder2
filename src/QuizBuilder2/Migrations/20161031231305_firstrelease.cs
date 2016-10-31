@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace QuizBuilder2.Data.Migrations
+namespace QuizBuilder2.Migrations
 {
-    public partial class Initial : Migration
+    public partial class firstrelease : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,6 +60,21 @@ namespace QuizBuilder2.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CharacterRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ImageFile = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Summary = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CharacterRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -162,11 +178,34 @@ namespace QuizBuilder2.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Outcomes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ImageFile = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    QuizId = table.Column<int>(nullable: false),
+                    Summary = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Outcomes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Outcomes_Quizzes_QuizId",
+                        column: x => x.QuizId,
+                        principalTable: "Quizzes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Questions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Points = table.Column<int>(nullable: false),
                     QuizId = table.Column<int>(nullable: false),
                     Text = table.Column<string>(nullable: true)
                 },
@@ -182,11 +221,38 @@ namespace QuizBuilder2.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CharacterRoleOutcomes",
+                columns: table => new
+                {
+                    CharacterRoleId = table.Column<int>(nullable: false),
+                    OutcomeId = table.Column<int>(nullable: false),
+                    Value = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CharacterRoleOutcomes", x => new { x.CharacterRoleId, x.OutcomeId });
+                    table.ForeignKey(
+                        name: "FK_CharacterRoleOutcomes_CharacterRoles_CharacterRoleId",
+                        column: x => x.CharacterRoleId,
+                        principalTable: "CharacterRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CharacterRoleOutcomes_Outcomes_OutcomeId",
+                        column: x => x.OutcomeId,
+                        principalTable: "Outcomes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Answers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ImageFile = table.Column<string>(nullable: true),
+                    IsImage = table.Column<bool>(nullable: false),
                     QuestionId = table.Column<int>(nullable: false),
                     Text = table.Column<string>(nullable: true)
                 },
@@ -199,6 +265,30 @@ namespace QuizBuilder2.Data.Migrations
                         principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AnswerOutcomes",
+                columns: table => new
+                {
+                    AnswerId = table.Column<int>(nullable: false),
+                    OutcomeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnswerOutcomes", x => new { x.AnswerId, x.OutcomeId });
+                    table.ForeignKey(
+                        name: "FK_AnswerOutcomes_Answers_AnswerId",
+                        column: x => x.AnswerId,
+                        principalTable: "Answers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnswerOutcomes_Outcomes_OutcomeId",
+                        column: x => x.OutcomeId,
+                        principalTable: "Outcomes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -237,6 +327,16 @@ namespace QuizBuilder2.Data.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AnswerOutcomes_AnswerId",
+                table: "AnswerOutcomes",
+                column: "AnswerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnswerOutcomes_OutcomeId",
+                table: "AnswerOutcomes",
+                column: "OutcomeId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -246,6 +346,21 @@ namespace QuizBuilder2.Data.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacterRoleOutcomes_CharacterRoleId",
+                table: "CharacterRoleOutcomes",
+                column: "CharacterRoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacterRoleOutcomes_OutcomeId",
+                table: "CharacterRoleOutcomes",
+                column: "OutcomeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Outcomes_QuizId",
+                table: "Outcomes",
+                column: "QuizId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_QuizId",
@@ -271,13 +386,25 @@ namespace QuizBuilder2.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Answers");
+                name: "AnswerOutcomes");
+
+            migrationBuilder.DropTable(
+                name: "CharacterRoleOutcomes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Answers");
+
+            migrationBuilder.DropTable(
+                name: "CharacterRoles");
+
+            migrationBuilder.DropTable(
+                name: "Outcomes");
 
             migrationBuilder.DropTable(
                 name: "Questions");
