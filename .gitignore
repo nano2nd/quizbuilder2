@@ -235,3 +235,7 @@ _Pvt_Extensions
 
 #vscode files
 .vscode/
+
+#Unignore deploy files
+!site/**/*
+.DS_Store
