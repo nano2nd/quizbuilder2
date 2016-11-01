@@ -1,0 +1,15 @@
+{
+  "name": "WhoAmI Quiz Builder",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.5.8",
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4",
+    "angular-ui-router": "~0.2.15",
+    "toastr": "~2.1.2",
+    "angular-ui": "~0.4.0",
+    "angularjs-slider": "~0.1.36",
+    "angular-ui-tinymce": "~0.0.10",
+    "less": "~2.5.3"
+  }
+}

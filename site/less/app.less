@@ -1,0 +1,421 @@
+@import 'variables';
+@import 'mixins';
+
+body {
+    padding-top: 70px;
+    
+    >.container-fluid {
+        max-width: @lg_size;
+    }
+}
+
+nav.question-pager {
+    text-align: center
+}
+
+.actions {
+    float: right;
+}
+
+.box-header {
+    background-color: @index_table_header_footer;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+}
+
+.box-footer {
+    background-color: @index_table_header_footer;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-top: none;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: @accent_color;
+}
+
+.display-none {
+    display: none !important;
+}
+
+#quiz-section h1,
+#quiz-section h2,
+#quiz-section h3,
+#quiz-section h4,
+#quiz-section h5,
+#quiz-section h6 {
+    margin: 0;
+    padding: 10px 0 10px 0;
+}
+
+.page-numbers {
+    color: #888888;
+}
+
+form .input-group {
+    margin-bottom: 20px;
+}
+
+.button {
+    cursor: pointer;
+}
+
+.input-group {
+    width: 100%;
+}
+
+.confirm-buttons {
+    display: block;
+    margin: 15px 0 15px 54px;
+}
+
+.back-nav {
+    display: block;
+    margin-top: 10px;
+}
+
+.pagination>.active>a, 
+.pagination>.active>a:focus, 
+.pagination>.active>a:hover, 
+.pagination>.active>span, 
+.pagination>.active>span:focus, 
+.pagination>.active>span:hover {
+    background-color: @accent_color;
+    border-color: @accent_color;
+}
+/************   QUIZ HEADER    ************/
+.quiz-list {
+    margin-bottom: 0 
+}
+
+.header {
+    min-height: 200px;
+    background-color: @frame_color;
+    padding: 20px;
+}
+
+.header .title-container {
+    padding: 40px 0 0 40px;
+}
+
+.big-points {
+    font-size: 4em;
+    font-weight: bold;
+    color: @secondary_color;
+}
+
+.points-remaining {
+    margin-top: 25px;
+    text-align: center;
+    line-height: 1.1;
+    color: @primary_color;
+}
+
+
+/*************   QUIZ SIDE BAR   **************/
+.outcome-sidebar {
+    background-color: @frame_color;
+    color: #fff;
+    padding-bottom: 15px;  
+}
+
+/* Keeps left sidebar full height */
+@media(min-width: @sm_size) {
+    
+    .main-content-container {
+        position: relative;
+    }
+    
+    .outcome-sidebar {
+        height: 100%;
+        position: absolute; 
+    }
+    
+    .questions-area {
+        float: right;
+        min-height: 600px;
+    }
+}
+
+.outcome-sidebar h4, .questions-area h4 {
+    text-align: center;
+    color: @primary_color;
+}
+
+.outcome-list > li {
+    position: relative;
+    margin: 15px 0 10px 0;
+    background-color: @primary_color;
+    border-radius: 4px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.outcome-list > li > a {
+    display: block;
+    color: #fff;
+    padding: 5px 15px;
+    height: 65px;
+}
+
+.outcome-list > li > a.active {
+    background-color: @secondary_color;
+}
+
+.outcome-list .title {
+    font-size: 1.2em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.outcome-top-role {
+    font-style: italic;
+    display: inline-block;
+    font-size: 0.9em;
+    font-weight: 200;
+}
+
+.outcome-points {
+    position: absolute;
+    color: #fff;
+    right: 15px;
+    bottom: 5px;
+}
+
+.pp {
+    font-variant: small-caps;
+}
+
+.outcome-remove {
+    position: absolute;
+    right: 7px;
+    cursor: pointer;
+}
+.outcome-remove:hover {
+    color: @accent_color;
+}
+
+.add-outcome-button {
+    float: right;
+}
+
+.role-value-list > li {
+    margin-bottom: 25px;
+}
+
+.role-points {
+    text-align: center;
+    font-size: 1.4em;
+}
+
+rzslider span.rz-pointer {
+    background-color: @secondary_color;
+}
+rzslider span.rz-bar.rz-selection {
+    background-color: @secondary_color;
+}
+rzslider span.rz-pointer.rz-active:after {
+    background-color: @accent_color;
+}
+
+#summary-edit {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    border: 2px solid #ddd;
+}
+
+/*************  QUESTIONS   *************/
+#quiz-subview .content {
+    padding: 15px 10px;
+}
+
+.icon-list {
+    
+    >li {
+        padding: 15px 0px 15px 10px;
+        margin: 0;
+        border-bottom: 1px solid #E7E7E7;
+        position: relative;
+        
+        title {
+            font-size: 1.2em;
+        }
+    }
+    
+    .body-container {
+        display: table-cell;
+        vertical-align: top;
+        padding-left: 15px;
+    }
+    
+    .action {
+        font-size: 12px;
+        font-style: italic;
+        color: @accent_color;
+    }
+}
+
+.icon-list-add-button {
+    display: block;
+    margin: 15px auto;
+    width: 250px;
+}
+
+.question-points-container {
+    display: block;
+    text-align: center;
+}
+
+.question-points-container > input {
+    text-align: center;
+    margin: 0 auto;
+    width: 120px;
+    height: 70px;
+    font-size: 40px;
+}
+#question-edit-form .question-points-container > input {
+    margin: 0;
+}
+
+.icon-container {
+    display: table-cell;
+}
+
+.icon-list-icon {
+    display: table-cell;
+    vertical-align: middle;
+    color: #fff;
+    width: 50px;
+    min-width: 50px;
+    height: 50px;
+    font-size: 20px;
+    background-color: @primary_color;
+    border-radius: 10px;
+    text-align: center;
+}
+
+@media (min-width: @sm_size) {
+    .icon-list-icon {
+        width: 70px;
+        min-width: 70px;
+        height: 70px;
+        font-size: 34px;
+    }
+}
+
+.icon-list-icon img {
+    width: inherit;
+    height: inherit;
+    border-radius: 10px;
+}
+
+.quick-entry-item {
+    margin-top: 20px;
+
+    > div {
+        display: inline-block;
+    }
+
+    > div:nth-child(1){
+        width: 5%;
+        vertical-align: top;
+    }
+
+    > div:nth-child(2){
+        width: 94%
+    }
+    
+    .question-box {
+        width: 100%
+    }
+
+    ul.answer-list {
+        margin-top: 15px;
+
+        > li {margin-top: 10px}
+    }
+
+    .answer-box {
+        width: 75%;
+    }
+}
+
+/*********   ANSWERS  *************/
+.answer-list .icon-list-icon {
+    background-color: @secondary_color;
+}
+
+.tag-list {
+    margin: 5px 0;
+    
+    &.outcomes {
+        
+        >li {
+            background-color: @primary_color;
+        }
+        
+        tag-link {
+            width: 160px;
+        }
+    }
+    
+    >li {
+        color: #fff;
+        display: inline-block;
+        margin: 0 5px 2px 0;
+        padding: 0 10px;
+        background-color: @secondary_color;
+        border-radius: 10px
+    }
+    
+    .tag-link {
+        display: inline-block;
+        vertical-align: middle;
+        color: #fff;
+        width: 120px;
+        white-space: nowrap;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .remove-tag {
+        color: rgba(0,0,0,0.5);
+        cursor: pointer;
+    }
+    
+    .remove-tag:after {
+        content: 'x'
+    }
+}
+
+.tag-drag-placeholder {
+    font-style: italic;
+    color: #888;
+    font-weight: 200;
+}
+
+.action.answer-remove {
+    color: red;
+}
+
+.upload-image-list img, .edit-image {
+    width: 300px;
+    height: auto;
+}
+
+.clear-image {
+    margin-top: 5px;
+}
+
