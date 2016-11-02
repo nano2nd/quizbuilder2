@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -27,8 +26,7 @@ namespace QuizBuilder2.Controllers
             _mapper = mapper;        
         }
 
-        [HttpGet]
-        [Route("{outcomeId}")]
+        [HttpGet("{outcomeId}")]
         public async Task<int> PointsPossible(int outcomeId)
         {
             return await _outcomeService.GetPointsPossible(outcomeId);
