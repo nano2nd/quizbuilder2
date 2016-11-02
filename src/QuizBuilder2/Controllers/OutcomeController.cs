@@ -26,16 +26,16 @@ namespace QuizBuilder2.Controllers
             _mapper = mapper;        
         }
 
-        [HttpGet("{outcomeId}")]
-        public async Task<int> PointsPossible(int outcomeId)
-        {
-            return await _outcomeService.GetPointsPossible(outcomeId);
-        }
-
         [HttpGet]
         public IEnumerable<CharacterRoleOutcomeModel> DefaultRoleOutcomes()
         {
             return _outcomeService.GetDefaultCharacterRoleOutcomes();
+        }
+
+        [HttpGet("{outcomeId}")]
+        public async Task<int> PointsPossible(int outcomeId)
+        {
+            return await _outcomeService.GetPointsPossible(outcomeId);
         }
 
         [HttpPost]
