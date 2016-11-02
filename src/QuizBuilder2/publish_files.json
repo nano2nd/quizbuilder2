@@ -1,11 +1,12 @@
 {
-  "publishlist": [
+  "file_list": [
       "./Controllers/**/*",
       "./Data/**/*",
       "./Models/**/*",
       "./Services/**/*",
       "./Views/**/*",
       "./wwwroot/**/*",
+      "!./wwwroot/lib/**/*",
 
       "./appsettings.json",
       "./project.json",

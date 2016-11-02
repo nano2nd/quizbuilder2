@@ -9,7 +9,6 @@
     "toastr": "~2.1.2",
     "angular-ui": "~0.4.0",
     "angularjs-slider": "~0.1.36",
-    "angular-ui-tinymce": "~0.0.10",
-    "less": "~2.5.3"
+    "angular-ui-tinymce": "~0.0.10"
   }
 }

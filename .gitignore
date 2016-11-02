@@ -233,6 +233,9 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
+#bower files
+src/QuizBuilder2/wwwroot/lib
+
 #vscode files
 .vscode/
 
