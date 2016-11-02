@@ -27,7 +27,7 @@ namespace QuizBuilder2.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<CharacterRoleOutcomeModel> NewRoleOutcomes()
+        public IEnumerable<CharacterRoleOutcomeModel> DefaultRoleOutcomes()
         {
             return _outcomeService.GetDefaultCharacterRoleOutcomes();
         }

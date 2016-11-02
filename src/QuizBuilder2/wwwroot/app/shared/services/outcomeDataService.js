@@ -31,7 +31,7 @@
         }
         
         var getDefaultRoleOutcomes = function() {
-            return $http.get('api/outcome/newroleoutcomes').then(function(response) {
+            return $http.get('api/outcome/defaultroleoutcomes').then(function(response) {
                 return response.data;
             });
         }
