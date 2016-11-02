@@ -99,7 +99,7 @@ namespace QuizBuilder2.Services
         public IEnumerable<CharacterRoleOutcomeModel> GetDefaultCharacterRoleOutcomes()
         {
             var roleOutcomes = new List<CharacterRoleOutcomeModel>();
-            foreach(var role in _db.CharacterRoles) {
+            foreach(var role in _db.CharacterRoles.ToList()) {
                 roleOutcomes.Add(new CharacterRoleOutcomeModel {
                     CharacterRoleId = role.Id,
                     CharacterRoleName = role.Name,
