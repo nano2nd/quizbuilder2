@@ -33,7 +33,7 @@
         }
         
         $scope.savePoints = function(dialog) {
-            questionDataService.UpdatePoints($scope.selectedQuestion, $scope.selectedQuestion.newPoints).then(function(points) {
+            questionDataService.UpdatePoints($scope.selectedQuestion, $scope.selectedQuestion.newPoints, quizData.outcomes).then(function(points) {
                 $scope.selectedQuestion.points = points;
                 dialog.close();
             });
@@ -85,12 +85,6 @@
         $scope.$watch('selectedQuestion.points', function() {
             $scope.updateRemainingPoints();
         });
-        
-        // $scope.$on('updatePp', function (event, outcome) {
-        //     outcomeDataService.UpdatePp(outcome).then(function(points) {
-        //         outcome.pointsPossible = points;
-        //     }); 
-        // });   
     }
     
     app.controller('QuizCtrl', ['$scope', '$state', 'quizDataService', 
