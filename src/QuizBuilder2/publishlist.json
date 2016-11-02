@@ -1,0 +1,18 @@
+{
+  "publishlist": [
+      "./Controllers/**/*",
+      "./Data/**/*",
+      "./Models/**/*",
+      "./Services/**/*",
+      "./Views/**/*",
+      "./wwwroot/**/*",
+
+      "./appsettings.json",
+      "./project.json",
+
+      "./startup.cs",
+      "./Program.cs",
+      
+      "web.config"
+  ]
+}
