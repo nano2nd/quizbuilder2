@@ -26,8 +26,9 @@ namespace QuizBuilder2
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-                
-            if (_isDevelopment)
+            
+            System.Diagnostics.Debug.WriteLine("Environment: " + env.EnvironmentName);
+            if (_isDevelopment || env.EnvironmentName == "Staging")
             {
                 builder.AddUserSecrets();
             }  
