@@ -20,25 +20,25 @@
             }
             return deferred.promise;
         }
-        
-        var removeImageFromAnswer = function(answer) {
-            var deferred = $q.defer();
-            
-            answer.get('image').destroy().then(function(removedAnswer) {
-                answer.set('image', null);
-                return answer.save().then(function() {
-                    deferred.resolve(removedAnswer); 
-                });
-            }, function(error) {
-                $log.error(error.message);
-                deferred.reject(error);
+
+        var uploadImage = function(imageFile, url) {
+            var data = new FormData();
+            data.append(imageFile.name, imageFile)
+            return $http.post(url, data, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).then(function(response) {
+                return response.data;
+            }).catch(function(error) {
+                toastr.error('Image was unable to save');
             });
-            return deferred.promise;
         }
         
         return {
             UrlForImageFile: urlForImageFile,
-            RemoveImageFromAnswer: removeImageFromAnswer
+            UploadImage: uploadImage
         };
     }
     

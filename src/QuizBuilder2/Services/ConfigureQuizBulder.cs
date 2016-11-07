@@ -11,6 +11,7 @@ namespace QuizBuilder2.Services
             var mapperConfig = new ConfigureMapper();
 
             return serviceCollection
+
                 .AddTransient<ISeeder, DefaultSeeder>()
                 
                 .AddTransient<IEmailSender, AuthMessageSender>()
@@ -20,6 +21,7 @@ namespace QuizBuilder2.Services
                 .AddTransient<IQuestionService, QuestionService>()
                 .AddTransient<IAnswerService, AnswerService>()
                 .AddTransient<IOutcomeService, OutcomeService>()
+                .AddTransient<IStorageService, StorageService>()
                 
                 .AddTransient<IMapper>(provider => new Mapper(mapperConfig.Config));
         }

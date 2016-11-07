@@ -27,7 +27,7 @@ namespace QuizBuilder2
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
             
-            if (_isDevelopment || env.EnvironmentName == "Staging")
+            if (env.IsDevelopment() || env.IsStaging())
             {
                 builder.AddUserSecrets();
             }  
@@ -62,6 +62,7 @@ namespace QuizBuilder2
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });;
 
+            services.AddSingleton<IConfiguration>(s => _configuration);
             services.AddQuizBuilderServices();       
         }
 

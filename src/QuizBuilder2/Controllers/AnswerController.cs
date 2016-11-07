@@ -16,12 +16,14 @@ namespace QuizBuilder2.Controllers
     {
         private readonly QuizDbContext _db;
         private readonly IAnswerService _answerService;
+        private readonly IStorageService _storageService;
         private readonly IMapper _mapper;
         
-        public AnswerController(QuizDbContext db, IAnswerService answerService, IMapper mapper)
+        public AnswerController(QuizDbContext db, IAnswerService answerService, IStorageService storageService, IMapper mapper)
         {
             _db = db;
             _answerService = answerService;  
+            _storageService = storageService;
             _mapper = mapper;        
         }
 
@@ -36,6 +38,16 @@ namespace QuizBuilder2.Controllers
         public async Task<int> RemoveAnswer(int answerId)
         {
             return await _answerService.RemoveAnswerAsync(answerId);
+        }
+
+        [HttpPost("{answerId}")]
+        public async Task<string> UploadPhoto(int answerId)
+        {
+            var file = Request.Form.Files[0];
+            var path = $"answers/{answerId}/{file.FileName}";
+            var container = "quizbuilder-photos";
+            await _storageService.UploadFileAsync(file, container, path);
+            return $"api/storage/{container}/{path}";
         }
     }
 }

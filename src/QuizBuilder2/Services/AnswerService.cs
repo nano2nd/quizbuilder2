@@ -30,7 +30,7 @@ namespace QuizBuilder2.Services
             answer.Text = answerModel.Text;
             answer.QuestionId = answerModel.QuestionId;
             answer.IsImage = answerModel.IsImage;
-            answer.ImageFile = answerModel.ImageFile;
+            answer.ImageFileName = answerModel.ImageFileName;
 
             await _db.SaveChangesAsync();
             return answer;

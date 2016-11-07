@@ -10,10 +10,10 @@
         </div>
         <div class="form-group">
             <rg-upload-image on-upload="uploadImage(files)"></rg-upload-image>
-            <p class="help-block">Image size must be less than 2 MB</p>
-            <img class="edit-image" ng-if="newAnswer.imageFile" ng-src="{{newAnswer.imageFile}}" />
+            <p class="help-block">Image size must be less than 4 MB</p>
+            <img class="edit-image" ng-if="imageFile" ng-src="{{imageUrl}}" />
             <div>
-                <button ng-show="newAnswer.imageFile" ng-click="removeImage($event)" class="clear-image btn btn-default">Remove image</button>
+                <button ng-show="imageFile" ng-click="removeImage($event)" class="clear-image btn btn-default">Remove image</button>
             </div>
         </div>
         <div class="form-group">

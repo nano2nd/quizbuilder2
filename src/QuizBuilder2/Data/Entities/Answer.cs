@@ -13,7 +13,7 @@ namespace QuizBuilder2.Data.Entities
         public int Id { get; set; }
         public string Text { get; set; }
         public bool IsImage { get; set; }
-        public string ImageFile { get; set; }
+        public string ImageFileName { get; set; }
         
         public int QuestionId { get; set; }
         public virtual Question Question { get; set; }
