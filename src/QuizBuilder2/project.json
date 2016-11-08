@@ -54,8 +54,7 @@
     "netcoreapp1.0": {
       "imports": [
         "dotnet5.6",
-        "portable-net40+sl5+win8+wp8+wpa81",
-        "portable-net45+win8"
+        "portable-net451+win8"
       ]
     }
   },
