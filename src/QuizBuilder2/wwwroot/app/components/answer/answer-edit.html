@@ -11,15 +11,21 @@
         <div class="form-group">
             <rg-upload-image on-upload="uploadImage(files)"></rg-upload-image>
             <p class="help-block">Image size must be less than 4 MB</p>
-            <img class="edit-image" ng-if="imageFile" ng-src="{{imageUrl}}" />
+            <div class="edit-image">
+                <img ng-if="imageData.imageUrl" ng-src="{{imageData.imageUrl}}" />
+                <div class="image-source-overlay" ng-if="newAnswer.photoSource">{{newAnswer.photoSource}}</div>
+            </div>
+            <div class="input-group image-source-input" ng-if="imageData.imageFile"> 
+                    <input ng-model="imageData.imageSource" type="text" class="form-control" placeholder="Enter source of photo">
+                </div>
             <div>
-                <button ng-show="imageFile" ng-click="removeImage($event)" class="clear-image btn btn-default">Remove image</button>
+                <button ng-show="imageData.imageUrl" ng-click="removeImage($event)" class="clear-image btn btn-default">Remove image</button>
             </div>
         </div>
         <div class="form-group">
             <div class="checkbox">
                 <label>
-                    <input ng-model="newAnswer.IsImage" type="checkbox"> Show image only
+                    <input ng-model="newAnswer.isPhotoOnly" type="checkbox"> Show image only
                 </label>
             </div>
         </div>

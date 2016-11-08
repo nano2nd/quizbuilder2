@@ -10,21 +10,29 @@
         $scope.newAnswer = {
             id: null,
             text: '',
-            isImage: false,
-            imageFileName: null,
-            questionId: $scope.currentQuestion.id
+            isPhotoOnly: false,
+            questionId: $scope.currentQuestion.id,
+            photoSource: null
         }
 
-        $scope.imageFile = null;
-        $scope.imageUrl = null;
+        $scope.imageData = {
+            imageFile: null,
+            imageUrl: null,
+            imageSource: null
+        }
         
         if ($stateParams.answerId) {
             $scope.currentAnswer = Utilities.find($scope.answers, 'id', $stateParams.answerId);
+            
+            if ($scope.currentAnswer.photoPath) {
+                $scope.imageData.imageUrl = 'api/storage/quizbuilder-photos' + '/' + $scope.currentAnswer.photoPath;
+            }
+            
             copyAnswer($scope.currentAnswer, $scope.newAnswer);
         }
         
         $scope.saveAnswer = function() {           
-            answerDataService.SaveAnswer($scope.newAnswer, $scope.imageFile).then(function(savedAnswer) {
+            answerDataService.SaveAnswer($scope.newAnswer, $scope.imageData).then(function(savedAnswer) {
                 if ($scope.currentAnswer) {
                     copyAnswer(savedAnswer, $scope.currentAnswer);
                 } else {
@@ -56,12 +64,13 @@
         }
 
         $scope.uploadImage = function(files) {
-           if (files[0].size <= 4000000) { // 4MB
-               $scope.imageFile = files[0];
-               $scope.newAnswer.imageFileName = files[0].name;
+            $scope.removeImage();
+
+            if (files[0].size <= 4000000) { // 4MB
+               $scope.imageData.imageFile = files[0];
 
                imageService.UrlForImageFile(files[0]).then(function(encodedUrl) {
-                   $scope.imageUrl = encodedUrl;
+                   $scope.imageData.imageUrl = encodedUrl;
                });
            } else {
                toastr.error('Image is too large, must be less than 4MB');
@@ -69,17 +78,25 @@
         }
         
         $scope.removeImage = function(event) {
-            event.preventDefault();
-            $scope.imageFile = null;
-            $scope.imageUrl = null;
+            if (event)
+                event.preventDefault();
+                
+            $scope.newAnswer.photoPath = null;
+            $scope.newAnswer.photoId = null;
+            $scope.newAnswer.photoSource = null;
+
+            $scope.imageData.imageFile = null;
+            $scope.imageData.imageUrl = null;
         }
 
         function copyAnswer(src, dest) {
             dest.id = src.id;
             dest.text = src.text;
-            dest.isImage = src.isImage;
-            dest.imageFileName = src.imageFileName;
+            dest.isPhotoOnly = src.isPhotoOnly;
             dest.questionId = src.questionId;
+            dest.photoPath = src.photoPath;
+            dest.photoId = src.photoId;
+            dest.photoSource = src.photoSource;
         }
     }
     

@@ -21,9 +21,14 @@
             return deferred.promise;
         }
 
-        var uploadImage = function(imageFile, url) {
+        var uploadImage = function(imageData, url) {
             var data = new FormData();
-            data.append(imageFile.name, imageFile)
+            
+            data.append(imageData.imageFile.name, imageData.imageFile)
+
+            if (imageData.imageSource)
+                data.append('source', imageData.imageSource);
+
             return $http.post(url, data, {
                 transformRequest: angular.identity,
                 headers: {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace QuizBuilder2.Data.Entities
 {
@@ -12,12 +11,14 @@ namespace QuizBuilder2.Data.Entities
 
         public int Id { get; set; }
         public string Text { get; set; }
-        public bool IsImage { get; set; }
-        public string ImageFileName { get; set; }
+        public bool IsPhotoOnly { get; set; }
+        public int? PhotoId { get; set; }
         
         public int QuestionId { get; set; }
         public virtual Question Question { get; set; }
 
         public ICollection<AnswerOutcome> AnswerOutcomes { get; set; }
+
+        public Photo Photo { get; set; }
     }
 }

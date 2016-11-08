@@ -4,16 +4,25 @@
     
     var answerDataService = function($q, $rootScope, $log, $http, imageService) {
 
-        var saveAnswer = function(answer, imageFile) {
-            return $http.post('api/answer/saveanswer', {
-                    answerModel: answer
-                }).then(function(response) {
-                    if (imageFile) {
-                        imageService.UploadImage(imageFile, 'api/answer/uploadphoto/' + response.data.id);
-                    }
+        var saveAnswer = function(answer, imageData) {
+            var deferred = $q.defer();
 
-                    return response.data;
-                });
+            $http.post('api/answer/saveanswer', {
+                answerModel: answer
+            }).then(function(response) {
+                var savedAnswer = response.data;
+                if (imageData.imageFile) {
+                    imageService.UploadImage(
+                        imageData, 'api/answer/uploadphoto/' + savedAnswer.id
+                    ).then(function(savedAnswerWithPhoto) {
+                        deferred.resolve(savedAnswerWithPhoto);
+                    });
+                } else {
+                    deferred.resolve(response.data);
+                }
+            });
+
+            return deferred.promise;
         }
 
         var removeAnswer = function(answer) {

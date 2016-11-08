@@ -30,5 +30,6 @@ namespace QuizBuilder2.Data
         public DbSet<Outcome> Outcomes { get; set; }
         public DbSet<CharacterRoleOutcome> CharacterRoleOutcomes { get; set; }
         public DbSet<AnswerOutcome> AnswerOutcomes { get; set; }
+        public DbSet<Photo> Photos { get; set; }
     }
 }

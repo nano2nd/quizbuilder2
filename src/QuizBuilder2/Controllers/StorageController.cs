@@ -1,10 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using QuizBuilder2.Services;
 
 namespace InternalAppsWeb.controllers
 {
@@ -18,7 +15,7 @@ namespace InternalAppsWeb.controllers
             _storageService = storageService;
         }
 
-        [HttpGet("{containerName}/{blobName}")]
+        [HttpGet("{containerName}/{*blobName}")]
         public async Task<ActionResult> GetFile(string containerName, string blobName)
         {
             try

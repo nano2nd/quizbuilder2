@@ -8,5 +8,6 @@ namespace QuizBuilder2.Services
     {
         Task<Answer> SaveAnswerAsync(AnswerModel answerModel);
         Task<int> RemoveAnswerAsync(int answerId);
+        Task<Answer> UpdatePhotoAsync(int photoId, int answerId);
     }
 }

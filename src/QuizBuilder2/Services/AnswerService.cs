@@ -29,10 +29,22 @@ namespace QuizBuilder2.Services
 
             answer.Text = answerModel.Text;
             answer.QuestionId = answerModel.QuestionId;
-            answer.IsImage = answerModel.IsImage;
-            answer.ImageFileName = answerModel.ImageFileName;
+            answer.IsPhotoOnly = answerModel.IsPhotoOnly;
+            answer.PhotoId = answerModel.PhotoId;
 
             await _db.SaveChangesAsync();
+            return answer;
+        }
+
+        public async Task<Answer> UpdatePhotoAsync(int photoId, int answerId)
+        {
+            var answer = _db.Answers.First(a => a.Id == answerId);    
+            answer.PhotoId = photoId;
+            await _db.SaveChangesAsync();
+
+            var photo = _db.Photos.First(p => p.Id == photoId);
+            answer.Photo = photo;
+
             return answer;
         }
 

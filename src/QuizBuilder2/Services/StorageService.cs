@@ -31,25 +31,16 @@ namespace QuizBuilder2.Services
             }
         }
 
-        public async Task<string> UploadFileAsync(IFormFile file, string containerName, string path = "")
+        public async Task<string> UploadFileAsync(IFormFile file, string containerName, string path)
         {
             using (var reader = new BinaryReader(file.OpenReadStream()))
             {
-                var fileContent = reader.ReadBytes((int)file.Length);        
-                var parsedContentDisposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
-
-                var title = Path.GetFileNameWithoutExtension(file.FileName);
-                var extension = Path.GetExtension(file.FileName);
-
-                if (extension.StartsWith("."))
-                    extension = extension.Substring(1);
-                
+                var fileContent = reader.ReadBytes((int)file.Length);
                 var blockBlob = GetFileBlobReference(path, containerName);
                 
                 blockBlob.Properties.ContentType = GetContentType(file.FileName);
 
                 await blockBlob.UploadFromByteArrayAsync(fileContent, 0, fileContent.Length);
-
                 return $"{containerName}/{path}";
             }
         }
@@ -76,6 +67,6 @@ namespace QuizBuilder2.Services
             var blobClient = _cloudStorageAccount.CreateCloudBlobClient();
             var blobcontainer = blobClient.GetContainerReference(containerName);
             return blobcontainer.GetBlockBlobReference(blobName);
-        }        
+        }    
     }
 }

@@ -22,6 +22,7 @@ namespace QuizBuilder2.Services
                 .AddTransient<IAnswerService, AnswerService>()
                 .AddTransient<IOutcomeService, OutcomeService>()
                 .AddTransient<IStorageService, StorageService>()
+                .AddTransient<IPhotoService, PhotoService>()
                 
                 .AddTransient<IMapper>(provider => new Mapper(mapperConfig.Config));
         }

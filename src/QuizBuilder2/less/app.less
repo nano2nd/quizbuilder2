@@ -410,9 +410,27 @@ rzslider span.rz-pointer.rz-active:after {
     color: red;
 }
 
-.upload-image-list img, .edit-image {
+.edit-image {
     width: 300px;
     height: auto;
+    position: relative;
+
+    img {
+        width: inherit;
+    }
+}
+
+.image-source-input {
+    width: 300px;
+}
+
+.image-source-overlay {
+    position: absolute;
+    color: white;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.3);
+    padding: 0 5px;
 }
 
 .clear-image {

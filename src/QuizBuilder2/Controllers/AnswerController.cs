@@ -1,8 +1,10 @@
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizBuilder2.Data;
+using QuizBuilder2.Data.Entities;
 using QuizBuilder2.Models;
 using QuizBuilder2.Services;
 
@@ -17,13 +19,16 @@ namespace QuizBuilder2.Controllers
         private readonly QuizDbContext _db;
         private readonly IAnswerService _answerService;
         private readonly IStorageService _storageService;
+        private readonly IPhotoService _photoService;
         private readonly IMapper _mapper;
         
-        public AnswerController(QuizDbContext db, IAnswerService answerService, IStorageService storageService, IMapper mapper)
+        public AnswerController(QuizDbContext db, IAnswerService answerService, IStorageService storageService, 
+            IPhotoService photoService, IMapper mapper)
         {
             _db = db;
             _answerService = answerService;  
             _storageService = storageService;
+            _photoService = photoService;
             _mapper = mapper;        
         }
 
@@ -41,13 +46,26 @@ namespace QuizBuilder2.Controllers
         }
 
         [HttpPost("{answerId}")]
-        public async Task<string> UploadPhoto(int answerId)
+        public async Task<AnswerModel> UploadPhoto(int answerId, string source)
         {
             var file = Request.Form.Files[0];
             var path = $"answers/{answerId}/{file.FileName}";
             var container = "quizbuilder-photos";
-            await _storageService.UploadFileAsync(file, container, path);
-            return $"api/storage/{container}/{path}";
+            
+            var photoPath = await _storageService.UploadFileAsync(file, container, path);
+            
+            var newPhoto = new Photo {
+                Description = Path.GetFileNameWithoutExtension(file.FileName),
+                Path = path,
+                Extension = Path.GetExtension(file.FileName),
+                Source = source
+            };
+            
+            await _photoService.AddPhoto(newPhoto);
+
+            var answer = await _answerService.UpdatePhotoAsync(newPhoto.Id, answerId);
+
+            return _mapper.Map<AnswerModel>(answer);
         }
     }
 }

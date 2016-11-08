@@ -47,6 +47,10 @@ namespace QuizBuilder2.Services
 
                 .Include(q => q.Questions)
                 .ThenInclude(q => q.Answers)
+                .ThenInclude(a => a.Photo)
+                
+                .Include(q => q.Questions)
+                .ThenInclude(q => q.Answers)
                 .ThenInclude(a => a.AnswerOutcomes)
                 
                 .FirstAsync(q => q.Id == id);
