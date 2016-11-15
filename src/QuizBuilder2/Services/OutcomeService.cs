@@ -33,7 +33,7 @@ namespace QuizBuilder2.Services
 
                 outcome.Name = outcomeModel.Name;
                 outcome.Summary = outcomeModel.Summary;
-                outcome.ImageFile = outcomeModel.ImageFile;
+                outcome.PhotoId = outcomeModel.PhotoId;
                 outcome.QuizId = outcomeModel.QuizId;
 
                 var existingRoleOutcomes = _db.CharacterRoleOutcomes.Where(cro => cro.OutcomeId == outcome.Id);
@@ -120,6 +120,24 @@ namespace QuizBuilder2.Services
                 return 0;
 
             return outcome.PointsPossible;
+        }
+
+        public async Task<Outcome> UpdatePhotoAsync(int photoId, int outcomeId)
+        {
+            var outcome = _db.Outcomes
+                .Include(o => o.CharacterRoleOutcomes)
+                .ThenInclude(co => co.CharacterRole)
+                .Include(o => o.AnswerOutcomes)
+                .ThenInclude(ao => ao.Answer)
+                .ThenInclude(a => a.Question)
+                .First(a => a.Id == outcomeId);    
+            outcome.PhotoId = photoId;
+            await _db.SaveChangesAsync();
+
+            var photo = _db.Photos.First(p => p.Id == photoId);
+            outcome.Photo = photo;
+
+            return outcome;
         }
     }
 }

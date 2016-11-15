@@ -13,5 +13,6 @@ namespace QuizBuilder2.Services
         Task<int> UnlinkOutcomeFromAnswerAsync(int answerId, int outcomeId);
         IEnumerable<CharacterRoleOutcomeModel> GetDefaultCharacterRoleOutcomes();
         Task<int> GetPointsPossible(int outcomeId);
+        Task<Outcome> UpdatePhotoAsync(int photoId, int outcomeId);
     }
 }

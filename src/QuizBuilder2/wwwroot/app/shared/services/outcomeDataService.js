@@ -2,23 +2,36 @@
     
     var app = angular.module('quizBuilder');
 
-    var outcomeDataService = function($q, $rootScope, $log, $http, userService) {
+    var outcomeDataService = function($q, $rootScope, $log, $http, userService, imageService) {
         
-        var saveOutcome = function(outcome) {
-            return $http.post(
-                'api/outcome/saveoutcome', { 
-                    outcomeModel: outcome,
-                }).then(function(response) {
-                    // update top role
-                    var topCharacterRoleOutcome = Utilities.findMax(outcome.characterRoleOutcomes, 'value');
-                    outcome.topCharacterRole = {
-                        id: topCharacterRoleOutcome.characterRoleId,
-                        name: topCharacterRoleOutcome.characterRoleName,
-                        summary: topCharacterRoleOutcome.characterRoleSummary,
-                        imageFile: topCharacterRoleOutcome.characterRoleImageFile
-                    };
-                    return response.data;
+        var saveOutcome = function(outcome, imageData) {
+            var deferred = $q.defer();
+
+            $http.post('api/outcome/saveoutcome', { 
+                outcomeModel: outcome,
+            }).then(function(response) {
+                // update top role
+                var topCharacterRoleOutcome = Utilities.findMax(outcome.characterRoleOutcomes, 'value');
+                outcome.topCharacterRole = {
+                    id: topCharacterRoleOutcome.characterRoleId,
+                    name: topCharacterRoleOutcome.characterRoleName,
+                    summary: topCharacterRoleOutcome.characterRoleSummary,
+                    imageFile: topCharacterRoleOutcome.characterRoleImageFile
+                };
+
+                var savedOutcome = response.data;
+                if (imageData.imageFile) {
+                    imageService.UploadImage(
+                        imageData, 'api/outcome/uploadphoto/' + savedOutcome.id
+                    ).then(function(savedOutcomeWithPhoto) {
+                        deferred.resolve(savedOutcomeWithPhoto);
+                    });
+                } else {
+                    deferred.resolve(response.data);
+                }
             });
+
+            return deferred.promise;
         }
         
         var removeOutcome = function(outcome) {
@@ -82,6 +95,6 @@
     }
     
     // register the service
-    app.factory('outcomeDataService', ['$q', '$rootScope', '$log', '$http', 'userService', outcomeDataService]);
+    app.factory('outcomeDataService', ['$q', '$rootScope', '$log', '$http', 'userService', 'imageService', outcomeDataService]);
     
 })();

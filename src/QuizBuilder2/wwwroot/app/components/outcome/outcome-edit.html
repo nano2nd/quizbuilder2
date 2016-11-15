@@ -9,9 +9,18 @@
           <input ng-model="newOutcome.name" type="text" class="form-control" placeholder="Enter name..." id="outcome-name" autocomplete="off" required>
         </div>
         <div class="form-group">
-            <label for="upload-image">Upload image</label>
-            <input type="file" id="upload-image">
-            <p class="help-block">Image size must be less than 768 KB</p>
+            <rg-upload-image on-upload="uploadImage(files)"></rg-upload-image>
+            <p class="help-block">Image size must be less than 4 MB</p>
+            <div class="edit-image">
+                <img ng-if="imageData.imageUrl" ng-src="{{imageData.imageUrl}}" />
+                <div class="image-source-overlay" ng-if="newOutcome.photoSource">{{newOutcome.photoSource}}</div>
+            </div>
+            <div class="input-group image-source-input" ng-if="imageData.imageFile"> 
+                <input ng-model="imageData.imageSource" type="text" class="form-control" placeholder="Enter source of photo">
+            </div>
+            <div>
+                <button ng-show="imageData.imageUrl" ng-click="removeImage($event)" class="clear-image btn btn-default">Remove image</button>
+            </div>
         </div>
         
         <h4>Role Values</h4>

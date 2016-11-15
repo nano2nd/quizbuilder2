@@ -24,7 +24,7 @@
         var uploadImage = function(imageData, url) {
             var data = new FormData();
             
-            data.append(imageData.imageFile.name, imageData.imageFile)
+            data.append('photo', imageData.imageFile)
 
             if (imageData.imageSource)
                 data.append('source', imageData.imageSource);

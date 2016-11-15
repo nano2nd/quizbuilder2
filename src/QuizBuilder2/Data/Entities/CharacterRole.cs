@@ -7,7 +7,6 @@ namespace QuizBuilder2.Data.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Summary { get; set; }
-        public string ImageFile { get; set; }
 
         public ICollection<CharacterRoleOutcome> CharacterRoleOutcomes { get; set; }
     }

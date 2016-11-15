@@ -40,6 +40,9 @@ namespace QuizBuilder2.Services
                 .Include(q => q.Outcomes)
                 .ThenInclude(o => o.CharacterRoleOutcomes)
                 .ThenInclude(cro => cro.CharacterRole)
+
+                .Include(q => q.Outcomes)
+                .ThenInclude(o => o.Photo)
                 
                 .Include(q => q.Outcomes)
                 .ThenInclude(o => o.CharacterRoleOutcomes)

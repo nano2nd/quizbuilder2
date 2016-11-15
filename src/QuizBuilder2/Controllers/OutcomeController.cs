@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizBuilder2.Data;
+using QuizBuilder2.Data.Entities;
 using QuizBuilder2.Models;
 using QuizBuilder2.Services;
 
@@ -17,12 +20,17 @@ namespace QuizBuilder2.Controllers
     {
         private readonly QuizDbContext _db;
         private readonly IOutcomeService _outcomeService;
+        private readonly IStorageService _storageService;
+        private readonly IPhotoService _photoService;
         private readonly IMapper _mapper;
         
-        public OutcomeController(QuizDbContext db, IOutcomeService outcomeService, IMapper mapper)
+        public OutcomeController(QuizDbContext db, IOutcomeService outcomeService, 
+            IStorageService storageService, IPhotoService photoService, IMapper mapper)
         {
             _db = db;
            _outcomeService = outcomeService;
+           _storageService = storageService;
+           _photoService = photoService;
             _mapper = mapper;        
         }
 
@@ -61,6 +69,28 @@ namespace QuizBuilder2.Controllers
         public async Task<int> UnlinkOutcomeFromAnswer(int answerId, int outcomeId)
         {
             return await _outcomeService.UnlinkOutcomeFromAnswerAsync(answerId, outcomeId);
+        }
+
+        [HttpPost("{outcomeId}")]
+        public async Task<OutcomeModel> UploadPhoto(IFormFile photo, int outcomeId, string source)
+        {
+            var path = $"outcomes/{outcomeId}/{photo.FileName}";
+            var container = "quizbuilder-photos";
+            
+            var photoPath = await _storageService.UploadFileAsync(photo, container, path);
+            
+            var newPhoto = new Photo {
+                Description = Path.GetFileNameWithoutExtension(photo.FileName),
+                Path = path,
+                Extension = Path.GetExtension(photo.FileName),
+                Source = source
+            };
+            
+            await _photoService.AddPhoto(newPhoto);
+
+            var outcome = await _outcomeService.UpdatePhotoAsync(newPhoto.Id, outcomeId);
+
+            return _mapper.Map<OutcomeModel>(outcome);
         }
     }
 }

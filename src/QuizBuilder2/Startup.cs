@@ -39,11 +39,11 @@ namespace QuizBuilder2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if (_isDevelopment)
-            {
-                services.AddDbContext<QuizDbContext>(options => options.UseInMemoryDatabase());
-            }
-            else
+            // if (_isDevelopment)
+            // {
+            //     services.AddDbContext<QuizDbContext>(options => options.UseInMemoryDatabase());
+            // }
+            // else
             {
                 var connection =  _configuration["ConnectionStrings:QuizBuilderDataConnectionString"]
                     .Replace("<password>", _configuration["dbpassword"]);
