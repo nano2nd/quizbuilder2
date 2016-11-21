@@ -25,7 +25,7 @@
             $scope.currentAnswer = Utilities.find($scope.answers, 'id', $stateParams.answerId);
             
             if ($scope.currentAnswer.photoPath) {
-                $scope.imageData.imageUrl = 'api/storage/quizbuilder-photos' + '/' + $scope.currentAnswer.photoPath;
+                $scope.imageData.imageUrl = 'api/storage/quizbuilder-photos/' + $scope.currentAnswer.photoPath;
             }
             
             copyAnswer($scope.currentAnswer, $scope.newAnswer);

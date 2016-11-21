@@ -80,6 +80,9 @@ form .input-group {
   background-color: #800080;
   border-color: #800080;
 }
+[disabled] {
+  pointer-events: none;
+}
 /************   QUIZ HEADER    ************/
 .quiz-list {
   margin-bottom: 0;
@@ -102,6 +105,13 @@ form .input-group {
   text-align: center;
   line-height: 1.1;
   color: cadetblue;
+}
+.header-actions li {
+  display: inline-block;
+}
+.header-actions li:not(:last-child)::after {
+  content: ' |';
+  margin: 0 5px;
 }
 /*************   QUIZ SIDE BAR   **************/
 .outcome-sidebar {
@@ -359,4 +369,82 @@ rzslider span.rz-pointer.rz-active:after {
 }
 .clear-image {
   margin-top: 5px;
+}
+/***********   Quiz Emulator  *************/
+#quiz-emulator-section {
+  padding-bottom: 20px;
+}
+#quiz-emulator-subview {
+  margin-top: 100px;
+  text-align: center;
+}
+#quiz-emulator-subview .start-btn {
+  margin-top: 30px;
+  font-size: 1.4em;
+}
+#quiz-emulator-subview .answer-choice {
+  display: inline-block;
+  vertical-align: top;
+  border: 2px solid;
+  margin: 10px;
+  overflow: hidden;
+}
+#quiz-emulator-subview .answer-choice.selected {
+  border-color: coral;
+  border-width: 5px;
+}
+#quiz-emulator-subview .answer-choice-link {
+  display: -ms-flexbox;
+  display: flex;
+  width: 175px;
+  height: 175px;
+  padding: 5px;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+}
+#quiz-emulator-subview .answer-choice-link.answer-image-and-text {
+  padding: 0;
+}
+#quiz-emulator-subview .answer-choice-link.answer-image-and-text .answer-text {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: inherit;
+}
+#quiz-emulator-subview .answer-image {
+  width: 175px;
+  height: auto;
+  position: relative;
+}
+#quiz-emulator-subview .answer-image img {
+  width: inherit;
+}
+#quiz-emulator-subview .outcome-image {
+  width: 175px;
+  height: auto;
+  position: relative;
+  margin: 0 auto;
+}
+#quiz-emulator-subview .outcome-image img {
+  width: inherit;
+}
+#quiz-emulator-subview .answer-text {
+  color: #000;
+}
+#quiz-emulator-subview .resulting-outcome {
+  color: coral;
+}
+.quiz-emulator-nav {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+.quiz-emulator-nav .next-btn,
+.quiz-emulator-nav .finish-btn {
+  float: right;
+}
+.quiz-emulator-nav .back-btn {
+  float: left;
 }

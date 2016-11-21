@@ -84,7 +84,37 @@
                             return outcomeDataService.GetDefaultRoleOutcomes();
                     }]
                 }
-            });
+            })
+            .state('play', {
+                url: '/play/:quizId',
+                templateUrl: 'app/components/quiz-emulator/quiz-emulator.html',
+                controller: 'QuizEmulatorCtrl',
+                abstract: true,
+                resolve: {
+                    'quizEmulatorData': ['$stateParams', 'quizDataService', function($stateParams, quizDataService) {
+                        return quizDataService.GetQuiz($stateParams.quizId);
+                    }]
+                }
+            })
+            .state('play.intro', {
+                url: '',
+                templateUrl: 'app/components/quiz-emulator/quiz-intro.html'
+            })
+            .state('play.finish', {
+                url: '/finish',
+                templateUrl: 'app/components/quiz-emulator/quiz-finish.html',
+                controller: 'quizEmulatorOutcomeCtrl'
+            })
+            .state('play.start', {
+                url: '/:questionIndex',
+                templateUrl: 'app/components/quiz-emulator/play-quiz.html',
+                controller: 'quizEmulatorQuestionCtrl',
+                resolve: {
+                    'quizQuestionData': ['$stateParams', 'quizEmulatorData', function($stateParams, quizEmulatorData) {
+                        return quizEmulatorData.questions[$stateParams.questionIndex];
+                    }]
+                }
+            })
     }
     app.config(['$stateProvider', '$urlRouterProvider', configRoutes]);    
     

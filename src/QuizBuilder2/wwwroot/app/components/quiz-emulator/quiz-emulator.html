@@ -1,0 +1,20 @@
+<section id="quiz-emulator-section" class="container-fluid">
+    <div class="row main-content-container">
+        <div class="col-sm-12 container-fluid"> 
+            <div>
+                <a class="back-nav" ui-sref="quiz.questions({id: quiz.id})" >
+                    <span class="glyphicon glyphicon-menu-left"></span>
+                    <span>Back to Editor</span>
+                </a>
+            </div>
+            <!--- Qesting Rendering -->
+            <div ui-view id="quiz-emulator-subview"></div>
+            <!-- ////////////////// -->
+            <div class="quiz-emulator-nav" ng-if="isQuestion()">
+                <a ui-sref="play.start({questionIndex: currentQuestionIndex - 1})" class="btn btn-default back-btn" ng-disabled="currentQuestionIndex == 0">Back</a>
+                <a ui-sref="play.start({questionIndex: currentQuestionIndex + 1})" class="btn btn-success next-btn" ng-if="currentQuestionIndex != quiz.questions.length - 1" ng-disabled="!currentQuestion.selectedAnswer">Next Question</a>
+                <a ui-sref="play.finish" class="btn btn-success finish-btn" ng-if="currentQuestionIndex == quiz.questions.length - 1" ng-disabled="!isAllAnswered()">Finish</a>
+            </div>
+        </div>
+    </div>
+</section>

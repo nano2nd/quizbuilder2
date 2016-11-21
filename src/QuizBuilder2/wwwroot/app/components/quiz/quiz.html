@@ -4,10 +4,12 @@
             <div class="title-container">
                 <a ui-sref="quiz.questions({id: quiz.id})">
                     <h2>{{quiz.title}}</h2>
-                    <a href ng-click="editTitle()">Change title</a>
-                    |
-                    <a href ng-click="removeQuiz()">Remove this quiz</a>
                 </a>
+                <ul class="header-actions">
+                    <li><a href ng-click="editTitle()">Change title</a></li>
+                    <li><a href ui-sref="play.intro({quizId: quiz.id})">Play quiz</a></li>
+                    <li><a href ng-click="removeQuiz()">Remove this quiz</a></li>
+                </ul>
             </div>
         </div>
         <div class="col-sm-3">

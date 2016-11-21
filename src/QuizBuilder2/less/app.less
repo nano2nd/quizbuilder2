@@ -94,6 +94,10 @@ form .input-group {
     background-color: @accent_color;
     border-color: @accent_color;
 }
+[disabled] {
+    pointer-events: none;
+}
+
 /************   QUIZ HEADER    ************/
 .quiz-list {
     margin-bottom: 0 
@@ -122,6 +126,14 @@ form .input-group {
     color: @primary_color;
 }
 
+.header-actions li {
+    display: inline-block;
+
+    &:not(:last-child)::after {
+        content: ' |';
+        margin: 0 5px;
+    }
+}
 
 /*************   QUIZ SIDE BAR   **************/
 .outcome-sidebar {
@@ -437,3 +449,89 @@ rzslider span.rz-pointer.rz-active:after {
     margin-top: 5px;
 }
 
+
+/***********   Quiz Emulator  *************/
+#quiz-emulator-section {
+    padding-bottom: 20px;
+}
+
+#quiz-emulator-subview {
+    margin-top: 100px;
+    text-align: center;
+
+    .start-btn {
+        margin-top: 30px;
+        font-size: 1.4em;
+    }
+
+    .answer-choice {
+        display: inline-block;
+        vertical-align: top;
+        border: 2px solid;
+        margin: 10px;
+        overflow: hidden;
+    }
+
+    .answer-choice.selected {
+        border-color: coral;
+        border-width: 5px;
+    }
+
+    .answer-choice-link {
+        display: flex;
+        width: 175px;
+        height: 175px;
+        padding: 5px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .answer-choice-link.answer-image-and-text {
+        padding: 0;
+
+        .answer-text {
+            position: absolute;
+            background-color: rgba(0,0,0,0.6);
+            color: white;
+            width: inherit;
+        }
+    }
+
+    .answer-image {
+        width: 175px;
+        height: auto;
+        position: relative;
+
+        img {
+            width: inherit;
+        }
+    }
+
+    .outcome-image {
+        width: 175px;
+        height: auto;
+        position: relative;
+        margin: 0 auto;
+
+        img {
+            width: inherit;
+        }
+    }
+
+    .answer-text {
+        color: #000;
+    }
+
+    .resulting-outcome {
+        color: coral;
+    }
+}
+
+.quiz-emulator-nav {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 40px; 
+
+    .next-btn, .finish-btn {float: right;}
+    .back-btn {float: left;}
+}

@@ -1,0 +1,34 @@
+<section id="play-quiz">
+    <h1>{{question.text}}</h1>
+    <br/>
+    <ul>
+        <li ng-repeat="answer in question.answers" class="answer-choice" ng-class="{selected: question.selectedAnswer == answer}">
+            <!-- text only view -->
+            <a ng-if="!answer.photoId" href="javascript:void(0)" class="answer-choice-link" ng-click="selectOption(answer)">
+                <div class="answer-choice-content">
+                    <div class="answer-text">{{answer.text}}</div>
+                </div>
+            </a>
+            <!-- image only view -->
+            <a ng-if="answer.photoId && answer.IsPhotoOnly" href="javascript:void(0)" class="answer-choice-link" ng-click="selectOption(answer)">
+                <div class="answer-choice-content">
+                    <div class="answer-image">
+                        <img ng-src="{{getImageUrl(answer.photoPath)}}" />
+                        <div class="image-source-overlay" ng-if="answer.photoSource">{{answer.photoSource}}</div>
+                    </div>
+                </div>
+            </a>
+            <!-- image and text view -->
+            <a ng-if="answer.photoId && !answer.IsPhotoOnly" href="javascript:void(0)" class="answer-choice-link answer-image-and-text" ng-click="selectOption(answer)">
+                <div class="answer-choice-content">
+                    <div class="answer-image">
+                        <img ng-src="{{getImageUrl(answer.photoPath)}}" />
+                        <div class="image-source-overlay" ng-if="answer.photoSource">{{answer.photoSource}}</div>
+                    </div>
+                </div>
+                <div class="answer-text">{{answer.text}}</div>
+                </div>
+            </a>
+        </li>
+    </ul>
+</section>

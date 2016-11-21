@@ -1,0 +1,22 @@
+<section id="quiz-finish">
+    <h1>You are <span class="resulting-outcome">{{resultingOutcome.name}}</span></h1>
+    <div ng-if="resultingOutcome.photoId" class="outcome-image">
+        <img ng-src="{{getImageUrl(resultingOutcome.photoPath)}}" />
+        <div class="image-source-overlay" ng-if="resultingOutcome.photoSource">{{resultingOutcome.photoSource}}</div>
+    </div>
+
+    <h3>Summary</h3>
+    <div>{{resultingOutcome.summary}}</div>
+
+    <div>
+        <h3>Outcome Breakdown</h3>
+        <ul>
+            <li ng-repeat="outcome in quiz.outcomes">
+                <span>{{outcome.name}}</span>:
+                <span>{{outcome.resultPointTotal}} / {{outcome.pointsPossible}}</span>
+            </li>
+        </ul>
+    </div>
+    <br />
+    <button class="start-over-btn btn btn-success" ui-sref="^.intro">Start quiz over</button>
+</section>
