@@ -9,8 +9,10 @@
           <input ng-model="newAnswer.text" type="text" class="form-control" placeholder="Enter an answer..." id="answer-text" aria-describedby="answer-text" autocomplete="off" required>
         </div>
         <div class="form-group">
-            <rg-upload-image on-upload="uploadImage(files)"></rg-upload-image>
-            <p class="help-block">Image size must be less than 4 MB</p>
+            <div ng-if="!imageData.imageUrl">
+                <rg-upload-image on-upload="uploadImage(files)"></rg-upload-image>
+                <p class="help-block">Image size must be less than 4 MB</p>
+            </div>
             <div class="edit-image">
                 <img ng-if="imageData.imageUrl" ng-src="{{imageData.imageUrl}}" />
                 <div class="image-source-overlay" ng-if="newAnswer.photoSource">{{newAnswer.photoSource}}</div>

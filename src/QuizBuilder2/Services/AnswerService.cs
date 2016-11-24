@@ -21,6 +21,7 @@ namespace QuizBuilder2.Services
             if (answerModel.Id.HasValue)
                 answer = await _db.Answers
                     .Include(a => a.AnswerOutcomes)
+                    .Include(a => a.Photo)
                     .FirstAsync(a => a.Id == answerModel.Id.Value);
             else {
                 answer = new Answer();

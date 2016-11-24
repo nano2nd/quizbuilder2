@@ -32,6 +32,7 @@ namespace QuizBuilder2.Data.Seeding
             await AddAnswersAsync();
             await ConnectOutcomesToCharacterRolesAsync();
             await ConnectAnswersToOutcomesAsync();
+            await AddImages();
         }
 
         private async Task<int> AddCharacterRoles()
@@ -166,6 +167,44 @@ namespace QuizBuilder2.Data.Seeding
                     OutcomeId = outcomes[randomId].Id
                 });
             }
+
+            return await _db.SaveChangesAsync();
+        }
+
+        private async Task<int> AddImages()
+        {
+            var images = new Photo[] {
+                new Photo {
+                    Description = "ariel",
+                    Extension = ".jpg",
+                    Path = "outcomes/2/ariel.jpg",
+                    Source = "The Walt Disney Company"
+                },
+                new Photo {
+                    Description = "Blossom Outcome",
+                    Extension = ".png",
+                    Path = "outcomes/15/Blossom Outcome.png",
+                    Source = "http://vignette2.wikia.nocookie.net/powerpuff/images/8/80/Blossomz.png/revision/latest?cb=20121213232239"
+                },
+                new Photo {
+                    Description = "A_country_house_in_Scotland_2",
+                    Extension = ".JPG",
+                    Path = "answers/47/A_country_house_in_Scotland_2.JPG",
+                    Source = "This is a source thats to high up"
+                }
+            };
+
+            _db.Photos.AddRange(images);
+            await _db.SaveChangesAsync();
+
+            var answer1 = await _db.Answers.FirstAsync(a => a.Id == 1);
+            answer1.PhotoId = 1;
+
+            var outcome1 = await _db.Outcomes.FirstAsync(o => o.Id == 1);
+            outcome1.PhotoId = 2;
+
+            var answer2 = await _db.Answers.FirstAsync(a => a.Id == 2);
+            answer2.PhotoId = 3;
 
             return await _db.SaveChangesAsync();
         }

@@ -10,24 +10,23 @@
                 </div>
             </a>
             <!-- image only view -->
-            <a ng-if="answer.photoId && answer.IsPhotoOnly" href="javascript:void(0)" class="answer-choice-link" ng-click="selectOption(answer)">
+            <a ng-if="answer.photoId && answer.isPhotoOnly" href="javascript:void(0)" class="answer-choice-link" ng-click="selectOption(answer)">
                 <div class="answer-choice-content">
                     <div class="answer-image">
                         <img ng-src="{{getImageUrl(answer.photoPath)}}" />
-                        <div class="image-source-overlay" ng-if="answer.photoSource">{{answer.photoSource}}</div>
                     </div>
                 </div>
+                <div class="image-source-overlay" ng-if="answer.photoSource">{{answer.photoSource}}</div>
             </a>
             <!-- image and text view -->
-            <a ng-if="answer.photoId && !answer.IsPhotoOnly" href="javascript:void(0)" class="answer-choice-link answer-image-and-text" ng-click="selectOption(answer)">
+            <a ng-if="answer.photoId && !answer.isPhotoOnly" href="javascript:void(0)" class="answer-choice-link answer-image-and-text" ng-click="selectOption(answer)">
                 <div class="answer-choice-content">
                     <div class="answer-image">
                         <img ng-src="{{getImageUrl(answer.photoPath)}}" />
-                        <div class="image-source-overlay" ng-if="answer.photoSource">{{answer.photoSource}}</div>
                     </div>
                 </div>
                 <div class="answer-text">{{answer.text}}</div>
-                </div>
+                <div class="image-source-overlay" ng-if="answer.photoSource">{{answer.photoSource}}</div>
             </a>
         </li>
     </ul>

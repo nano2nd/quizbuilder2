@@ -25,6 +25,7 @@ namespace QuizBuilder2.Services
                 Outcome outcome;
                 if (outcomeModel.Id.HasValue)
                     outcome = await _db.Outcomes
+                        .Include(o => o.Photo)
                         .FirstAsync(o => o.Id == outcomeModel.Id.Value);
                 else {
                     outcome = new Outcome();
