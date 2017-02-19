@@ -6,6 +6,5 @@ namespace QuizBuilder2.Models
         public int Value { get; set; }
         public string CharacterRoleName { get; set; }
         public string CharacterRoleSummary { get; set; }
-        public string CharacterRoleImageFile { get; set; }
     }
 }

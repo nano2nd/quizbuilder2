@@ -1,5 +1,5 @@
 {
-  "name": "WhoAmI Quiz Builder",
+  "name": "whoami-quiz-builder",
   "private": true,
   "dependencies": {
     "angular": "~1.5.8",

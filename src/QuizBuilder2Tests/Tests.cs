@@ -29,7 +29,7 @@ namespace QuizBuilder2Tests
             using (var db = new QuizDbContext(_testFixture.DbOptions))
             {
                 var count = db.Quizzes.Count();
-                Assert.Equal(10, count);
+                Assert.Equal(16, count);
 
                 var firstQuiz = await db.Quizzes
                     .Include(q => q.Questions)
@@ -63,13 +63,13 @@ namespace QuizBuilder2Tests
                 var quizzes1 = quizService.GetQuizzes(numberOfQuizzes).ToList();
                 Assert.Equal("Quiz Number 0", quizzes1[0].Title);
                 Assert.Equal("Quiz Number 1", quizzes1[1].Title);
-                Assert.Equal("Quiz Number 2", quizzes1[2].Title);
+                Assert.Equal("Quiz Number 10", quizzes1[2].Title);
                 Assert.Equal(numberOfQuizzes,  quizzes1.Count);
                 
                 var quizzes2 = quizService.GetQuizzes(numberOfQuizzes, skipInterval).ToList();
-                Assert.Equal("Quiz Number 3", quizzes2[0].Title);                
-                Assert.Equal("Quiz Number 4", quizzes2[1].Title);                
-                Assert.Equal("Quiz Number 5", quizzes2[2].Title);                
+                Assert.Equal("Quiz Number 11", quizzes2[0].Title);                
+                Assert.Equal("Quiz Number 12", quizzes2[1].Title);                
+                Assert.Equal("Quiz Number 13", quizzes2[2].Title);                
                 Assert.Equal(numberOfQuizzes, quizzes2.Count);
             }
         }
