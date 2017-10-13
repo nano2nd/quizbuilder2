@@ -55,7 +55,7 @@
         $scope.removeQuiz = function() {
             confirmToast('Are you sure you want to remove this quiz and all of its questions?', function(yes) {
                 if (yes) {
-                    quizDataService.RemoveQuiz($scope.quiz).then(function() {
+                    quizDataService.RemoveQuiz($scope.quiz.id).then(function() {
                         $state.go('home');
                     });
                 }
