@@ -10,6 +10,7 @@ using QuizBuilder2.Data;
 using QuizBuilder2.Data.Entities;
 using QuizBuilder2.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace QuizBuilder2
 {
@@ -25,15 +26,15 @@ namespace QuizBuilder2
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-            
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true); 
+
+            builder.AddEnvironmentVariables();
             if (env.IsDevelopment() || env.IsStaging())
             {
-                builder.AddUserSecrets();
-            }  
-                
-            builder.AddEnvironmentVariables();
-            _configuration = builder.Build();
+                builder.AddUserSecrets<Startup>();
+            } 
+
+             _configuration = builder.Build();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
